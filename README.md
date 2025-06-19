@@ -11,7 +11,7 @@
 ### Requirement
 * Run our code on Windows;
 * You need to enable miniconda and python (3.10) on your platform;
-* To use our text-to-SQL agent, we provide guideline for MySQL-80 You need to connect the server by yourself.
+* To use our text-to-SQL agent, we provide guideline for MySQL-80. You need to connect the server by yourself.
 
 ### Guideline
 
