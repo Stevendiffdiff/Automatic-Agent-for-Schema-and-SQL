@@ -1,0 +1,483 @@
+{
+    "tables": [
+        {
+            "name": "auth_user",
+            "description": "User authentication table storing user credentials and profile information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for user identification",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "username",
+                    "type": "varchar",
+                    "description": "User's login username",
+                    "constraints": {
+                        "nullable": false,
+                        "unique": true
+                    }
+                },
+                {
+                    "name": "password",
+                    "type": "varchar",
+                    "description": "User's password (likely hashed)",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "first_name",
+                    "type": "varchar",
+                    "description": "User's first name",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "last_name",
+                    "type": "varchar",
+                    "description": "User's last name",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "email",
+                    "type": "varchar",
+                    "description": "User's email address",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "is_superuser",
+                    "type": "tinyint",
+                    "description": "Flag indicating if user has superuser privileges",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "is_staff",
+                    "type": "tinyint",
+                    "description": "Flag indicating if user is staff member",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "is_active",
+                    "type": "tinyint",
+                    "description": "Flag indicating if user account is active",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "last_login",
+                    "type": "datetime",
+                    "description": "Timestamp of user's last login",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "date_joined",
+                    "type": "datetime",
+                    "description": "Timestamp of when user joined/registered",
+                    "constraints": {
+                        "nullable": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "push_notifications_gcmdevice",
+            "description": "Table for storing Google Cloud Messaging (FCM) device information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for GCM device",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "Device name or identifier",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "active",
+                    "type": "tinyint",
+                    "description": "Flag indicating if device is active",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "date_created",
+                    "type": "datetime",
+                    "description": "When the device was registered",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "device_id",
+                    "type": "bigint",
+                    "description": "Unique device identifier from GCM",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "registration_id",
+                    "type": "longtext",
+                    "description": "Registration ID from GCM service",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "user_id",
+                    "type": "int",
+                    "description": "Foreign key to auth_user table",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "auth_user",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "cloud_message_type",
+                    "type": "varchar",
+                    "description": "Type of cloud message",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "application_id",
+                    "type": "varchar",
+                    "description": "Identifier for the application",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "push_notifications_apnsdevice",
+            "description": "Table for storing Apple Push Notification Service device information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for APNS device",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "Device name or identifier",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "active",
+                    "type": "tinyint",
+                    "description": "Flag indicating if device is active",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "date_created",
+                    "type": "datetime",
+                    "description": "When the device was registered",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "device_id",
+                    "type": "char",
+                    "description": "Unique device identifier from APNS",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "registration_id",
+                    "type": "varchar",
+                    "description": "Registration ID from APNS service",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "user_id",
+                    "type": "int",
+                    "description": "Foreign key to auth_user table",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "auth_user",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "application_id",
+                    "type": "varchar",
+                    "description": "Identifier for the application",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "push_notifications_wnsdevice",
+            "description": "Table for storing Windows Notification Service device information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for WNS device",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "Device name or identifier",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "active",
+                    "type": "tinyint",
+                    "description": "Flag indicating if device is active",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "date_created",
+                    "type": "datetime",
+                    "description": "When the device was registered",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "device_id",
+                    "type": "char",
+                    "description": "Unique device identifier from WNS",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "registration_id",
+                    "type": "longtext",
+                    "description": "Registration ID from WNS service",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "user_id",
+                    "type": "int",
+                    "description": "Foreign key to auth_user table",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "auth_user",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "application_id",
+                    "type": "varchar",
+                    "description": "Identifier for the application",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "push_notifications_webpushdevice",
+            "description": "Table for storing Web Push notification device information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for Web Push device",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "Device name or identifier",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "active",
+                    "type": "tinyint",
+                    "description": "Flag indicating if device is active",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "date_created",
+                    "type": "datetime",
+                    "description": "When the device was registered",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "application_id",
+                    "type": "varchar",
+                    "description": "Identifier for the application",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "registration_id",
+                    "type": "longtext",
+                    "description": "Registration ID for web push service",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "p256dh",
+                    "type": "varchar",
+                    "description": "P-256 Diffie-Hellman public key for encryption",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "auth",
+                    "type": "varchar",
+                    "description": "Authentication secret for push encryption",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "browser",
+                    "type": "varchar",
+                    "description": "Browser information",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "user_id",
+                    "type": "int",
+                    "description": "Foreign key to auth_user table",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "auth_user",
+                            "column": "id"
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "name": "user_gcmdevice",
+            "type": "one_to_many",
+            "description": "A user can have multiple GCM devices for push notifications",
+            "from": {
+                "table": "auth_user",
+                "column": "id"
+            },
+            "to": {
+                "table": "push_notifications_gcmdevice",
+                "column": "user_id"
+            }
+        },
+        {
+            "name": "user_apnsdevice",
+            "type": "one_to_many",
+            "description": "A user can have multiple APNS devices for push notifications",
+            "from": {
+                "table": "auth_user",
+                "column": "id"
+            },
+            "to": {
+                "table": "push_notifications_apnsdevice",
+                "column": "user_id"
+            }
+        },
+        {
+            "name": "user_wnsdevice",
+            "type": "one_to_many",
+            "description": "A user can have multiple WNS devices for push notifications",
+            "from": {
+                "table": "auth_user",
+                "column": "id"
+            },
+            "to": {
+                "table": "push_notifications_wnsdevice",
+                "column": "user_id"
+            }
+        },
+        {
+            "name": "user_webpushdevice",
+            "type": "one_to_many",
+            "description": "A user can have multiple Web Push devices for push notifications",
+            "from": {
+                "table": "auth_user",
+                "column": "id"
+            },
+            "to": {
+                "table": "push_notifications_webpushdevice",
+                "column": "user_id"
+            }
+        }
+    ]
+}

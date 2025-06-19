@@ -1,0 +1,37 @@
+### Functional Description  
+
+The software is a **cross-platform push notification service** integrated with a **user authentication system**. It enables sending targeted push notifications to users across multiple platforms (Android, iOS, Windows, and Web) while maintaining user-device associations.  
+
+#### **Core Features:**  
+
+1. **User Authentication & Management**  
+   - Stores user credentials (username, hashed password) and profile information (name, email).  
+   - Supports role-based access control via `is_superuser`, `is_staff`, and `is_active` flags.  
+   - Tracks user activity (`last_login`, `date_joined`).  
+
+2. **Multi-Platform Push Notifications**  
+   - **Google Cloud Messaging (GCM/FCM):**  
+     - Stores device registration IDs, activity status, and optional metadata (device name, application ID).  
+   - **Apple Push Notification Service (APNS):**  
+     - Manages iOS device tokens, activation status, and application context.  
+   - **Windows Notification Service (WNS):**  
+     - Tracks Windows device registrations and user associations.  
+   - **Web Push (Browser-Based):**  
+     - Supports browser notifications with encryption keys (`p256dh`, `auth`) and browser-specific metadata.  
+
+3. **User-Device Relationships**  
+   - Each user can have **multiple registered devices** across platforms (1:N relationships).  
+   - Devices are linked to users via foreign keys, enabling targeted notifications.  
+
+#### **Key Functionality:**  
+- **Registration & Management:** Users can register devices for push notifications, with support for deactivation (`active` flag).  
+- **Cross-Platform Targeting:** Notifications can be sent selectively by platform (e.g., Android-only, Web-only) or to all user devices.  
+- **Security:**  
+  - User authentication ensures only valid users receive notifications.  
+  - Web Push uses encryption for secure delivery.  
+
+#### **Engineering Implications:**  
+- The schema supports **scalability** (auto-increment IDs, indexed user-device relationships).  
+- **Extensibility:** New platforms can be added with similar device tables (e.g., for future services like Amazon Device Messaging).  
+
+This system is ideal for applications requiring **user-specific, cross-platform notifications**, such as social networks, productivity tools, or e-commerce apps.

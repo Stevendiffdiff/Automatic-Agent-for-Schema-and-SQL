@@ -1,0 +1,270 @@
+{
+  "tables": [
+    {
+      "name": "tags",
+      "description": "Stores and tracks tags, including their usage count and timestamps for creation/updates.",
+      "columns": [
+        {
+          "name": "tag_id",
+          "type": "integer",
+          "description": "Primary key for the tag",
+          "constraints": {
+            "primary_key": true,
+            "nullable": false,
+            "unique": true,
+            "auto_increment": true
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Name of the tag",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp",
+          "description": "Timestamp when the tag was created",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp",
+          "description": "Timestamp when the tag was last updated",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "taggings_count",
+          "type": "integer",
+          "description": "Count of how many times the tag has been used",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "taggings",
+      "description": "Junction table linking tags, taggers, and tagged entities. Supports polymorphic tagging and contextual metadata.",
+      "columns": [
+        {
+          "name": "tagging_id",
+          "type": "integer",
+          "description": "Primary key for the tagging",
+          "constraints": {
+            "primary_key": true,
+            "nullable": false,
+            "unique": true,
+            "auto_increment": true
+          }
+        },
+        {
+          "name": "tag_id",
+          "type": "integer",
+          "description": "Foreign key to the tags table",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false,
+            "foreign_key": {
+              "table": "tags",
+              "column": "tag_id"
+            }
+          }
+        },
+        {
+          "name": "taggable_id",
+          "type": "integer",
+          "description": "ID of the tagged entity",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "taggable_type",
+          "type": "string",
+          "description": "Type of the tagged entity (e.g., 'Document', 'Image', 'User')",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "tagger_id",
+          "type": "integer",
+          "description": "ID of the tagger (user/system)",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "tagger_type",
+          "type": "string",
+          "description": "Type of the tagger (e.g., 'User', 'System')",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "context",
+          "type": "jsonb",
+          "description": "Optional contextual metadata for the tag (e.g., categorization, purpose)",
+          "constraints": {
+            "primary_key": false,
+            "nullable": true,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp",
+          "description": "Timestamp when the tagging was created",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "taggable_entities",
+      "description": "Polymorphic table representing different types of entities that can be tagged.",
+      "columns": [
+        {
+          "name": "entity_id",
+          "type": "integer",
+          "description": "Primary key for the entity",
+          "constraints": {
+            "primary_key": true,
+            "nullable": false,
+            "unique": true,
+            "auto_increment": true
+          }
+        },
+        {
+          "name": "entity_type",
+          "type": "string",
+          "description": "Type of the entity (e.g., 'Document', 'Image', 'User')",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "taggers",
+      "description": "Table representing different types of taggers (e.g., users, automated systems).",
+      "columns": [
+        {
+          "name": "tagger_id",
+          "type": "integer",
+          "description": "Primary key for the tagger",
+          "constraints": {
+            "primary_key": true,
+            "nullable": false,
+            "unique": true,
+            "auto_increment": true
+          }
+        },
+        {
+          "name": "tagger_type",
+          "type": "string",
+          "description": "Type of the tagger (e.g., 'User', 'System')",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "name": "used_in",
+      "type": "one_to_many",
+      "description": "A tag can be used in multiple taggings.",
+      "from": {
+        "table": "tags",
+        "column": "tag_id"
+      },
+      "to": {
+        "table": "taggings",
+        "column": "tag_id"
+      }
+    },
+    {
+      "name": "tags",
+      "type": "many_to_many",
+      "description": "A tagging links a tag to a taggable entity.",
+      "from": {
+        "table": "taggings",
+        "column": "taggable_id"
+      },
+      "to": {
+        "table": "taggable_entities",
+        "column": "entity_id"
+      },
+      "junction_table": {
+        "name": "taggings",
+        "source_column": "taggable_id",
+        "target_column": "taggable_type"
+      }
+    },
+    {
+      "name": "applied_by",
+      "type": "many_to_many",
+      "description": "A tagging is applied by a tagger.",
+      "from": {
+        "table": "taggings",
+        "column": "tagger_id"
+      },
+      "to": {
+        "table": "taggers",
+        "column": "tagger_id"
+      },
+      "junction_table": {
+        "name": "taggings",
+        "source_column": "tagger_id",
+        "target_column": "tagger_type"
+      }
+    }
+  ]
+}

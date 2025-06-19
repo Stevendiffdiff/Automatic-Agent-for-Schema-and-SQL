@@ -1,0 +1,300 @@
+{
+    "tables": [
+        {
+            "name": "migrations",
+            "description": "Tracks database migration information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for migrations",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "migration",
+                    "type": "varchar",
+                    "description": "Name or identifier of the migration"
+                },
+                {
+                    "name": "batch",
+                    "type": "int",
+                    "description": "Migration batch number"
+                }
+            ]
+        },
+        {
+            "name": "users",
+            "description": "Stores user account information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for users",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "email",
+                    "type": "varchar",
+                    "description": "User's email address",
+                    "constraints": {
+                        "unique": true
+                    }
+                },
+                {
+                    "name": "token",
+                    "type": "varchar",
+                    "description": "User authentication token",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "provider",
+                    "type": "varchar",
+                    "description": "Authentication provider",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "provider_id",
+                    "type": "varchar",
+                    "description": "ID from the authentication provider",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the user account was created",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the user account was last updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "User's name",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "password",
+                    "type": "varchar",
+                    "description": "User's hashed password",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "remember_token",
+                    "type": "varchar",
+                    "description": "Token for 'remember me' functionality",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "password_resets",
+            "description": "Tracks password reset requests",
+            "columns": [
+                {
+                    "name": "email",
+                    "type": "varchar",
+                    "description": "Email address associated with the reset request"
+                },
+                {
+                    "name": "token",
+                    "type": "varchar",
+                    "description": "Token for password reset verification"
+                },
+                {
+                    "name": "created_at",
+                    "type": "timestamp",
+                    "description": "When the password reset request was created",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "api_log",
+            "description": "Logs API access and activity",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for API logs",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "user_id",
+                    "type": "int",
+                    "description": "Reference to the user making the API call",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "users",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "api_key_id",
+                    "type": "int",
+                    "description": "Reference to the API key used",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "api_keys",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "images",
+                    "type": "text",
+                    "description": "Image data or references related to the API call"
+                },
+                {
+                    "name": "created_at",
+                    "type": "timestamp",
+                    "description": "When the API log was created",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "timestamp",
+                    "description": "When the API log was last updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "api_keys",
+            "description": "Stores API keys for authentication",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for API keys",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "Name or description of the API key"
+                },
+                {
+                    "name": "key",
+                    "type": "varchar",
+                    "description": "The actual API key string",
+                    "constraints": {
+                        "unique": true
+                    }
+                },
+                {
+                    "name": "user_id",
+                    "type": "int",
+                    "description": "Reference to the user who owns the API key",
+                    "constraints": {
+                        "foreign_key": {
+                            "table": "users",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "timestamp",
+                    "description": "When the API key was created",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "timestamp",
+                    "description": "When the API key was last updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "name": "user_api_keys",
+            "type": "one_to_many",
+            "description": "A user can have multiple API keys",
+            "from": {
+                "table": "users",
+                "column": "id"
+            },
+            "to": {
+                "table": "api_keys",
+                "column": "user_id"
+            }
+        },
+        {
+            "name": "user_api_logs",
+            "type": "one_to_many",
+            "description": "A user can have multiple API logs",
+            "from": {
+                "table": "users",
+                "column": "id"
+            },
+            "to": {
+                "table": "api_log",
+                "column": "user_id"
+            }
+        },
+        {
+            "name": "api_key_logs",
+            "type": "one_to_many",
+            "description": "An API key can be used in multiple API logs",
+            "from": {
+                "table": "api_keys",
+                "column": "id"
+            },
+            "to": {
+                "table": "api_log",
+                "column": "api_key_id"
+            }
+        }
+    ]
+}

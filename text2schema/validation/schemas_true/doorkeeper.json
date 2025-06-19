@@ -1,0 +1,277 @@
+{
+    "tables": [
+        {
+            "name": "users",
+            "description": "Stores user information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "bigint",
+                    "description": "Primary key for the users table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "oauth_access_tokens",
+            "description": "Stores OAuth access token information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "bigint",
+                    "description": "Primary key for the oauth_access_tokens table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "resource_owner_id",
+                    "type": "bigint",
+                    "description": "Foreign key to users table",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "users",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "application_id",
+                    "type": "bigint",
+                    "description": "Foreign key to oauth_applications table",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "oauth_applications",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "token",
+                    "type": "varchar",
+                    "description": "The access token string"
+                },
+                {
+                    "name": "refresh_token",
+                    "type": "varchar",
+                    "description": "The refresh token string"
+                },
+                {
+                    "name": "expires_in",
+                    "type": "int",
+                    "description": "Token expiration time in seconds"
+                },
+                {
+                    "name": "revoked_at",
+                    "type": "datetime",
+                    "description": "Timestamp when token was revoked",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "Timestamp when token was created"
+                },
+                {
+                    "name": "scopes",
+                    "type": "varchar",
+                    "description": "Permitted scopes for this token"
+                },
+                {
+                    "name": "previous_refresh_token",
+                    "type": "varchar",
+                    "description": "Previous refresh token value"
+                }
+            ]
+        },
+        {
+            "name": "oauth_applications",
+            "description": "Stores OAuth application registration information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "bigint",
+                    "description": "Primary key for the oauth_applications table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "Name of the OAuth application"
+                },
+                {
+                    "name": "uid",
+                    "type": "varchar",
+                    "description": "Unique identifier for the application"
+                },
+                {
+                    "name": "secret",
+                    "type": "varchar",
+                    "description": "Client secret for the application"
+                },
+                {
+                    "name": "redirect_uri",
+                    "type": "text",
+                    "description": "Redirect URI for the OAuth flow"
+                },
+                {
+                    "name": "scopes",
+                    "type": "varchar",
+                    "description": "Default scopes for the application"
+                },
+                {
+                    "name": "confidential",
+                    "type": "tinyint",
+                    "description": "Flag indicating if the application is confidential"
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "Timestamp when application was created"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "Timestamp when application was last updated"
+                }
+            ]
+        },
+        {
+            "name": "oauth_access_grants",
+            "description": "Stores OAuth authorization code grants",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "bigint",
+                    "description": "Primary key for the oauth_access_grants table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "resource_owner_id",
+                    "type": "bigint",
+                    "description": "Foreign key to users table",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "users",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "application_id",
+                    "type": "bigint",
+                    "description": "Foreign key to oauth_applications table",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "oauth_applications",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "token",
+                    "type": "varchar",
+                    "description": "The authorization code"
+                },
+                {
+                    "name": "expires_in",
+                    "type": "int",
+                    "description": "Authorization code expiration time in seconds"
+                },
+                {
+                    "name": "redirect_uri",
+                    "type": "text",
+                    "description": "Redirect URI for this specific grant"
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "Timestamp when grant was created"
+                },
+                {
+                    "name": "revoked_at",
+                    "type": "datetime",
+                    "description": "Timestamp when grant was revoked",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "scopes",
+                    "type": "varchar",
+                    "description": "Permitted scopes for this grant"
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "name": "user_to_access_tokens",
+            "type": "one_to_many",
+            "description": "A user can have multiple OAuth access tokens",
+            "from": {
+                "table": "users",
+                "column": "id"
+            },
+            "to": {
+                "table": "oauth_access_tokens",
+                "column": "resource_owner_id"
+            }
+        },
+        {
+            "name": "user_to_access_grants",
+            "type": "one_to_many",
+            "description": "A user can have multiple OAuth access grants",
+            "from": {
+                "table": "users",
+                "column": "id"
+            },
+            "to": {
+                "table": "oauth_access_grants",
+                "column": "resource_owner_id"
+            }
+        },
+        {
+            "name": "application_to_access_tokens",
+            "type": "one_to_many",
+            "description": "An OAuth application can have multiple access tokens",
+            "from": {
+                "table": "oauth_applications",
+                "column": "id"
+            },
+            "to": {
+                "table": "oauth_access_tokens",
+                "column": "application_id"
+            }
+        },
+        {
+            "name": "application_to_access_grants",
+            "type": "one_to_many",
+            "description": "An OAuth application can have multiple access grants",
+            "from": {
+                "table": "oauth_applications",
+                "column": "id"
+            },
+            "to": {
+                "table": "oauth_access_grants",
+                "column": "application_id"
+            }
+        }
+    ]
+}

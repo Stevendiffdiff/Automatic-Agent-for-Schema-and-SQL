@@ -1,0 +1,705 @@
+{
+    "tables": [
+      {
+        "name": "filer_clipboard",
+        "description": "Stores clipboard data for file management",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for clipboard",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key to the user who owns this clipboard",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "filer_clipboarditem",
+        "description": "Stores items in a clipboard",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for clipboard item",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "clipboard_id",
+            "type": "int",
+            "description": "Foreign key to the clipboard this item belongs to",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "filer_clipboard",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "file_id",
+            "type": "int",
+            "description": "Foreign key to the file in this clipboard item",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "filer_file",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "filer_folder",
+        "description": "Represents folders in the file system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for folder",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the folder"
+          },
+          {
+            "name": "uploaded_at",
+            "type": "datetime",
+            "description": "When the folder was uploaded"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "When the folder was created"
+          },
+          {
+            "name": "modified_at",
+            "type": "datetime",
+            "description": "When the folder was last modified"
+          },
+          {
+            "name": "lft",
+            "type": "int",
+            "description": "Left value for nested set model"
+          },
+          {
+            "name": "rght",
+            "type": "int",
+            "description": "Right value for nested set model"
+          },
+          {
+            "name": "tree_id",
+            "type": "int",
+            "description": "Tree identifier for nested set model"
+          },
+          {
+            "name": "level",
+            "type": "int",
+            "description": "Level in the tree hierarchy"
+          },
+          {
+            "name": "owner_id",
+            "type": "int",
+            "description": "Foreign key to the owner of this folder",
+            "constraints": {
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "parent_id",
+            "type": "int",
+            "description": "Foreign key to the parent folder",
+            "constraints": {
+              "foreign_key": {
+                "table": "filer_folder",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "filer_thumbnailoption",
+        "description": "Options for thumbnail generation",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for thumbnail option",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the thumbnail option"
+          },
+          {
+            "name": "width",
+            "type": "int",
+            "description": "Width of the thumbnail"
+          },
+          {
+            "name": "height",
+            "type": "int",
+            "description": "Height of the thumbnail"
+          },
+          {
+            "name": "crop",
+            "type": "tinyint",
+            "description": "Whether to crop the thumbnail"
+          },
+          {
+            "name": "upscale",
+            "type": "tinyint",
+            "description": "Whether to upscale the thumbnail"
+          }
+        ]
+      },
+      {
+        "name": "filer_file",
+        "description": "Stores file metadata",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for file",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "file",
+            "type": "varchar",
+            "description": "File path or reference"
+          },
+          {
+            "name": "file_size",
+            "type": "bigint",
+            "description": "Size of the file in bytes"
+          },
+          {
+            "name": "sha1",
+            "type": "varchar",
+            "description": "SHA1 hash of the file for integrity verification"
+          },
+          {
+            "name": "has_all_mandatory_data",
+            "type": "tinyint",
+            "description": "Whether all required data is present"
+          },
+          {
+            "name": "original_filename",
+            "type": "varchar",
+            "description": "Original filename before upload"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Display name of the file"
+          },
+          {
+            "name": "description",
+            "type": "longtext",
+            "description": "Description of the file"
+          },
+          {
+            "name": "uploaded_at",
+            "type": "datetime",
+            "description": "When the file was uploaded"
+          },
+          {
+            "name": "modified_at",
+            "type": "datetime",
+            "description": "When the file was last modified"
+          },
+          {
+            "name": "is_public",
+            "type": "tinyint",
+            "description": "Whether the file is publicly accessible"
+          },
+          {
+            "name": "folder_id",
+            "type": "int",
+            "description": "Foreign key to the folder containing this file",
+            "constraints": {
+              "foreign_key": {
+                "table": "filer_folder",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "owner_id",
+            "type": "int",
+            "description": "Foreign key to the owner of this file",
+            "constraints": {
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "polymorphic_ctype_id",
+            "type": "int",
+            "description": "Foreign key to content type for polymorphic relationship",
+            "constraints": {
+              "foreign_key": {
+                "table": "django_content_type",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "filer_image",
+        "description": "Stores image-specific metadata",
+        "columns": [
+          {
+            "name": "file_ptr_id",
+            "type": "int",
+            "description": "Primary key, inherits from filer_file",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "foreign_key": {
+                "table": "filer_file",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "height",
+            "type": "int",
+            "description": "Height of the image in pixels"
+          },
+          {
+            "name": "width",
+            "type": "int",
+            "description": "Width of the image in pixels"
+          },
+          {
+            "name": "date_taken",
+            "type": "datetime",
+            "description": "When the image was taken"
+          },
+          {
+            "name": "default_alt_text",
+            "type": "varchar",
+            "description": "Default alternative text for the image"
+          },
+          {
+            "name": "default_caption",
+            "type": "varchar",
+            "description": "Default caption for the image"
+          },
+          {
+            "name": "author",
+            "type": "varchar",
+            "description": "Author of the image"
+          },
+          {
+            "name": "must_always_publish_author_credit",
+            "type": "tinyint",
+            "description": "Whether author credit must always be published"
+          },
+          {
+            "name": "must_always_publish_copyright",
+            "type": "tinyint",
+            "description": "Whether copyright info must always be published"
+          },
+          {
+            "name": "subject_location",
+            "type": "varchar",
+            "description": "Location of the subject in the image"
+          }
+        ]
+      },
+      {
+        "name": "filer_folderpermission",
+        "description": "Defines permissions for folders",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for folder permission",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "type",
+            "type": "smallint",
+            "description": "Type of permission"
+          },
+          {
+            "name": "everybody",
+            "type": "tinyint",
+            "description": "Whether permission applies to everybody"
+          },
+          {
+            "name": "can_edit",
+            "type": "smallint",
+            "description": "Permission to edit"
+          },
+          {
+            "name": "can_read",
+            "type": "smallint",
+            "description": "Permission to read"
+          },
+          {
+            "name": "can_add_children",
+            "type": "smallint",
+            "description": "Permission to add children"
+          },
+          {
+            "name": "folder_id",
+            "type": "int",
+            "description": "Foreign key to the folder this permission applies to",
+            "constraints": {
+              "foreign_key": {
+                "table": "filer_folder",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key to the user this permission applies to",
+            "constraints": {
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "group_id",
+            "type": "int",
+            "description": "Foreign key to the group this permission applies to",
+            "constraints": {
+              "foreign_key": {
+                "table": "auth_group",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "auth_user",
+        "description": "Stores user account information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for user",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "password",
+            "type": "varchar",
+            "description": "Hashed password"
+          },
+          {
+            "name": "last_login",
+            "type": "datetime",
+            "description": "When the user last logged in"
+          },
+          {
+            "name": "is_superuser",
+            "type": "tinyint",
+            "description": "Whether the user has superuser privileges"
+          },
+          {
+            "name": "username",
+            "type": "varchar",
+            "description": "Username for login",
+            "constraints": {
+              "unique": true
+            }
+          },
+          {
+            "name": "first_name",
+            "type": "varchar",
+            "description": "User's first name"
+          },
+          {
+            "name": "last_name",
+            "type": "varchar",
+            "description": "User's last name"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address"
+          },
+          {
+            "name": "is_staff",
+            "type": "tinyint",
+            "description": "Whether the user is staff member"
+          },
+          {
+            "name": "is_active",
+            "type": "tinyint",
+            "description": "Whether the user account is active"
+          },
+          {
+            "name": "date_joined",
+            "type": "datetime",
+            "description": "When the user joined"
+          }
+        ]
+      },
+      {
+        "name": "auth_group",
+        "description": "Stores user groups",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for group",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the group",
+            "constraints": {
+              "unique": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "django_content_type",
+        "description": "Stores content types for Django's content type system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for content type",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "app_label",
+            "type": "varchar",
+            "description": "Label of the app this content type belongs to"
+          },
+          {
+            "name": "model",
+            "type": "varchar",
+            "description": "Name of the model"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "clipboard_user",
+        "type": "many_to_one",
+        "description": "A user can have multiple clipboards",
+        "from": {
+          "table": "filer_clipboard",
+          "column": "user_id"
+        },
+        "to": {
+          "table": "auth_user",
+          "column": "id"
+        }
+      },
+      {
+        "name": "clipboarditem_clipboard",
+        "type": "many_to_one",
+        "description": "A clipboard can have multiple items",
+        "from": {
+          "table": "filer_clipboarditem",
+          "column": "clipboard_id"
+        },
+        "to": {
+          "table": "filer_clipboard",
+          "column": "id"
+        }
+      },
+      {
+        "name": "clipboarditem_file",
+        "type": "many_to_one",
+        "description": "A file can be in multiple clipboard items",
+        "from": {
+          "table": "filer_clipboarditem",
+          "column": "file_id"
+        },
+        "to": {
+          "table": "filer_file",
+          "column": "id"
+        }
+      },
+      {
+        "name": "folder_owner",
+        "type": "many_to_one",
+        "description": "A user can own multiple folders",
+        "from": {
+          "table": "filer_folder",
+          "column": "owner_id"
+        },
+        "to": {
+          "table": "auth_user",
+          "column": "id"
+        }
+      },
+      {
+        "name": "folder_parent",
+        "type": "many_to_one",
+        "description": "A folder can have multiple child folders",
+        "from": {
+          "table": "filer_folder",
+          "column": "parent_id"
+        },
+        "to": {
+          "table": "filer_folder",
+          "column": "id"
+        }
+      },
+      {
+        "name": "file_folder",
+        "type": "many_to_one",
+        "description": "A folder can contain multiple files",
+        "from": {
+          "table": "filer_file",
+          "column": "folder_id"
+        },
+        "to": {
+          "table": "filer_folder",
+          "column": "id"
+        }
+      },
+      {
+        "name": "file_owner",
+        "type": "many_to_one",
+        "description": "A user can own multiple files",
+        "from": {
+          "table": "filer_file",
+          "column": "owner_id"
+        },
+        "to": {
+          "table": "auth_user",
+          "column": "id"
+        }
+      },
+      {
+        "name": "file_content_type",
+        "type": "many_to_one",
+        "description": "Polymorphic relationship to content types",
+        "from": {
+          "table": "filer_file",
+          "column": "polymorphic_ctype_id"
+        },
+        "to": {
+          "table": "django_content_type",
+          "column": "id"
+        }
+      },
+      {
+        "name": "image_file",
+        "type": "one_to_one",
+        "description": "An image is a specific type of file",
+        "from": {
+          "table": "filer_image",
+          "column": "file_ptr_id"
+        },
+        "to": {
+          "table": "filer_file",
+          "column": "id"
+        }
+      },
+      {
+        "name": "folderpermission_folder",
+        "type": "many_to_one",
+        "description": "A folder can have multiple permissions",
+        "from": {
+          "table": "filer_folderpermission",
+          "column": "folder_id"
+        },
+        "to": {
+          "table": "filer_folder",
+          "column": "id"
+        }
+      },
+      {
+        "name": "folderpermission_user",
+        "type": "many_to_one",
+        "description": "A user can have multiple folder permissions",
+        "from": {
+          "table": "filer_folderpermission",
+          "column": "user_id"
+        },
+        "to": {
+          "table": "auth_user",
+          "column": "id"
+        }
+      },
+      {
+        "name": "folderpermission_group",
+        "type": "many_to_one",
+        "description": "A group can have multiple folder permissions",
+        "from": {
+          "table": "filer_folderpermission",
+          "column": "group_id"
+        },
+        "to": {
+          "table": "auth_group",
+          "column": "id"
+        }
+      }
+    ]
+  }

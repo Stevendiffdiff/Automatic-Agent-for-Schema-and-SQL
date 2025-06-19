@@ -1,0 +1,252 @@
+{
+    "tables": [
+        {
+            "name": "permissions",
+            "description": "Stores available permissions in the system",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "bigint",
+                    "description": "Primary key for the permissions table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "Name of the permission",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "guard_name",
+                    "type": "varchar",
+                    "description": "Guard name for the permission",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the permission was created",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the permission was last updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "roles",
+            "description": "Stores roles in the system",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "bigint",
+                    "description": "Primary key for the roles table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "Name of the role",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "guard_name",
+                    "type": "varchar",
+                    "description": "Guard name for the role",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the role was created",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the role was last updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "role_has_permissions",
+            "description": "Junction table linking roles to permissions",
+            "columns": [
+                {
+                    "name": "permission_id",
+                    "type": "bigint",
+                    "description": "Foreign key to permissions table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "permissions",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "role_id",
+                    "type": "bigint",
+                    "description": "Foreign key to roles table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "roles",
+                            "column": "id"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "model_has_permissions",
+            "description": "Polymorphic table linking models to permissions",
+            "columns": [
+                {
+                    "name": "permission_id",
+                    "type": "bigint",
+                    "description": "Foreign key to permissions table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "permissions",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "model_type",
+                    "type": "varchar",
+                    "description": "Type of the model that has this permission",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "model_id",
+                    "type": "int",
+                    "description": "ID of the model that has this permission",
+                    "constraints": {
+                        "nullable": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "model_has_roles",
+            "description": "Polymorphic table linking models to roles",
+            "columns": [
+                {
+                    "name": "role_id",
+                    "type": "bigint",
+                    "description": "Foreign key to roles table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "roles",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "model_type",
+                    "type": "varchar",
+                    "description": "Type of the model that has this role",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "model_id",
+                    "type": "int",
+                    "description": "ID of the model that has this role",
+                    "constraints": {
+                        "nullable": false
+                    }
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "name": "role_permissions",
+            "type": "many_to_many",
+            "description": "Relationship between roles and permissions",
+            "from": {
+                "table": "roles",
+                "column": "id"
+            },
+            "to": {
+                "table": "permissions",
+                "column": "id"
+            },
+            "junction_table": {
+                "name": "role_has_permissions",
+                "source_column": "role_id",
+                "target_column": "permission_id"
+            }
+        },
+        {
+            "name": "model_permissions",
+            "type": "many_to_many",
+            "description": "Polymorphic relationship between models and permissions",
+            "from": {
+                "table": "permissions",
+                "column": "id"
+            },
+            "to": {
+                "table": "models",
+                "column": "id"
+            },
+            "junction_table": {
+                "name": "model_has_permissions",
+                "source_column": "permission_id",
+                "target_column": "model_id"
+            }
+        },
+        {
+            "name": "model_roles",
+            "type": "many_to_many",
+            "description": "Polymorphic relationship between models and roles",
+            "from": {
+                "table": "roles",
+                "column": "id"
+            },
+            "to": {
+                "table": "models",
+                "column": "id"
+            },
+            "junction_table": {
+                "name": "model_has_roles",
+                "source_column": "role_id",
+                "target_column": "model_id"
+            }
+        }
+    ]
+}

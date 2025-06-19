@@ -1,0 +1,31 @@
+### Functional Description:  
+
+The software is a **thumbnail generation and management system** that creates and stores resized versions (thumbnails) of source images. It tracks the relationship between original images and their thumbnails, along with the dimensions of each thumbnail variant.  
+
+#### Core Functionality:  
+1. **Source Image Storage**  
+   - Stores original images with a unique identifier, file name, storage location hash, and modification timestamp.  
+
+2. **Thumbnail Generation & Storage**  
+   - Generates thumbnails from source images, storing each thumbnail with:  
+     - A reference to the source image.  
+     - A unique identifier, file name, storage location hash, and modification timestamp.  
+
+3. **Thumbnail Dimension Management**  
+   - Supports multiple size variants per thumbnail (e.g., small, medium, large).  
+   - Tracks width and height (in pixels) for each variant, linked to the parent thumbnail.  
+
+#### Key Relationships:  
+- **Thumbnail → Source Image**: Each thumbnail is derived from one source image.  
+- **Thumbnail Dimensions → Thumbnail**: Each thumbnail can have multiple dimension records (e.g., different sizes).  
+
+#### Use Cases:  
+- Dynamically serving appropriately sized thumbnails for different UI contexts (e.g., gallery view, detail view).  
+- Efficient storage and retrieval of thumbnails by source image or dimensions.  
+
+#### Engineering Implications:  
+- The schema supports **scalable thumbnail generation** with traceability back to source files.  
+- **Storage optimization**: Uses hashes (likely file paths or identifiers) to reference images without duplication.  
+- **Flexible resizing**: Nullable width/height allows for dynamic or unconstrained resizing.  
+
+This system is well-suited for media-heavy applications like CMS platforms, social networks, or e-commerce sites.

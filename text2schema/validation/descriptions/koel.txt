@@ -1,0 +1,38 @@
+### Functional Description of the Music Streaming Service  
+
+The competitor's software is a **music streaming platform** with user accounts, playlist management, and music library organization. The core functionality includes:  
+
+1. **User Management**  
+   - Users can register with email/password and have admin privileges (via `is_admin` flag).  
+   - Supports "remember me" sessions (`remember_token`) and password resets (`password_resets` table).  
+   - Users can store preferences (`preferences` column).  
+
+2. **Authentication & API Access**  
+   - Personal access tokens (`personal_access_tokens`) allow API authentication with granular permissions (`abilities`).  
+   - Tokens are tied to users or other entities (`tokenable_id`, `tokenable_type`).  
+
+3. **Music Library**  
+   - Tracks (`songs`) are organized by **albums** and **artists**, with metadata (title, duration, lyrics, file path).  
+   - Albums have cover art (`cover`), and artists have profile images (`image`).  
+
+4. **Playlist System**  
+   - Users can create **playlists** (`playlists`), which can be organized into **folders** (`playlist_folders`).  
+   - Playlists can contain multiple songs (via `playlist_song` junction table).  
+   - Supports rule-based playlists (`rules` column for dynamic filtering).  
+
+5. **User Engagement**  
+   - Tracks user interactions (`interactions`), including play counts (`play_count`) and likes (`liked`).  
+
+6. **Application Settings**  
+   - Global settings (`settings` table) stored as key-value pairs.  
+
+### Key Relationships  
+- **Users** own **playlists** and **folders**.  
+- **Playlists** can be nested in **folders** and contain **songs**.  
+- **Songs** belong to **albums** and **artists**.  
+- **Artists** have multiple **albums** and **songs**.  
+- **Users** interact with **songs** (plays, likes).  
+
+This schema suggests a **self-hostable** or **cloud-based** music service with strong playlist customization, user tracking, and API access. The lack of subscription tables implies a focus on personal libraries or ad-supported streaming.  
+
+Would you like to prioritize any specific area for our implementation?

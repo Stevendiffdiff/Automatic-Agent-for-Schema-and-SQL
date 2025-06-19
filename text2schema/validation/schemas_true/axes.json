@@ -1,0 +1,179 @@
+{
+    "tables": [
+      {
+        "name": "axes_accesslog",
+        "description": "Records successful access attempts to the system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for the access log entry",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_agent",
+            "type": "varchar",
+            "description": "Browser or client information used to access the system",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "ip_address",
+            "type": "char",
+            "description": "IP address from which the access was made",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "username",
+            "type": "varchar",
+            "description": "Username that was used for authentication",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "http_accept",
+            "type": "varchar",
+            "description": "HTTP accept header from the request",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "path_info",
+            "type": "varchar",
+            "description": "Path or URL that was accessed",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "attempt_time",
+            "type": "datetime",
+            "description": "Timestamp when the access occurred",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "logout_time",
+            "type": "datetime",
+            "description": "Timestamp when the user logged out",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "axes_accessattempt",
+        "description": "Records details about access attempts, including failed attempts",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for the access attempt",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_agent",
+            "type": "varchar",
+            "description": "Browser or client information used in the access attempt",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "ip_address",
+            "type": "char",
+            "description": "IP address from which the attempt was made",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "username",
+            "type": "varchar",
+            "description": "Username that was attempted",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "http_accept",
+            "type": "varchar",
+            "description": "HTTP accept header from the attempt request",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "path_info",
+            "type": "varchar",
+            "description": "Path or URL that was attempted to be accessed",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "attempt_time",
+            "type": "datetime",
+            "description": "Timestamp when the attempt occurred",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "get_data",
+            "type": "longtext",
+            "description": "GET request data submitted during the attempt",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "post_data",
+            "type": "longtext",
+            "description": "POST request data submitted during the attempt",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "failures_since_start",
+            "type": "int",
+            "description": "Count of failed attempts since tracking began",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "access_attempt_log_relation",
+        "type": "one_to_one",
+        "description": "Relationship between successful access logs and their corresponding access attempts",
+        "from": {
+          "table": "axes_accesslog",
+          "column": "username"
+        },
+        "to": {
+          "table": "axes_accessattempt",
+          "column": "username"
+        }
+      }
+    ]
+  }

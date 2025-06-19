@@ -1,0 +1,25 @@
+### Functional Description  
+
+The software is an authentication system with user management and two-factor authentication (2FA) capabilities.  
+
+#### Core Functionality:  
+
+1. **User Authentication & Profile Management**  
+   - Stores user credentials (username, hashed password) and profile information (name, email).  
+   - Tracks account status (`is_active`), privileges (`is_superuser`, `is_staff`), and timestamps (`last_login`, `date_joined`).  
+   - Usernames are unique and required; emails are optional.  
+
+2. **Two-Factor Authentication (2FA) via Phone Devices**  
+   - Users can register phone devices for 2FA, with methods like SMS or call-based verification.  
+   - Each device stores a phone number, security key, and confirmation status (`confirmed`).  
+   - A user can have multiple phone devices (one-to-many relationship).  
+
+#### Key Features:  
+- **Role-Based Access**: Superusers and staff members have elevated privileges.  
+- **Account Security**: Supports 2FA with configurable methods (e.g., SMS) and device management.  
+- **Auditability**: Tracks login activity and account creation times.  
+
+#### Schema Relationships:  
+- Each `two_factor_phonedevice` is linked to a single `auth_user` (via `user_id` foreign key).  
+
+This system is typical for applications requiring secure access control with optional 2FA, such as admin dashboards or enterprise portals. The schema supports extensibility (e.g., adding more 2FA methods) while enforcing security constraints (e.g., non-null passwords).

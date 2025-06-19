@@ -1,0 +1,26 @@
+### Functional Description: Feature Flagging System  
+
+This software is a **feature flag management system** that enables controlled rollouts and dynamic toggling of product features. It consists of two core components:  
+
+1. **Feature Definitions**  
+   - Stores metadata for each feature flag, including a unique identifier (`key`) and timestamps for creation/modification.  
+   - Features are referenced by their `key` in other parts of the system.  
+
+2. **Flag Rules (Gates)**  
+   - Defines activation rules for features (e.g., percentage rollouts, user whitelists, environment restrictions).  
+   - Each rule is tied to a feature via the feature’s `key` and includes:  
+     - A rule type identifier (`key`), e.g., `"percentage"`, `"user_list"`.  
+     - A configurable value (`value`), e.g., `"50"` for 50% rollout.  
+   - Multiple rules can be applied to a single feature (one-to-many relationship).  
+
+#### Key Capabilities:  
+- **Targeted Rollouts**: Enable/disable features for specific user segments or conditions.  
+- **Dynamic Configuration**: Modify rules without code deploys (via `value` updates).  
+- **Auditability**: Track when features/rules are created or updated (`created_at`, `updated_at`).  
+
+#### Example Use Cases:  
+- Gradual feature releases (e.g., 10% of users).  
+- Kill switches for faulty features.  
+- A/B testing via user segmentation.  
+
+This design suggests a **database-backed implementation** where features and rules are stored relationally, with minimal required fields for core functionality. Engineers could replicate this by modeling features and their rules as separate tables linked by a foreign key.

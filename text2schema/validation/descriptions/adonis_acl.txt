@@ -1,0 +1,36 @@
+### Functional Description:  
+
+The software is a **role-based access control (RBAC) system** that manages user permissions through a flexible hierarchy of roles and direct permission assignments.  
+
+#### Core Components:  
+
+1. **Users** – Represents system users. Currently, only a basic identifier (`id`) is defined, suggesting this is a foundational table for future expansion.  
+
+2. **Permissions** – Defines granular access rights in the system. Each permission has:  
+   - A machine-readable `slug` (e.g., `edit_content`)  
+   - A human-readable `name` and `description`  
+   - Timestamps for creation/modification  
+
+3. **Roles** – Groups permissions into reusable sets (e.g., "Admin," "Editor"). Roles mirror permissions in structure (`slug`, `name`, `description`, timestamps).  
+
+#### Assignment Relationships:  
+
+- **Users ↔ Permissions (Direct Assignment)**  
+  Users can be granted permissions directly via the `permission_user` junction table, bypassing roles if needed.  
+
+- **Users ↔ Roles**  
+  Users can be assigned multiple roles via `role_user`, inheriting all permissions tied to those roles.  
+
+- **Roles ↔ Permissions**  
+  Permissions are grouped into roles via `permission_role`. This allows role definitions to be reused across users.  
+
+#### Key Characteristics:  
+- **Flexible Authorization**: Supports both role-based and direct permission assignments.  
+- **Auditability**: Timestamps (`created_at`, `updated_at`) track permission/role assignments and changes.  
+- **Extensible Design**: The `users` table is minimally defined, suggesting it’s meant to integrate with a broader user management system.  
+
+#### Engineering Implications:  
+- The schema enables efficient permission checks (e.g., "Does user X have permission Y?"), which can be resolved via direct assignments or role inheritance.  
+- Junction tables (`permission_user`, `role_user`, `permission_role`) use surrogate keys (`id`) for traceability, though natural keys (e.g., composite of `user_id`+`permission_id`) could also work.  
+
+This design is typical for systems requiring fine-grained access control, such as CMS platforms, SaaS products, or internal tools.

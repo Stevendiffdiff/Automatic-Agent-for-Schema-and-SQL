@@ -1,0 +1,291 @@
+{
+    "tables": [
+      {
+        "name": "features",
+        "description": "Stores individual features in the system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key identifier for the feature",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the feature",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Description of the feature",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "active",
+            "type": "boolean",
+            "description": "Indicates if the feature is currently active",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the feature was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the feature was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "expires_at",
+            "type": "datetime",
+            "description": "When the feature expires",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "feature_groups",
+        "description": "Groups that can contain multiple features",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key identifier for the feature group",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the feature group",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Description of the feature group",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "active",
+            "type": "boolean",
+            "description": "Indicates if the feature group is currently active",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the feature group was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the feature group was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "feature_feature_groups",
+        "description": "Junction table connecting features to feature groups",
+        "columns": [
+          {
+            "name": "feature_id",
+            "type": "bigint",
+            "description": "Foreign key reference to features table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "features",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "feature_group_id",
+            "type": "bigint",
+            "description": "Foreign key reference to feature_groups table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "feature_groups",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "users",
+        "description": "User information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for the user",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "...",
+            "type": "int",
+            "description": "Other user fields (not fully specified in diagram)",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "feature_user",
+        "description": "Junction table connecting features to users",
+        "columns": [
+          {
+            "name": "feature_id",
+            "type": "bigint",
+            "description": "Foreign key reference to features table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "features",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "Foreign key reference to users table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "feature_group_user",
+        "description": "Junction table connecting feature groups to users",
+        "columns": [
+          {
+            "name": "feature_group_id",
+            "type": "bigint",
+            "description": "Foreign key reference to feature_groups table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "feature_groups",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "Foreign key reference to users table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "features_to_feature_groups",
+        "type": "many_to_many",
+        "description": "Features can belong to multiple feature groups, and feature groups can contain multiple features",
+        "from": {
+          "table": "features",
+          "column": "id"
+        },
+        "to": {
+          "table": "feature_groups",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "feature_feature_groups",
+          "source_column": "feature_id",
+          "target_column": "feature_group_id"
+        }
+      },
+      {
+        "name": "features_to_users",
+        "type": "many_to_many",
+        "description": "Features can be assigned to multiple users, and users can have multiple features",
+        "from": {
+          "table": "features",
+          "column": "id"
+        },
+        "to": {
+          "table": "users",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "feature_user",
+          "source_column": "feature_id",
+          "target_column": "user_id"
+        }
+      },
+      {
+        "name": "feature_groups_to_users",
+        "type": "many_to_many",
+        "description": "Feature groups can be assigned to multiple users, and users can have multiple feature groups",
+        "from": {
+          "table": "feature_groups",
+          "column": "id"
+        },
+        "to": {
+          "table": "users",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "feature_group_user",
+          "source_column": "feature_group_id",
+          "target_column": "user_id"
+        }
+      }
+    ]
+  }

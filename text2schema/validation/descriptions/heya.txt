@@ -1,0 +1,28 @@
+### Functional Description:
+
+The software appears to be a **campaign management system** that orchestrates targeted messaging campaigns to users. It tracks user participation in campaigns and records message delivery receipts, with the following core capabilities:
+
+1. **User Management**  
+   - Maintains a basic user registry with unique identifiers  
+   - Serves as the central entity for campaign participation tracking
+
+2. **Campaign Membership System**  
+   - Enrolls users in multiple campaigns simultaneously (via `concurrent` flag)  
+   - Tracks campaign participation through global identifiers (`campaign_gid`)  
+   - Records last message sent timestamp for membership context  
+   - Supports segmentation through `user_type` classification  
+
+3. **Message Delivery Tracking**  
+   - Creates audit records for each campaign step executed (`step_gid`)  
+   - Temporal tracking of message dispatch (`sent_at`) with nullability for unsent messages  
+   - Maintains full history of delivery attempts through timestamps  
+
+4. **Temporal Controls**  
+   - Comprehensive timestamp tracking at both membership and message levels  
+   - Created/updated timestamps enable change monitoring and synchronization  
+
+Key Relationships:  
+- **1:N User → Memberships**: Users can participate in multiple campaigns  
+- **1:N User → Receipts**: Users accumulate multiple message delivery records  
+
+The system emphasizes **campaign lifecycle management** (from enrollment to message delivery) with strong temporal tracking, while supporting user segmentation and concurrent campaign participation. The schema suggests an architecture optimized for high-volume messaging with delivery verification capabilities.

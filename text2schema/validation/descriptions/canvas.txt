@@ -1,0 +1,38 @@
+### Functional Description:  
+
+The software is a **content management system (CMS)** focused on publishing and organizing blog-style posts ("canvas posts"). It includes robust analytics for tracking post visits/views, flexible categorization through tags and topics, and user management with extended profile metadata.  
+
+#### Core Features:  
+
+1. **Content Management**  
+   - **Posts**: Supports rich text content with titles, summaries, featured images, and metadata. Posts can be published, updated, or soft-deleted.  
+   - **URL-friendly slugs**: Each post has a unique, SEO-optimized identifier.  
+   - **Categorization**:  
+     - **Tags**: User-defined labels for cross-cutting classification (e.g., "Tutorials").  
+     - **Topics**: Hierarchical groupings (e.g., "Technology > AI").  
+     - Both support many-to-many relationships with posts.  
+
+2. **User System**  
+   - **Authentication**: Standard email/password login with "remember me" tokens and email verification.  
+   - **Profiles**: Extended metadata (avatars, bios, dark mode preferences, etc.) stored separately from core auth data.  
+   - **Ownership**: Users create and manage their posts, tags, and topics.  
+
+3. **Analytics**  
+   - **Visits vs. Views**: Tracks initial visits (landings) and subsequent views (engagements) per post.  
+   - **Visitor Data**: Captures IP, user agent, and referrer for traffic analysis.  
+
+4. **Soft Deletion**  
+   - Posts, tags, and topics can be soft-deleted (hidden but retained in the database).  
+
+#### Key Relationships:  
+- **Users → Posts**: One-to-many (a user authors many posts).  
+- **Posts ↔ Tags/Topics**: Many-to-many (flexible categorization).  
+- **Posts → Visits/Views**: One-to-many (tracking engagement).  
+- **Users ↔ Metadata**: One-to-one (extended profile data).  
+
+#### Engineering Notes:  
+- **Analytics Separation**: `canvas_visits` and `canvas_views` are distinct tables, suggesting visits track initial access, while views may log repeat interactions.  
+- **Extensibility**: JSON `meta` fields in posts and user metadata allow for custom attributes without schema changes.  
+- **Soft Deletion**: Implemented via `deleted_at` timestamps (nullable if active).  
+
+This design prioritizes **content organization**, **user customization**, and **audience insights**, typical of a modern blogging platform or knowledge base.

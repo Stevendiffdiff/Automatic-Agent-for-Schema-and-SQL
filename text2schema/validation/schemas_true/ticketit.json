@@ -1,0 +1,536 @@
+{
+    "tables": [
+      {
+        "name": "ticketit",
+        "description": "Main tickets table that stores ticket information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for the tickets table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "subject",
+            "type": "varchar",
+            "description": "Subject of the ticket"
+          },
+          {
+            "name": "content",
+            "type": "longtext",
+            "description": "Main content of the ticket"
+          },
+          {
+            "name": "html",
+            "type": "longtext?",
+            "description": "HTML formatted content of the ticket"
+          },
+          {
+            "name": "status_id",
+            "type": "int",
+            "description": "Status of the ticket",
+            "constraints": {
+              "foreign_key": {
+                "table": "ticketit_statuses",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "priority_id",
+            "type": "int",
+            "description": "Priority level of the ticket",
+            "constraints": {
+              "foreign_key": {
+                "table": "ticketit_priorities",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "User who created the ticket",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "agent_id",
+            "type": "int",
+            "description": "Agent assigned to the ticket",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "category_id",
+            "type": "int",
+            "description": "Category of the ticket",
+            "constraints": {
+              "foreign_key": {
+                "table": "ticketit_categories",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the ticket was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "bigint",
+            "description": "Timestamp when the ticket was last updated"
+          },
+          {
+            "name": "completed_at",
+            "type": "timestamp?",
+            "description": "Timestamp when the ticket was completed"
+          }
+        ]
+      },
+      {
+        "name": "ticketit_comments",
+        "description": "Comments associated with tickets",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for the comments table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "content",
+            "type": "text",
+            "description": "Text content of the comment"
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "User who created the comment",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "ticket_id",
+            "type": "int",
+            "description": "Ticket that this comment belongs to",
+            "constraints": {
+              "foreign_key": {
+                "table": "ticketit",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "bigint",
+            "description": "Timestamp when the comment was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the comment was last updated"
+          },
+          {
+            "name": "content",
+            "type": "longtext",
+            "description": "Formatted content of the comment"
+          },
+          {
+            "name": "html",
+            "type": "longtext?",
+            "description": "HTML formatted content of the comment"
+          }
+        ]
+      },
+      {
+        "name": "ticketit_settings",
+        "description": "System settings for the ticketing system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for the settings table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "lang",
+            "type": "varchar?",
+            "description": "Language setting"
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "Unique slug identifier for the setting"
+          },
+          {
+            "name": "value",
+            "type": "mediumtext",
+            "description": "Value of the setting"
+          },
+          {
+            "name": "default",
+            "type": "mediumtext",
+            "description": "Default value of the setting"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the setting was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the setting was last updated"
+          }
+        ]
+      },
+      {
+        "name": "ticketit_categories",
+        "description": "Categories for organizing tickets",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for the categories table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the category"
+          },
+          {
+            "name": "color",
+            "type": "bigint",
+            "description": "Color code associated with the category"
+          }
+        ]
+      },
+      {
+        "name": "ticketit_categories_users",
+        "description": "Junction table for many-to-many relationship between categories and users",
+        "columns": [
+          {
+            "name": "category_id",
+            "type": "int",
+            "description": "Foreign key to categories table",
+            "constraints": {
+              "foreign_key": {
+                "table": "ticketit_categories",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key to users table",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "users",
+        "description": "Users of the ticketing system including customers and agents",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for the users table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "ticketit_admin",
+            "type": "boolean",
+            "description": "Flag indicating if user has administrator privileges"
+          },
+          {
+            "name": "ticketit_agent",
+            "type": "boolean",
+            "description": "Flag indicating if user is a support agent"
+          }
+        ]
+      },
+      {
+        "name": "ticketit_audits",
+        "description": "Audit log of actions performed on tickets",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for the audits table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "operation",
+            "type": "text",
+            "description": "Type of operation performed"
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "User who performed the operation",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "ticket_id",
+            "type": "int",
+            "description": "Ticket that was modified",
+            "constraints": {
+              "foreign_key": {
+                "table": "ticketit",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the audit record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the audit record was last updated"
+          }
+        ]
+      },
+      {
+        "name": "ticketit_statuses",
+        "description": "Possible status options for tickets",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for the statuses table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the status"
+          },
+          {
+            "name": "color",
+            "type": "bigint",
+            "description": "Color code associated with the status"
+          }
+        ]
+      },
+      {
+        "name": "ticketit_priorities",
+        "description": "Priority levels for tickets",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for the priorities table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the priority level"
+          },
+          {
+            "name": "color",
+            "type": "bigint",
+            "description": "Color code associated with the priority level"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "ticket_status",
+        "type": "many_to_one",
+        "description": "Each ticket has one status, and a status can be associated with many tickets",
+        "from": {
+          "table": "ticketit",
+          "column": "status_id"
+        },
+        "to": {
+          "table": "ticketit_statuses",
+          "column": "id"
+        }
+      },
+      {
+        "name": "ticket_priority",
+        "type": "many_to_one",
+        "description": "Each ticket has one priority level, and a priority level can be associated with many tickets",
+        "from": {
+          "table": "ticketit",
+          "column": "priority_id"
+        },
+        "to": {
+          "table": "ticketit_priorities",
+          "column": "id"
+        }
+      },
+      {
+        "name": "ticket_category",
+        "type": "many_to_one",
+        "description": "Each ticket belongs to one category, and a category can have many tickets",
+        "from": {
+          "table": "ticketit",
+          "column": "category_id"
+        },
+        "to": {
+          "table": "ticketit_categories",
+          "column": "id"
+        }
+      },
+      {
+        "name": "ticket_creator",
+        "type": "many_to_one",
+        "description": "Each ticket is created by one user, and a user can create many tickets",
+        "from": {
+          "table": "ticketit",
+          "column": "user_id"
+        },
+        "to": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "name": "ticket_agent",
+        "type": "many_to_one",
+        "description": "Each ticket is assigned to one agent, and an agent can be assigned many tickets",
+        "from": {
+          "table": "ticketit",
+          "column": "agent_id"
+        },
+        "to": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "name": "ticket_comments",
+        "type": "one_to_many",
+        "description": "A ticket can have many comments, and each comment belongs to one ticket",
+        "from": {
+          "table": "ticketit",
+          "column": "id"
+        },
+        "to": {
+          "table": "ticketit_comments",
+          "column": "ticket_id"
+        }
+      },
+      {
+        "name": "comment_author",
+        "type": "many_to_one",
+        "description": "Each comment is created by one user, and a user can create many comments",
+        "from": {
+          "table": "ticketit_comments",
+          "column": "user_id"
+        },
+        "to": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "name": "ticket_audits",
+        "type": "one_to_many",
+        "description": "A ticket can have many audit records, and each audit record belongs to one ticket",
+        "from": {
+          "table": "ticketit",
+          "column": "id"
+        },
+        "to": {
+          "table": "ticketit_audits",
+          "column": "ticket_id"
+        }
+      },
+      {
+        "name": "audit_user",
+        "type": "many_to_one",
+        "description": "Each audit record is associated with one user, and a user can have many audit records",
+        "from": {
+          "table": "ticketit_audits",
+          "column": "user_id"
+        },
+        "to": {
+          "table": "users",
+          "column": "id"
+        }
+      },
+      {
+        "name": "category_users",
+        "type": "many_to_many",
+        "description": "Users can be associated with multiple categories, and categories can have multiple users",
+        "from": {
+          "table": "ticketit_categories",
+          "column": "id"
+        },
+        "to": {
+          "table": "users",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "ticketit_categories_users",
+          "source_column": "category_id",
+          "target_column": "user_id"
+        }
+      }
+    ]
+  }

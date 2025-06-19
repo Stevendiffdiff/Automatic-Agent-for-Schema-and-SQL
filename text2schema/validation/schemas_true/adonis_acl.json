@@ -1,0 +1,308 @@
+{
+    "tables": [
+      {
+        "name": "users",
+        "description": "Stores user information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for users table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "permissions",
+        "description": "Stores available permissions in the system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for permissions table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "Permission identifier slug"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Human-readable permission name"
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Detailed description of the permission"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the permission was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the permission was last updated"
+          }
+        ]
+      },
+      {
+        "name": "roles",
+        "description": "Stores user roles in the system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for roles table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "Role identifier slug"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Human-readable role name"
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Detailed description of the role"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the role was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the role was last updated"
+          }
+        ]
+      },
+      {
+        "name": "permission_user",
+        "description": "Junction table linking users to permissions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for permission_user table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "permission_id",
+            "type": "int",
+            "description": "Foreign key to permissions table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "permissions",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key to users table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the permission was assigned to the user"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the permission assignment was last updated"
+          }
+        ]
+      },
+      {
+        "name": "role_user",
+        "description": "Junction table linking users to roles",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for role_user table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "role_id",
+            "type": "int",
+            "description": "Foreign key to roles table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "roles",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key to users table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the role was assigned to the user"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the role assignment was last updated"
+          }
+        ]
+      },
+      {
+        "name": "permission_role",
+        "description": "Junction table linking roles to permissions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for permission_role table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "permission_id",
+            "type": "int",
+            "description": "Foreign key to permissions table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "permissions",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "role_id",
+            "type": "int",
+            "description": "Foreign key to roles table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "roles",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the permission was assigned to the role"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the permission assignment was last updated"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "user_permissions",
+        "type": "many_to_many",
+        "description": "Users can have multiple permissions, and permissions can be assigned to multiple users",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "permissions",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "permission_user",
+          "source_column": "user_id",
+          "target_column": "permission_id"
+        }
+      },
+      {
+        "name": "user_roles",
+        "type": "many_to_many",
+        "description": "Users can have multiple roles, and roles can be assigned to multiple users",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "roles",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "role_user",
+          "source_column": "user_id",
+          "target_column": "role_id"
+        }
+      },
+      {
+        "name": "role_permissions",
+        "type": "many_to_many",
+        "description": "Roles can have multiple permissions, and permissions can be assigned to multiple roles",
+        "from": {
+          "table": "roles",
+          "column": "id"
+        },
+        "to": {
+          "table": "permissions",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "permission_role",
+          "source_column": "role_id",
+          "target_column": "permission_id"
+        }
+      }
+    ]
+  }

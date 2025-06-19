@@ -1,0 +1,31 @@
+### Functional Description:  
+
+The software is a **multi-tenant organizational management system** that allows users to create and manage organizations with role-based access control.  
+
+#### Core Features:  
+1. **Organization Management**  
+   - Organizations are the primary entities, each with a unique name, URL-friendly slug, and active/inactive status.  
+   - Creation and modification timestamps are tracked.  
+
+2. **User & Role Management**  
+   - Users (from an authentication system) can be associated with multiple organizations.  
+   - Each user-organization relationship defines whether the user is an **admin** (privileged role).  
+   - A separate **ownership model** exists, where specific users can be designated as owners of an organization (independent of admin status).  
+
+3. **Relationships & Permissions**  
+   - **One-to-many relationships**:  
+     - An organization can have multiple users (via `organizationuser`).  
+     - A user can belong to multiple organizations.  
+     - An organization can have multiple owners (via `organizationowner`).  
+   - Admins and owners likely have elevated permissions (e.g., managing organization settings, adding/removing users).  
+
+#### Key Business Logic Inferences:  
+- **Ownership is distinct from admin rights**: An owner may not necessarily be an admin, and vice versa.  
+- **Flexible user-organization associations**: Users can participate in multiple organizations with different roles.  
+- **Soft deletion**: The `is_active` flag suggests organizations can be deactivated without full deletion.  
+
+#### Missing but Implied Functionality:  
+- User authentication (handled by an external `auth_user` system).  
+- Additional role/permission granularity (beyond `is_admin`).  
+
+This system is well-suited for **SaaS platforms** where customers (organizations) need controlled access for their members. Engineers can replicate this by modeling organizations, users, their relationships, and ownership structures.

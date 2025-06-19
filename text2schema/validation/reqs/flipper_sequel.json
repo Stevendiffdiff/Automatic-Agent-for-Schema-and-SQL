@@ -1,0 +1,9 @@
+[
+  "store-feature-metadata",
+  "track-creation-modification-timestamps",
+  "define-activation-rules",
+  "support-multiple-rules-per-feature",
+  "enable-targeted-rollouts",
+  "allow-dynamic-configuration",
+  "maintain-auditability"
+]

@@ -1,0 +1,372 @@
+{
+    "tables": [
+      {
+        "name": "users",
+        "description": "Stores user account information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for user identification",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "username",
+            "type": "varchar",
+            "description": "User's username for login",
+            "constraints": {
+              "nullable": false,
+              "unique": true
+            }
+          },
+          {
+            "name": "password",
+            "type": "varchar",
+            "description": "User's hashed password",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "ip",
+            "type": "text",
+            "description": "IP address of user registration",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "recovery_key",
+            "type": "varchar",
+            "description": "Key for password recovery",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "role",
+            "type": "varchar",
+            "description": "User role for permission management",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "active",
+            "type": "varchar",
+            "description": "Account activation status",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "api_key",
+            "type": "varchar",
+            "description": "API key for programmatic access",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "api_active",
+            "type": "tinyint",
+            "description": "Flag indicating if API access is active",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "api_quota",
+            "type": "varchar",
+            "description": "API usage quota for the user",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the user was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the user was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "deleted_at",
+            "type": "timestamp",
+            "description": "Timestamp when the user was deleted (soft delete)",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "links",
+        "description": "Stores shortened URLs and their original URLs",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for link identification",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "short_url",
+            "type": "varchar",
+            "description": "Shortened URL path",
+            "constraints": {
+              "nullable": false,
+              "unique": true
+            }
+          },
+          {
+            "name": "long_url",
+            "type": "longtext",
+            "description": "Original URL that is being shortened",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "ip",
+            "type": "varchar",
+            "description": "IP address of link creation",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "creator",
+            "type": "varchar",
+            "description": "User identifier who created the link",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "clicks",
+            "type": "int",
+            "description": "Counter for number of clicks on this link",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "secret_key",
+            "type": "varchar",
+            "description": "Secret key for link management",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "is_disabled",
+            "type": "tinyint",
+            "description": "Flag indicating if link is disabled",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "is_custom",
+            "type": "tinyint",
+            "description": "Flag indicating if short URL was custom-defined",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "is_api",
+            "type": "tinyint",
+            "description": "Flag indicating if link was created via API",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the link was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the link was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "long_url_hash",
+            "type": "varchar",
+            "description": "Hash of the long URL for quick lookups",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "clicks",
+        "description": "Tracks click events on shortened links",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for click event",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "ip",
+            "type": "varchar",
+            "description": "IP address of the visitor",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "country",
+            "type": "varchar",
+            "description": "Country of the visitor based on IP",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "referer",
+            "type": "varchar",
+            "description": "HTTP referer URL",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "referer_host",
+            "type": "varchar",
+            "description": "Host domain of the referer",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "user_agent",
+            "type": "text",
+            "description": "User agent string of the visitor's browser",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "link_id",
+            "type": "int",
+            "description": "Foreign key to the links table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "links",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the click occurred",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the click record was updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "migrations",
+        "description": "Tracks database migrations for version control",
+        "columns": [
+          {
+            "name": "migration",
+            "type": "varchar",
+            "description": "Migration identifier or filename",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "batch",
+            "type": "int",
+            "description": "Migration batch number",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "user_links",
+        "type": "one_to_many",
+        "description": "Users can create multiple links",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "links",
+          "column": "creator"
+        }
+      },
+      {
+        "name": "link_clicks",
+        "type": "one_to_many",
+        "description": "Links can have multiple clicks",
+        "from": {
+          "table": "links",
+          "column": "id"
+        },
+        "to": {
+          "table": "clicks",
+          "column": "link_id"
+        }
+      }
+    ]
+  }

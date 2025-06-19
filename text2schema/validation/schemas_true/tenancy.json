@@ -1,0 +1,96 @@
+{
+    "tables": [
+        {
+            "name": "taggit_taggeditem",
+            "description": "Junction table that associates objects with tags",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "object_id",
+                    "type": "int",
+                    "description": "ID of the object being tagged",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "content_type_id",
+                    "type": "int",
+                    "description": "Type of content being tagged",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "tag_id",
+                    "type": "int",
+                    "description": "Reference to the tag",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "taggit_tag",
+                            "column": "id"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "taggit_tag",
+            "description": "Table that stores tag definitions",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "Name of the tag",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "slug",
+                    "type": "varchar",
+                    "description": "URL-friendly version of the tag name",
+                    "constraints": {
+                        "nullable": false,
+                        "unique": true
+                    }
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "name": "taggeditem_tag",
+            "type": "many_to_one",
+            "description": "Relationship between tagged items and tags",
+            "from": {
+                "table": "taggit_taggeditem",
+                "column": "tag_id"
+            },
+            "to": {
+                "table": "taggit_tag",
+                "column": "id"
+            }
+        }
+    ]
+}

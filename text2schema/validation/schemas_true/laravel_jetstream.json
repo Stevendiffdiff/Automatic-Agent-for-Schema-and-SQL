@@ -1,0 +1,376 @@
+{
+    "tables": [
+      {
+        "name": "personal_access_tokens",
+        "description": "Stores personal access tokens for user authentication",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the personal access tokens table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "tokenable_type",
+            "type": "varchar",
+            "description": "The type of the entity that the token belongs to",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "tokenable_id",
+            "type": "bigint",
+            "description": "The ID of the entity that the token belongs to",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the token",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "token",
+            "type": "varchar",
+            "description": "The actual token string",
+            "constraints": {
+              "nullable": false,
+              "unique": true
+            }
+          },
+          {
+            "name": "abilities",
+            "type": "text",
+            "description": "The abilities/permissions granted to this token",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "last_used_at",
+            "type": "timestamp",
+            "description": "When the token was last used",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the token was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the token was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "users",
+        "description": "Stores user account information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the users table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "User's name",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address",
+            "constraints": {
+              "nullable": false,
+              "unique": true
+            }
+          },
+          {
+            "name": "email_verified_at",
+            "type": "timestamp",
+            "description": "When the user's email was verified",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "password",
+            "type": "varchar",
+            "description": "User's encrypted password",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "two_factor_secret",
+            "type": "text",
+            "description": "Secret for two-factor authentication",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "two_factor_recovery_codes",
+            "type": "text",
+            "description": "Recovery codes for two-factor authentication",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "remember_token",
+            "type": "varchar",
+            "description": "Token for 'remember me' functionality",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "current_team_id",
+            "type": "varchar",
+            "description": "ID of the user's current team",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "teams",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "profile_photo_path",
+            "type": "text",
+            "description": "Path to the user's profile photo",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the user account was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the user account was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "team_user",
+        "description": "Junction table that connects users to teams",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the team_user table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "team_id",
+            "type": "char",
+            "description": "ID of the team",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "teams",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "ID of the user",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "role",
+            "type": "varchar",
+            "description": "User's role within the team",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the team-user relationship was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the team-user relationship was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "teams",
+        "description": "Stores information about teams",
+        "columns": [
+          {
+            "name": "id",
+            "type": "char",
+            "description": "Primary key for the teams table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "ID of the team owner/creator",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the team",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "personal_team",
+            "type": "tinyint",
+            "description": "Flag indicating if this is a personal team",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the team was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the team was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "user_teams",
+        "type": "many_to_many",
+        "description": "Users can belong to multiple teams, and teams can have multiple users",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "teams",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "team_user",
+          "source_column": "user_id",
+          "target_column": "team_id"
+        }
+      },
+      {
+        "name": "team_owner",
+        "type": "one_to_many",
+        "description": "A user can own/create multiple teams",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "teams",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_current_team",
+        "type": "many_to_one",
+        "description": "A user can have one current team, but multiple users can have the same current team",
+        "from": {
+          "table": "users",
+          "column": "current_team_id"
+        },
+        "to": {
+          "table": "teams",
+          "column": "id"
+        }
+      },
+      {
+        "name": "tokenable_users",
+        "type": "one_to_many",
+        "description": "A user can have many personal access tokens",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "personal_access_tokens",
+          "column": "tokenable_id"
+        }
+      }
+    ]
+  }

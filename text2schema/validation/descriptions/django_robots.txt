@@ -1,0 +1,33 @@
+### Functional Description:  
+The software is a **robots.txt management system** that enables granular control over web crawler access to websites. It provides:  
+
+1. **Crawler-Specific Rules**  
+   - Defines rules per crawler (e.g., Googlebot) with configurable crawl delays.  
+   - Supports wildcard rules (e.g., `*` for all crawlers).  
+
+2. **URL Access Control**  
+   - **Allow/Disallow Lists**: Associates URL patterns (e.g., `/admin/*`) with rules to explicitly permit or block crawling.  
+   - Patterns are reusable across rules (many-to-many relationships).  
+
+3. **Multi-Site Support**  
+   - Rules can be applied to one or more websites (domains), enabling centralized management for multi-domain deployments.  
+
+4. **Core Entities**  
+   - **Rules**: Base configurations (crawler name, delay).  
+   - **URL Patterns**: Path-based matching (e.g., `/images/`).  
+   - **Sites**: Domain records (e.g., `example.com`).  
+
+### Key Relationships:  
+- Each rule maps to:  
+  - Multiple allowed/disallowed URL patterns.  
+  - Multiple sites (where the rule applies).  
+- URL patterns and sites can be shared across rules.  
+
+### Outputs:  
+The system likely generates standard `robots.txt` files dynamically for each site, combining applicable rules and URL patterns.  
+
+### Engineering Implications:  
+- Requires join tables (`robots_rule_allowed`, `robots_rule_sites`, etc.) to manage many-to-many relationships.  
+- Foreign keys enforce integrity (e.g., a URL pattern cannot be deleted if referenced by a rule).  
+
+This design mirrors tools like Django’s `django-robots` but with explicit crawl delays and multi-site support.

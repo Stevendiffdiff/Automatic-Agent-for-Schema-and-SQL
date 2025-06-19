@@ -1,0 +1,53 @@
+### Functional Description of the CMS Platform:
+
+This is a **multi-site content management system** with robust content organization, multilingual support, and versioning capabilities. The system is designed to manage websites with hierarchical content structures, reusable components, and flexible categorization.
+
+#### Core Functionality:
+
+1. **Multi-site Management**  
+   - Supports multiple independent websites (sites) with unique domains/paths  
+   - Each site maintains its own content, layouts, files, and categories  
+   - Default language configuration per site  
+
+2. **Content Structure**  
+   - Pages organized in parent-child hierarchies with manual ordering (position)  
+   - Pages can redirect to other pages (target_page_id)  
+   - Supports both published and draft states (is_published)  
+   - URL management via slugs and full_path tracking  
+
+3. **Multilingual Support**  
+   - Translations exist as separate records linked to base content  
+   - Each translation can have its own layout override  
+   - Published status managed per translation  
+
+4. **Presentation Layer**  
+   - Layout templates with HTML/CSS/JS components  
+   - Layout inheritance through parent-child relationships  
+   - Application layout wrappers (app_layout) for consistent framing  
+
+5. **Content Components**  
+   - Reusable snippets (global content fragments)  
+   - Flexible fragments that can attach to any content type  
+   - Fragments support multiple data types (text, boolean, datetime)  
+
+6. **Organization System**  
+   - Category system with polymorphic associations  
+   - Content can belong to multiple categories  
+   - Categories are scoped to specific content types  
+
+7. **Asset Management**  
+   - File uploads with metadata and site association  
+   - Human-readable labeling and descriptions  
+
+8. **Version Control**  
+   - Full revision history for all content types  
+   - Tracks complete record state at each change  
+
+#### Key Relationships:
+- All content ties back to a specific site  
+- Pages can have translations and child pages  
+- Layouts can inherit from parent layouts  
+- Categories can organize multiple content types  
+- All content types support revision tracking  
+
+The system emphasizes **content reuse** (through snippets, fragments, and layouts), **flexible organization** (via categories and hierarchies), and **multi-site scalability** while maintaining full version history of all changes.

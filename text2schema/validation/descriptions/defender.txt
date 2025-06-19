@@ -1,0 +1,29 @@
+### Functional Description:  
+The system is a **role-based access control (RBAC) platform** with extended flexibility for direct user-level permission assignments. It enables granular management of permissions through three core entities:  
+
+1. **Permissions** – Define discrete system actions (e.g., "edit_content", "view_reports"). Each has:  
+   - A machine-readable `name` (required) and optional human-readable `readable_name`.  
+   - Timestamps for creation/modification tracking.  
+
+2. **Roles** – Group permissions into reusable sets (e.g., "Admin", "Editor"). Roles have:  
+   - A required `name` and creation/modification timestamps.  
+
+3. **Users** – Represent system users (schema shows only an `id`; other attributes likely exist elsewhere).  
+
+#### Key Features:  
+- **Role-Permission Assignment**: Permissions are assigned to roles via `permission_role`, supporting:  
+  - Optional `value` (likely for permission states like allow/deny) and `expires` (temporary access).  
+- **User-Role Assignment**: Users inherit role permissions via `role_user` (simple many-to-many linking).  
+- **Direct User-Permission Overrides**: `permission_user` bypasses roles to grant/restrict permissions directly to users, also supporting `value` and `expires`.  
+
+#### Design Intent:  
+- **Flexibility**: Combines role-based efficiency with user-specific exceptions (e.g., temporary admin access).  
+- **Auditability**: Timestamps track permission/role lifecycle changes.  
+- **Scalability**: Junction tables (`permission_role`, `role_user`, `permission_user`) enable complex permission hierarchies.  
+
+#### Engineering Implications:  
+- Permissions can cascade from roles or be assigned ad-hoc to users.  
+- Expiration fields enable time-bound access without manual revocation.  
+- The `value` field suggests ternary logic (e.g., 1=allow, 0=deny, NULL=inherit), but business logic would define its use.  
+
+This schema supports enterprise-grade access control where roles provide structure, and user-level assignments handle edge cases.

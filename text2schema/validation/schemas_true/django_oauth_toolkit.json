@@ -1,0 +1,493 @@
+{
+    "tables": [
+      {
+        "name": "oauth2_provider_grant",
+        "description": "Stores OAuth2 authorization grants",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the grant",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "code",
+            "type": "varchar",
+            "description": "Authorization code",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "expires",
+            "type": "datetime",
+            "description": "Expiration time for the grant"
+          },
+          {
+            "name": "redirect_uri",
+            "type": "varchar",
+            "description": "URI to redirect after authorization"
+          },
+          {
+            "name": "scope",
+            "type": "longtext",
+            "description": "Scope of the authorization"
+          },
+          {
+            "name": "application_id",
+            "type": "bigint",
+            "description": "References the OAuth application",
+            "constraints": {
+              "foreign_key": {
+                "table": "oauth2_provider_application",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "References the user who granted authorization",
+            "constraints": {
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created",
+            "type": "datetime",
+            "description": "Creation timestamp"
+          },
+          {
+            "name": "updated",
+            "type": "datetime",
+            "description": "Last update timestamp"
+          },
+          {
+            "name": "code_challenge",
+            "type": "varchar",
+            "description": "PKCE code challenge"
+          },
+          {
+            "name": "code_challenge_method",
+            "type": "varchar",
+            "description": "PKCE code challenge method"
+          }
+        ]
+      },
+      {
+        "name": "oauth2_provider_application",
+        "description": "Stores OAuth2 client applications",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the application",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "client_id",
+            "type": "varchar",
+            "description": "OAuth client ID",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "redirect_uris",
+            "type": "longtext",
+            "description": "Authorized redirect URIs"
+          },
+          {
+            "name": "client_type",
+            "type": "varchar",
+            "description": "Type of the client"
+          },
+          {
+            "name": "authorization_grant_type",
+            "type": "varchar",
+            "description": "Type of grant this application can use"
+          },
+          {
+            "name": "client_secret",
+            "type": "varchar",
+            "description": "OAuth client secret"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the application"
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "References the user who owns this application",
+            "constraints": {
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "skip_authorization",
+            "type": "tinyint",
+            "description": "Whether to skip authorization step"
+          },
+          {
+            "name": "created",
+            "type": "datetime",
+            "description": "Creation timestamp"
+          },
+          {
+            "name": "updated",
+            "type": "datetime",
+            "description": "Last update timestamp"
+          }
+        ]
+      },
+      {
+        "name": "oauth2_provider_accesstoken",
+        "description": "Stores OAuth2 access tokens",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the access token",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "token",
+            "type": "varchar",
+            "description": "The access token string",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "expires",
+            "type": "datetime",
+            "description": "Expiration time for the token"
+          },
+          {
+            "name": "scope",
+            "type": "longtext",
+            "description": "Scope of the access token"
+          },
+          {
+            "name": "application_id",
+            "type": "bigint",
+            "description": "References the application that issued this token",
+            "constraints": {
+              "foreign_key": {
+                "table": "oauth2_provider_application",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "References the user this token is for",
+            "constraints": {
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created",
+            "type": "datetime",
+            "description": "Creation timestamp"
+          },
+          {
+            "name": "updated",
+            "type": "datetime",
+            "description": "Last update timestamp"
+          },
+          {
+            "name": "source_refresh_token_id",
+            "type": "bigint",
+            "description": "References the refresh token that created this token",
+            "constraints": {
+              "foreign_key": {
+                "table": "oauth2_provider_refreshtoken",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "oauth2_provider_refreshtoken",
+        "description": "Stores OAuth2 refresh tokens",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the refresh token",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "token",
+            "type": "varchar",
+            "description": "The refresh token string",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "access_token_id",
+            "type": "bigint",
+            "description": "References the access token associated with this refresh token",
+            "constraints": {
+              "foreign_key": {
+                "table": "oauth2_provider_accesstoken",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "application_id",
+            "type": "bigint",
+            "description": "References the application that issued this token",
+            "constraints": {
+              "foreign_key": {
+                "table": "oauth2_provider_application",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "References the user this token is for",
+            "constraints": {
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created",
+            "type": "datetime",
+            "description": "Creation timestamp"
+          },
+          {
+            "name": "updated",
+            "type": "datetime",
+            "description": "Last update timestamp"
+          },
+          {
+            "name": "revoked",
+            "type": "datetime",
+            "description": "Revocation timestamp"
+          }
+        ]
+      },
+      {
+        "name": "auth_user",
+        "description": "Stores user accounts",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for the user",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "password",
+            "type": "varchar",
+            "description": "Hashed password"
+          },
+          {
+            "name": "last_login",
+            "type": "datetime",
+            "description": "Timestamp of last login"
+          },
+          {
+            "name": "is_superuser",
+            "type": "tinyint",
+            "description": "Whether user has superuser privileges"
+          },
+          {
+            "name": "username",
+            "type": "varchar",
+            "description": "Unique username",
+            "constraints": {
+              "unique": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "first_name",
+            "type": "varchar",
+            "description": "User's first name"
+          },
+          {
+            "name": "last_name",
+            "type": "varchar",
+            "description": "User's last name"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address"
+          },
+          {
+            "name": "is_staff",
+            "type": "tinyint",
+            "description": "Whether user can access admin site"
+          },
+          {
+            "name": "is_active",
+            "type": "tinyint",
+            "description": "Whether this account is active"
+          },
+          {
+            "name": "date_joined",
+            "type": "datetime",
+            "description": "Date when account was created"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "grant_to_application",
+        "type": "many_to_one",
+        "description": "Authorization grants belong to an application",
+        "from": {
+          "table": "oauth2_provider_grant",
+          "column": "application_id"
+        },
+        "to": {
+          "table": "oauth2_provider_application",
+          "column": "id"
+        }
+      },
+      {
+        "name": "grant_to_user",
+        "type": "many_to_one",
+        "description": "Authorization grants are issued to users",
+        "from": {
+          "table": "oauth2_provider_grant",
+          "column": "user_id"
+        },
+        "to": {
+          "table": "auth_user",
+          "column": "id"
+        }
+      },
+      {
+        "name": "application_to_user",
+        "type": "many_to_one",
+        "description": "Applications are owned by users",
+        "from": {
+          "table": "oauth2_provider_application",
+          "column": "user_id"
+        },
+        "to": {
+          "table": "auth_user",
+          "column": "id"
+        }
+      },
+      {
+        "name": "accesstoken_to_application",
+        "type": "many_to_one",
+        "description": "Access tokens are issued by applications",
+        "from": {
+          "table": "oauth2_provider_accesstoken",
+          "column": "application_id"
+        },
+        "to": {
+          "table": "oauth2_provider_application",
+          "column": "id"
+        }
+      },
+      {
+        "name": "accesstoken_to_user",
+        "type": "many_to_one",
+        "description": "Access tokens are issued to users",
+        "from": {
+          "table": "oauth2_provider_accesstoken",
+          "column": "user_id"
+        },
+        "to": {
+          "table": "auth_user",
+          "column": "id"
+        }
+      },
+      {
+        "name": "accesstoken_to_refreshtoken",
+        "type": "one_to_one",
+        "description": "Access tokens can be created from refresh tokens",
+        "from": {
+          "table": "oauth2_provider_accesstoken",
+          "column": "source_refresh_token_id"
+        },
+        "to": {
+          "table": "oauth2_provider_refreshtoken",
+          "column": "id"
+        }
+      },
+      {
+        "name": "refreshtoken_to_accesstoken",
+        "type": "one_to_one",
+        "description": "Refresh tokens are associated with access tokens",
+        "from": {
+          "table": "oauth2_provider_refreshtoken",
+          "column": "access_token_id"
+        },
+        "to": {
+          "table": "oauth2_provider_accesstoken",
+          "column": "id"
+        }
+      },
+      {
+        "name": "refreshtoken_to_application",
+        "type": "many_to_one",
+        "description": "Refresh tokens are issued by applications",
+        "from": {
+          "table": "oauth2_provider_refreshtoken",
+          "column": "application_id"
+        },
+        "to": {
+          "table": "oauth2_provider_application",
+          "column": "id"
+        }
+      },
+      {
+        "name": "refreshtoken_to_user",
+        "type": "many_to_one",
+        "description": "Refresh tokens are issued to users",
+        "from": {
+          "table": "oauth2_provider_refreshtoken",
+          "column": "user_id"
+        },
+        "to": {
+          "table": "auth_user",
+          "column": "id"
+        }
+      }
+    ]
+  }

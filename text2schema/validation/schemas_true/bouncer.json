@@ -1,0 +1,308 @@
+{
+    "tables": [
+      {
+        "name": "abilities",
+        "description": "Stores available abilities in the system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the abilities table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the ability",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "title",
+            "type": "varchar",
+            "description": "Title of the ability",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "entity_id",
+            "type": "bigint",
+            "description": "ID of the entity this ability belongs to",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "entity_type",
+            "type": "varchar",
+            "description": "Type of the entity this ability belongs to",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "only_owned",
+            "type": "tinyint",
+            "description": "Flag indicating if ability is only accessible to owners",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "options",
+            "type": "json",
+            "description": "Additional options for the ability",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "scope",
+            "type": "int",
+            "description": "Scope of the ability",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the ability was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the ability was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "permissions",
+        "description": "Stores permissions associated with abilities",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the permissions table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "ability_id",
+            "type": "bigint",
+            "description": "Reference to the ability this permission is for",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "abilities",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "entity_id",
+            "type": "bigint",
+            "description": "ID of the entity this permission applies to",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "entity_type",
+            "type": "varchar",
+            "description": "Type of the entity this permission applies to",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "forbidden",
+            "type": "tinyint",
+            "description": "Flag indicating if the permission is forbidden",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "scope",
+            "type": "int",
+            "description": "Scope of the permission",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "roles",
+        "description": "Stores available roles in the system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the roles table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the role",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "title",
+            "type": "varchar",
+            "description": "Title of the role",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "level",
+            "type": "int",
+            "description": "Level of the role",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "scope",
+            "type": "int",
+            "description": "Scope of the role",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the role was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the role was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "assigned_roles",
+        "description": "Junction table mapping roles to entities",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the assigned_roles table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "role_id",
+            "type": "bigint",
+            "description": "Reference to the role being assigned",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "roles",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "entity_id",
+            "type": "bigint",
+            "description": "ID of the entity the role is assigned to",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "entity_type",
+            "type": "varchar",
+            "description": "Type of the entity the role is assigned to",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "restricted_to_id",
+            "type": "bigint",
+            "description": "ID of the entity that restricts this role assignment",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "restricted_to_type",
+            "type": "varchar",
+            "description": "Type of the entity that restricts this role assignment",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "scope",
+            "type": "int",
+            "description": "Scope of the role assignment",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "abilities_permissions",
+        "type": "one_to_many",
+        "description": "An ability can have multiple permissions",
+        "from": {
+          "table": "abilities",
+          "column": "id"
+        },
+        "to": {
+          "table": "permissions",
+          "column": "ability_id"
+        }
+      },
+      {
+        "name": "roles_assigned_roles",
+        "type": "one_to_many",
+        "description": "A role can be assigned to multiple entities",
+        "from": {
+          "table": "roles",
+          "column": "id"
+        },
+        "to": {
+          "table": "assigned_roles",
+          "column": "role_id"
+        }
+      }
+    ]
+  }

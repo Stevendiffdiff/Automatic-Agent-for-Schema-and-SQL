@@ -1,0 +1,720 @@
+{
+    "tables": [
+      {
+        "name": "canvas_visits",
+        "description": "Tracks visits to canvas content",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "post_id",
+            "type": "char",
+            "description": "ID of the post being visited",
+            "constraints": {
+              "foreign_key": {
+                "table": "canvas_posts",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "ip",
+            "type": "varchar",
+            "description": "IP address of the visitor",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "agent",
+            "type": "varchar",
+            "description": "User agent information",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "referer",
+            "type": "varchar",
+            "description": "Referring URL",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the visit was recorded",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the visit record was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "canvas_views",
+        "description": "Tracks view statistics for canvas content",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "post_id",
+            "type": "char",
+            "description": "ID of the post being viewed",
+            "constraints": {
+              "foreign_key": {
+                "table": "canvas_posts",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "ip",
+            "type": "varchar",
+            "description": "IP address of the viewer",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "agent",
+            "type": "varchar",
+            "description": "User agent information",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "referer",
+            "type": "varchar",
+            "description": "Referring URL",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the view was recorded",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the view record was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "canvas_posts_tags",
+        "description": "Junction table linking posts and tags",
+        "columns": [
+          {
+            "name": "tag_id",
+            "type": "char",
+            "description": "ID of the tag",
+            "constraints": {
+              "foreign_key": {
+                "table": "canvas_tags",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "post_id",
+            "type": "char",
+            "description": "ID of the post",
+            "constraints": {
+              "foreign_key": {
+                "table": "canvas_posts",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "canvas_posts",
+        "description": "Stores canvas post content",
+        "columns": [
+          {
+            "name": "id",
+            "type": "char",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "URL-friendly identifier for the post",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "title",
+            "type": "varchar",
+            "description": "Title of the post",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "summary",
+            "type": "text",
+            "description": "Summary of the post content",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "body",
+            "type": "text",
+            "description": "Main content of the post",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "published_at",
+            "type": "datetime",
+            "description": "When the post was published",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "featured_image",
+            "type": "varchar",
+            "description": "URL or path to featured image",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "featured_image_caption",
+            "type": "varchar",
+            "description": "Caption for the featured image",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "ID of the user who created the post",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "meta",
+            "type": "json",
+            "description": "Additional metadata for the post",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the post was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the post was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "deleted_at",
+            "type": "timestamp",
+            "description": "When the post was soft-deleted",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "canvas_posts_topics",
+        "description": "Junction table linking posts and topics",
+        "columns": [
+          {
+            "name": "post_id",
+            "type": "char",
+            "description": "ID of the post",
+            "constraints": {
+              "foreign_key": {
+                "table": "canvas_posts",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "topic_id",
+            "type": "char",
+            "description": "ID of the topic",
+            "constraints": {
+              "foreign_key": {
+                "table": "canvas_topics",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "canvas_tags",
+        "description": "Stores tags used to categorize posts",
+        "columns": [
+          {
+            "name": "id",
+            "type": "char",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "URL-friendly identifier for the tag",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Display name of the tag",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "ID of the user who created the tag",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the tag was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the tag was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "deleted_at",
+            "type": "timestamp",
+            "description": "When the tag was soft-deleted",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "canvas_topics",
+        "description": "Stores topics for organizing posts",
+        "columns": [
+          {
+            "name": "id",
+            "type": "char",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "URL-friendly identifier for the topic",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Display name of the topic",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "ID of the user who created the topic",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the topic was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the topic was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "deleted_at",
+            "type": "timestamp",
+            "description": "When the topic was soft-deleted",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "users",
+        "description": "Stores user account information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "User's full name",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address",
+            "constraints": {
+              "nullable": false,
+              "unique": true
+            }
+          },
+          {
+            "name": "email_verified_at",
+            "type": "timestamp",
+            "description": "When the user's email was verified",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "password",
+            "type": "varchar",
+            "description": "Hashed password",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "remember_token",
+            "type": "varchar",
+            "description": "Token for 'remember me' functionality",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the user account was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the user account was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "canvas_user_meta",
+        "description": "Stores additional user metadata",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "ID of the user",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              },
+              "nullable": false
+            }
+          },
+          {
+            "name": "username",
+            "type": "varchar",
+            "description": "User's username",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "summary",
+            "type": "text",
+            "description": "User's bio or summary",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "avatar",
+            "type": "varchar",
+            "description": "URL or path to user's avatar",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "dark_mode",
+            "type": "tinyint",
+            "description": "User's dark mode preference",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "digest",
+            "type": "tinyint",
+            "description": "User's digest notification preference",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "locale",
+            "type": "varchar",
+            "description": "User's preferred locale",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the user metadata was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the user metadata was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "user_posts",
+        "type": "one_to_many",
+        "description": "A user can create many posts",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "canvas_posts",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "post_visits",
+        "type": "one_to_many",
+        "description": "A post can have many visits",
+        "from": {
+          "table": "canvas_posts",
+          "column": "id"
+        },
+        "to": {
+          "table": "canvas_visits",
+          "column": "post_id"
+        }
+      },
+      {
+        "name": "post_views",
+        "type": "one_to_many",
+        "description": "A post can have many views",
+        "from": {
+          "table": "canvas_posts",
+          "column": "id"
+        },
+        "to": {
+          "table": "canvas_views",
+          "column": "post_id"
+        }
+      },
+      {
+        "name": "post_tags",
+        "type": "many_to_many",
+        "description": "Posts can have many tags and tags can be assigned to many posts",
+        "from": {
+          "table": "canvas_posts",
+          "column": "id"
+        },
+        "to": {
+          "table": "canvas_tags",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "canvas_posts_tags",
+          "source_column": "post_id",
+          "target_column": "tag_id"
+        }
+      },
+      {
+        "name": "post_topics",
+        "type": "many_to_many",
+        "description": "Posts can have many topics and topics can contain many posts",
+        "from": {
+          "table": "canvas_posts",
+          "column": "id"
+        },
+        "to": {
+          "table": "canvas_topics",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "canvas_posts_topics",
+          "source_column": "post_id",
+          "target_column": "topic_id"
+        }
+      },
+      {
+        "name": "user_tags",
+        "type": "one_to_many",
+        "description": "A user can create many tags",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "canvas_tags",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_topics",
+        "type": "one_to_many",
+        "description": "A user can create many topics",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "canvas_topics",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_meta",
+        "type": "one_to_one",
+        "description": "A user has one metadata record",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "canvas_user_meta",
+          "column": "user_id"
+        }
+      }
+    ]
+  }

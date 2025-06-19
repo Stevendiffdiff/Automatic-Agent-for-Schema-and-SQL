@@ -1,0 +1,408 @@
+{
+    "tables": [
+      {
+        "name": "users",
+        "description": "Stores user account information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for user records",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "User's display name"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address",
+            "constraints": {
+              "unique": true
+            }
+          },
+          {
+            "name": "email_verified_at",
+            "type": "timestamp",
+            "description": "When the user's email was verified"
+          },
+          {
+            "name": "password",
+            "type": "varchar",
+            "description": "User's hashed password"
+          },
+          {
+            "name": "remember_token",
+            "type": "varchar",
+            "description": "Token for 'remember me' functionality"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the user record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the user record was last updated"
+          },
+          {
+            "name": "last_login",
+            "type": "timestamp",
+            "description": "When the user last logged in"
+          },
+          {
+            "name": "permissions",
+            "type": "json",
+            "description": "User-specific permission settings"
+          }
+        ]
+      },
+      {
+        "name": "roles",
+        "description": "Defines role types for users",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for role records",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "Machine-readable identifier for the role",
+            "constraints": {
+              "unique": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Human-readable name for the role"
+          },
+          {
+            "name": "permissions",
+            "type": "json",
+            "description": "Permissions associated with this role"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the role was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the role was last updated"
+          }
+        ]
+      },
+      {
+        "name": "role_users",
+        "description": "Junction table mapping users to roles",
+        "columns": [
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "Reference to users table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "role_id",
+            "type": "int",
+            "description": "Reference to roles table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "roles",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "settings",
+        "description": "Application configuration settings stored as key-value pairs",
+        "columns": [
+          {
+            "name": "key",
+            "type": "varchar",
+            "description": "Setting key name",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "value",
+            "type": "json",
+            "description": "Setting value in JSON format"
+          }
+        ]
+      },
+      {
+        "name": "notifications",
+        "description": "User notifications",
+        "columns": [
+          {
+            "name": "id",
+            "type": "char",
+            "description": "Primary key for notification records",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "type",
+            "type": "varchar",
+            "description": "Notification type"
+          },
+          {
+            "name": "notifiable_type",
+            "type": "varchar",
+            "description": "Type of entity the notification relates to"
+          },
+          {
+            "name": "notifiable_id",
+            "type": "bigint",
+            "description": "ID of entity the notification relates to"
+          },
+          {
+            "name": "data",
+            "type": "text",
+            "description": "Notification content/data"
+          },
+          {
+            "name": "read_at",
+            "type": "timestamp",
+            "description": "When the notification was read"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the notification was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the notification was last updated"
+          }
+        ]
+      },
+      {
+        "name": "attachments",
+        "description": "Uploaded file attachments",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for attachment records",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "text",
+            "description": "Display name of the file"
+          },
+          {
+            "name": "original_name",
+            "type": "text",
+            "description": "Original filename before upload"
+          },
+          {
+            "name": "mime",
+            "type": "varchar",
+            "description": "MIME type of the file"
+          },
+          {
+            "name": "extension",
+            "type": "varchar",
+            "description": "File extension"
+          },
+          {
+            "name": "size",
+            "type": "bigint",
+            "description": "File size in bytes"
+          },
+          {
+            "name": "sort",
+            "type": "int",
+            "description": "Order/position value"
+          },
+          {
+            "name": "path",
+            "type": "text",
+            "description": "Storage path for the file"
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Optional description of the file"
+          },
+          {
+            "name": "alt",
+            "type": "text",
+            "description": "Alt text for images"
+          },
+          {
+            "name": "hash",
+            "type": "text",
+            "description": "File hash for integrity or deduplication"
+          },
+          {
+            "name": "disk",
+            "type": "varchar",
+            "description": "Storage disk identifier"
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "User who uploaded the file",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "group",
+            "type": "varchar",
+            "description": "Optional grouping category"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the attachment was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the attachment was last updated"
+          }
+        ]
+      },
+      {
+        "name": "attachmentable",
+        "description": "Pivot table for polymorphic relationships between attachments and other entities",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "attachmentable_type",
+            "type": "varchar",
+            "description": "Type of entity the attachment is connected to"
+          },
+          {
+            "name": "attachmentable_id",
+            "type": "int",
+            "description": "ID of entity the attachment is connected to"
+          },
+          {
+            "name": "attachment_id",
+            "type": "int",
+            "description": "Reference to the attachment",
+            "constraints": {
+              "foreign_key": {
+                "table": "attachments",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "users_roles",
+        "type": "many_to_many",
+        "description": "Users can have multiple roles, and roles can be assigned to multiple users",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "roles",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "role_users",
+          "source_column": "user_id",
+          "target_column": "role_id"
+        }
+      },
+      {
+        "name": "users_attachments",
+        "type": "one_to_many",
+        "description": "Users can upload multiple attachments",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "attachments",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "attachments_polymorphic",
+        "type": "many_to_many",
+        "description": "Polymorphic relationship allowing attachments to be associated with various entity types",
+        "from": {
+          "table": "attachments",
+          "column": "id"
+        },
+        "to": {
+          "table": "various",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "attachmentable",
+          "source_column": "attachment_id",
+          "target_column": "attachmentable_id"
+        }
+      },
+      {
+        "name": "polymorphic_notifications",
+        "type": "many_to_one",
+        "description": "Polymorphic relationship allowing notifications to be associated with various entity types",
+        "from": {
+          "table": "notifications", 
+          "column": "notifiable_id"
+        },
+        "to": {
+          "table": "various",
+          "column": "id"
+        }
+      }
+    ]
+  }

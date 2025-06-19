@@ -1,0 +1,29 @@
+{
+  "entities": [
+    {
+      "name": "flipper_features",
+      "attributes": [
+        "key",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    {
+      "name": "flipper_gates",
+      "attributes": [
+        "feature_key",
+        "key",
+        "value",
+        "created_at",
+        "updated_at"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "from": "flipper_features",
+      "to": "flipper_gates",
+      "label": "has-rules"
+    }
+  ]
+}

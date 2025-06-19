@@ -1,0 +1,219 @@
+{
+    "tables": [
+        {
+            "name": "users",
+            "description": "Stores user account information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "bigint",
+                    "description": "Primary key identifier for users",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "User's display name",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "email",
+                    "type": "varchar",
+                    "description": "User's email address",
+                    "constraints": {
+                        "nullable": true,
+                        "unique": true
+                    }
+                },
+                {
+                    "name": "password_digest",
+                    "type": "varchar",
+                    "description": "Hashed user password",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the user was created",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the user was last updated",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "remember_token",
+                    "type": "varchar",
+                    "description": "Token for persistent login sessions",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "slug",
+                    "type": "varchar",
+                    "description": "URL-friendly identifier for the user",
+                    "constraints": {
+                        "nullable": true,
+                        "unique": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "relationships",
+            "description": "Stores follower/following relationships between users",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "bigint",
+                    "description": "Primary key identifier for relationships",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "follower_id",
+                    "type": "int",
+                    "description": "ID of the user who is following",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "users",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "followed_id",
+                    "type": "int",
+                    "description": "ID of the user being followed",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "users",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the relationship was created",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the relationship was last updated",
+                    "constraints": {
+                        "nullable": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "tweets",
+            "description": "Stores user tweets/posts",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "bigint",
+                    "description": "Primary key identifier for tweets",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "content",
+                    "type": "varchar",
+                    "description": "The content of the tweet",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "user_id",
+                    "type": "int",
+                    "description": "ID of the user who posted the tweet",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "users",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the tweet was created",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the tweet was last updated",
+                    "constraints": {
+                        "nullable": false
+                    }
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "name": "user_tweets",
+            "type": "one_to_many",
+            "description": "A user can have many tweets",
+            "from": {
+                "table": "users",
+                "column": "id"
+            },
+            "to": {
+                "table": "tweets",
+                "column": "user_id"
+            }
+        },
+        {
+            "name": "user_follows",
+            "type": "many_to_many",
+            "description": "Users can follow many other users, and be followed by many users",
+            "from": {
+                "table": "users",
+                "column": "id"
+            },
+            "to": {
+                "table": "users",
+                "column": "id"
+            },
+            "junction_table": {
+                "name": "relationships",
+                "source_column": "follower_id",
+                "target_column": "followed_id"
+            }
+        }
+    ]
+}

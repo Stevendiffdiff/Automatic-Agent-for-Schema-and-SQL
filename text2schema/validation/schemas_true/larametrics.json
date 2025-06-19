@@ -1,0 +1,360 @@
+{
+    "tables": [
+        {
+            "name": "users",
+            "description": "Stores user information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "bigint",
+                    "description": "Primary key for users table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "larametrics_logs",
+            "description": "Stores application logs",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for logs table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "level",
+                    "type": "varchar",
+                    "description": "Log level",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "message",
+                    "type": "text",
+                    "description": "Log message content",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "user_id",
+                    "type": "int",
+                    "description": "Foreign key to users table",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "users",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "email",
+                    "type": "varchar",
+                    "description": "Email associated with the log",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "trace",
+                    "type": "text",
+                    "description": "Stack trace information",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "timestamp",
+                    "description": "When the log was created",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "timestamp",
+                    "description": "When the log was last updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "larametrics_notifications",
+            "description": "Stores notification configurations",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for notifications table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "action",
+                    "type": "varchar",
+                    "description": "Action that triggers notification",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "filter",
+                    "type": "varchar",
+                    "description": "Filter criteria for notifications",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "meta",
+                    "type": "text",
+                    "description": "Additional metadata for notification",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "notify_by",
+                    "type": "varchar",
+                    "description": "Notification method",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "last_fired_at",
+                    "type": "timestamp",
+                    "description": "When notification was last triggered",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "timestamp",
+                    "description": "When notification was created",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "timestamp",
+                    "description": "When notification was last updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "larametrics_models",
+            "description": "Stores model change tracking information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for models table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "model",
+                    "type": "varchar",
+                    "description": "Model class name",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "model_id",
+                    "type": "int",
+                    "description": "ID of the tracked model",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "user_id",
+                    "type": "int",
+                    "description": "Foreign key to users table",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "users",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "method",
+                    "type": "varchar",
+                    "description": "Type of model change",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "original",
+                    "type": "text",
+                    "description": "Original model data before change",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "changes",
+                    "type": "text",
+                    "description": "Data changes made to the model",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "timestamp",
+                    "description": "When the model change was recorded",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "timestamp",
+                    "description": "When the model change record was updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "larametrics_requests",
+            "description": "Stores HTTP request information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for requests table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "method",
+                    "type": "varchar",
+                    "description": "HTTP method (GET, POST, etc.)",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "uri",
+                    "type": "text",
+                    "description": "Request URI path",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "ip",
+                    "type": "varchar",
+                    "description": "IP address of the requester",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "headers",
+                    "type": "text",
+                    "description": "HTTP headers of the request",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "start_time",
+                    "type": "double",
+                    "description": "Request start time",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "end_time",
+                    "type": "double",
+                    "description": "Request end time",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "timestamp",
+                    "description": "When the request record was created",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "timestamp",
+                    "description": "When the request record was updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "name": "user_logs",
+            "type": "one_to_many",
+            "description": "A user can have many log entries",
+            "from": {
+                "table": "users",
+                "column": "id"
+            },
+            "to": {
+                "table": "larametrics_logs",
+                "column": "user_id"
+            }
+        },
+        {
+            "name": "user_models",
+            "type": "one_to_many",
+            "description": "A user can make many model changes",
+            "from": {
+                "table": "users",
+                "column": "id"
+            },
+            "to": {
+                "table": "larametrics_models",
+                "column": "user_id"
+            }
+        }
+    ]
+}

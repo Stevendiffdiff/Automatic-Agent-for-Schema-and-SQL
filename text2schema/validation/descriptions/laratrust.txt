@@ -1,0 +1,22 @@
+### Functional Description:  
+The software is a **role-based access control (RBAC) system** with **direct permission assignment capabilities**, designed to manage user permissions flexibly. It supports **three core entities**:  
+
+1. **Permissions** – Atomic privileges (e.g., "create_post", "delete_user") with metadata (name, display name, description).  
+2. **Roles** – Groups of permissions (e.g., "Admin", "Editor") with similar metadata. Roles simplify permission management by bundling them.  
+3. **Users** – End-user accounts (minimal schema shown; likely extended elsewhere).  
+
+#### Key Features:  
+- **Role-Permission Assignment**: Permissions can be assigned to roles via a many-to-many relationship (`permission_role` junction table).  
+- **User-Role Assignment**: Users inherit permissions by being assigned roles (`role_user` junction table).  
+- **Direct User-Permission Overrides**: Users can be granted individual permissions *independent* of their roles (`permission_user` junction table), enabling granular control.  
+- **Polymorphic User Support**: The `user_type` field in junction tables allows roles/permissions to be assigned to different user models (e.g., "Employee", "ExternalUser").  
+
+#### Metadata & Tracking:  
+- Human-readable labels (`display_name`, `description`) for roles/permissions improve UX.  
+- Timestamps (`created_at`, `updated_at`) enable auditing.  
+
+#### Engineering Implications:  
+- **Flexible permission resolution**: A user’s effective permissions combine their role-based and direct permissions.  
+- **Extensible user models**: Polymorphism supports multiple user types without schema changes.  
+
+This design prioritizes **scalability** (via role-based grouping) and **granularity** (via direct assignments), typical for SaaS or enterprise applications with complex access needs.

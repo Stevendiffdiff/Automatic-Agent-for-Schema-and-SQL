@@ -1,0 +1,43 @@
+### Functional Description:  
+
+The software is a **version control system** built on top of Django, designed to track and manage changes to database objects over time. It provides **audit trails**, **rollback capabilities**, and **user attribution** for modifications.  
+
+#### Core Features:  
+
+1. **Object Versioning**  
+   - Tracks changes to any Django model by storing serialized snapshots of objects.  
+   - Each version includes:  
+     - The object’s unique identifier (`object_id`)  
+     - A string representation (`object_repr`)  
+     - Serialized data (`serialized_data`) in a specified format  
+     - The content type (model) it belongs to (`content_type_id`)  
+
+2. **Revision Grouping**  
+   - Versions are grouped into **revisions**, representing a logical set of changes (e.g., a single user action).  
+   - Each revision records:  
+     - Timestamp (`date_created`)  
+     - Optional user-provided comment (`comment`)  
+     - The user who made the changes (`user_id`, nullable for system-generated revisions)  
+
+3. **User Attribution**  
+   - Revisions are linked to authenticated users (via `auth_user`), enabling accountability.  
+
+4. **Database Support**  
+   - Supports multi-database setups via a `db` field, allowing version tracking across different databases.  
+
+#### Key Relationships:  
+- **Content Type → Versions**: A model (content type) can have many tracked versions.  
+- **Revision → Versions**: A revision can contain multiple versions (e.g., changes to multiple objects in one transaction).  
+- **User → Revisions**: A user can create multiple revisions.  
+
+#### Use Cases:  
+- **Audit Logs**: Track who changed what and when.  
+- **Undo/Redo**: Revert objects to previous states.  
+- **Collaboration**: Review changes made by team members.  
+
+#### Technical Notes:  
+- Built for Django (uses `django_content_type` for model tracking).  
+- Serialization format is flexible (e.g., JSON, XML).  
+- Supports optional user comments for contextualizing changes.  
+
+This system is comparable to Django Reversion or similar version-control libraries but is likely a custom implementation given the schema structure. Engineers can replicate this by designing a versioning system with object snapshots, revision grouping, and user attribution.

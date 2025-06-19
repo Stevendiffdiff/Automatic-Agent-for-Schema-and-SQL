@@ -1,0 +1,325 @@
+{
+    "tables": [
+        {
+            "name": "billable",
+            "description": "Stores billing-related information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "description": "Primary key for the billable table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "processor",
+                    "type": "varchar",
+                    "description": "Payment processor information",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "processor_id",
+                    "type": "varchar",
+                    "description": "Identifier from the payment processor",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "trial_ends_at",
+                    "type": "datetime",
+                    "description": "Date and time when the trial period ends",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "card_type",
+                    "type": "varchar",
+                    "description": "Type of credit card",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "card_last4",
+                    "type": "varchar",
+                    "description": "Last 4 digits of the credit card",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "card_exp_month",
+                    "type": "varchar",
+                    "description": "Expiration month of the credit card",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "card_exp_year",
+                    "type": "varchar",
+                    "description": "Expiration year of the credit card",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "extra_billing_info",
+                    "type": "text",
+                    "description": "Additional billing information",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "pay_charges",
+            "description": "Stores information about payment charges",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "description": "Primary key for the pay_charges table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "owner_type",
+                    "type": "varchar",
+                    "description": "Type of the owner entity",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "owner_id",
+                    "type": "integer",
+                    "description": "ID of the owner entity",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "processor",
+                    "type": "varchar",
+                    "description": "Payment processor information",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "processor_id",
+                    "type": "varchar",
+                    "description": "Identifier from the payment processor",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "amount",
+                    "type": "integer",
+                    "description": "Amount charged",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "amount_refunded",
+                    "type": "integer",
+                    "description": "Amount refunded from the charge",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "card_type",
+                    "type": "varchar",
+                    "description": "Type of credit card",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "card_last4",
+                    "type": "varchar",
+                    "description": "Last 4 digits of the credit card",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "card_exp_month",
+                    "type": "varchar",
+                    "description": "Expiration month of the credit card",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "card_exp_year",
+                    "type": "varchar",
+                    "description": "Expiration year of the credit card",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the record was created",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the record was last updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "pay_subscriptions",
+            "description": "Stores information about payment subscriptions",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "description": "Primary key for the pay_subscriptions table",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "owner_id",
+                    "type": "integer",
+                    "description": "ID of the owner entity",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "Name of the subscription",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "processor",
+                    "type": "varchar",
+                    "description": "Payment processor information",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "processor_id",
+                    "type": "varchar",
+                    "description": "Identifier from the payment processor",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "processor_plan",
+                    "type": "varchar",
+                    "description": "Plan identifier from the payment processor",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "quantity",
+                    "type": "integer",
+                    "description": "Quantity of the subscription",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "trial_ends_at",
+                    "type": "datetime",
+                    "description": "Date and time when the trial period ends",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "ends_at",
+                    "type": "datetime",
+                    "description": "Date and time when the subscription ends",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the record was created",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the record was last updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "status",
+                    "type": "varchar",
+                    "description": "Current status of the subscription",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "name": "billable_to_pay_charges",
+            "type": "one_to_many",
+            "description": "Relationship between billable entity and payment charges",
+            "from": {
+                "table": "billable",
+                "column": "id"
+            },
+            "to": {
+                "table": "pay_charges",
+                "column": "owner_id"
+            }
+        },
+        {
+            "name": "billable_to_pay_subscriptions",
+            "type": "one_to_many",
+            "description": "Relationship between billable entity and payment subscriptions",
+            "from": {
+                "table": "billable",
+                "column": "id"
+            },
+            "to": {
+                "table": "pay_subscriptions",
+                "column": "owner_id"
+            }
+        }
+    ]
+}

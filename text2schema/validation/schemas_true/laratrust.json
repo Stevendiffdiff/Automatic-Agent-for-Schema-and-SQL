@@ -1,0 +1,291 @@
+{
+    "tables": [
+      {
+        "name": "permissions",
+        "description": "Stores available permissions in the system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for the permission",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the permission",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "display_name",
+            "type": "varchar",
+            "description": "Human-readable display name for the permission",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "description",
+            "type": "varchar",
+            "description": "Description of what the permission allows",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the permission was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the permission was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "roles",
+        "description": "Stores role definitions that can be assigned to users",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for the role",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the role",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "display_name",
+            "type": "varchar",
+            "description": "Human-readable display name for the role",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "description",
+            "type": "varchar",
+            "description": "Description of the role's purpose",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the role was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the role was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "users",
+        "description": "Stores user accounts in the system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key identifier for the user",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "permission_role",
+        "description": "Junction table connecting permissions to roles (many-to-many)",
+        "columns": [
+          {
+            "name": "permission_id",
+            "type": "int",
+            "description": "Foreign key reference to permissions table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "permissions",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "role_id",
+            "type": "int",
+            "description": "Foreign key reference to roles table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "roles",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "role_user",
+        "description": "Junction table connecting roles to users (many-to-many)",
+        "columns": [
+          {
+            "name": "role_id",
+            "type": "int",
+            "description": "Foreign key reference to roles table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "roles",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key reference to users table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_type",
+            "type": "varchar",
+            "description": "Type of user for polymorphic relationships",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "permission_user",
+        "description": "Junction table connecting permissions directly to users (many-to-many)",
+        "columns": [
+          {
+            "name": "permission_id",
+            "type": "int",
+            "description": "Foreign key reference to permissions table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "permissions",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key reference to users table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_type",
+            "type": "varchar",
+            "description": "Type of user for polymorphic relationships",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "roles_permissions",
+        "type": "many_to_many",
+        "description": "Relationship between roles and permissions",
+        "from": {
+          "table": "roles",
+          "column": "id"
+        },
+        "to": {
+          "table": "permissions",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "permission_role",
+          "source_column": "role_id",
+          "target_column": "permission_id"
+        }
+      },
+      {
+        "name": "users_roles",
+        "type": "many_to_many",
+        "description": "Relationship between users and roles",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "roles",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "role_user",
+          "source_column": "user_id",
+          "target_column": "role_id"
+        }
+      },
+      {
+        "name": "users_permissions",
+        "type": "many_to_many",
+        "description": "Direct relationship between users and permissions",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "permissions",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "permission_user",
+          "source_column": "user_id",
+          "target_column": "permission_id"
+        }
+      }
+    ]
+  }

@@ -1,0 +1,30 @@
+### Functional Description:  
+
+The software is a **tagging system** that enables flexible categorization of various entities through a **polymorphic many-to-many relationship**. It allows different types of content (e.g., articles, products, users) to be tagged with reusable, structured labels while supporting multilingual naming and URL-friendly slugs.  
+
+#### Core Features:  
+
+1. **Tag Management**  
+   - Tags can be created with **localized names** (stored as JSON to support multiple languages).  
+   - Each tag has a **slug** (also in JSON format) for URL-friendly references.  
+   - Tags can be **grouped by type** (e.g., "topic," "category," "skill") and **ordered manually** via an `order_column`.  
+
+2. **Polymorphic Tagging**  
+   - Any entity in the system (e.g., blog posts, products) can be tagged by storing its **ID and type** in the `taggables` junction table.  
+   - This design allows **one tag to be applied to multiple entity types** (e.g., a "Python" tag could label both a tutorial and a software tool).  
+
+3. **Relationship Structure**  
+   - **One-to-many**: A single tag can be linked to many `taggable` entries.  
+   - **Polymorphic**: The `taggable_type` column identifies the entity type (e.g., "Article," "Product"), while `taggable_id` points to its record.  
+
+#### Use Cases:  
+- **Content categorization** (e.g., tagging articles by topic).  
+- **Dynamic filtering** (e.g., finding all products with a "sale" tag).  
+- **Multilingual tagging** (e.g., displaying tags in a user’s preferred language).  
+
+#### Key Constraints:  
+- Tag **names and slugs are required** and support structured JSON for localization.  
+- The system tracks **creation/update timestamps** for auditing.  
+- Polymorphic relationships rely on **strict type/ID pairs** in `taggables`.  
+
+This design prioritizes **flexibility** (supporting any entity type) and **scalability** (via normalized tables and polymorphic relationships). Engineers can replicate it by implementing a junction table with `taggable_id`+`taggable_type` and enforcing foreign keys to the `tags` table.

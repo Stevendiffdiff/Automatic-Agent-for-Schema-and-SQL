@@ -1,0 +1,29 @@
+# Tagging System Functionality Description
+
+This software implements a flexible, polymorphic tagging system that allows any object in the application to be tagged, regardless of its type. 
+
+## Core Functionality
+
+The system enables users to associate descriptive tags with various content objects throughout the application. The design follows a polymorphic association pattern that:
+
+1. Stores tag definitions independently of the objects they're applied to
+2. Allows any object type in the system to be tagged without schema modifications 
+3. Supports efficient querying of objects by their tags
+
+## Key Components
+
+The tagging system consists of two main entities:
+
+- **Tags**: Reusable label entities with human-readable names and URL-friendly slugs for consistent references in the interface and URLs
+- **Tagged Items**: Junction records that connect tags to any object in the system using a content type identifier and object ID combination
+
+## Implementation Pattern
+
+The system uses a generic foreign key approach where:
+
+- Tags are defined once and can be reused across multiple object types
+- The junction table stores references to both the tag and the tagged object
+- Tagged objects are identified by their content type (indicating which table they belong to) and their unique ID within that type
+- This polymorphic design eliminates the need for separate tagging tables for each object type
+
+This tagging functionality would allow features such as filtering content by tags, tag clouds, related content suggestions, and categorization across the entire application with minimal database overhead.

@@ -1,0 +1,166 @@
+{
+    "tables": [
+      {
+        "name": "migrations",
+        "description": "Tracks database migrations",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for migrations",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "migration",
+            "type": "varchar",
+            "description": "Name or description of the migration",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "batch",
+            "type": "int",
+            "description": "Batch number for grouping migrations",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "users",
+        "description": "Stores user account information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for users",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "User's full name",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address",
+            "constraints": {
+              "nullable": false,
+              "unique": true
+            }
+          },
+          {
+            "name": "email_verified_at",
+            "type": "datetime",
+            "description": "Timestamp when email was verified",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "password",
+            "type": "varchar",
+            "description": "Hashed user password",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "remember_token",
+            "type": "varchar",
+            "description": "Token for 'remember me' functionality",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when user account was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when user account was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "failed_jobs",
+        "description": "Records of failed background jobs",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for failed jobs",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "connection",
+            "type": "text",
+            "description": "Connection information for the failed job",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "queue",
+            "type": "text",
+            "description": "Queue name for the failed job",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "payload",
+            "type": "longtext",
+            "description": "Job payload data",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "exception",
+            "type": "longtext",
+            "description": "Exception details that caused the job to fail",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "failed_at",
+            "type": "timestamp",
+            "description": "Timestamp when the job failed",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": []
+  }

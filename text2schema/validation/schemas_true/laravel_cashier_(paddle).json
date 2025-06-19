@@ -1,0 +1,270 @@
+{
+    "tables": [
+      {
+        "name": "customers",
+        "description": "Stores customer information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the customers table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "billable_id",
+            "type": "bigint",
+            "description": "External billing system ID"
+          },
+          {
+            "name": "billable_type",
+            "type": "bigint",
+            "description": "Type of billing entity"
+          },
+          {
+            "name": "trial_ends_at",
+            "type": "timestamp",
+            "description": "Date when trial period ends",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Last update timestamp"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Creation timestamp"
+          }
+        ]
+      },
+      {
+        "name": "users/teams",
+        "description": "Stores user or team information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the users/teams table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "subscriptions",
+        "description": "Stores subscription information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the subscriptions table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "billable_id",
+            "type": "bigint",
+            "description": "External billing system ID"
+          },
+          {
+            "name": "billable_type",
+            "type": "varchar",
+            "description": "Type of billing entity"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the subscription"
+          },
+          {
+            "name": "paddle_id",
+            "type": "int",
+            "description": "ID from Paddle payment processor"
+          },
+          {
+            "name": "paddle_status",
+            "type": "varchar",
+            "description": "Status from Paddle payment processor"
+          },
+          {
+            "name": "paddle_plan",
+            "type": "int",
+            "description": "Plan ID from Paddle payment processor"
+          },
+          {
+            "name": "quantity",
+            "type": "int",
+            "description": "Quantity of subscription units"
+          },
+          {
+            "name": "trial_ends_at",
+            "type": "datetime",
+            "description": "Date when trial period ends",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "paused_from",
+            "type": "datetime",
+            "description": "Date when subscription was paused",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "ends_at",
+            "type": "datetime",
+            "description": "Date when subscription ends",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Last update timestamp"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Creation timestamp"
+          }
+        ]
+      },
+      {
+        "name": "receipts",
+        "description": "Stores payment receipt information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for the receipts table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "billable_id",
+            "type": "bigint",
+            "description": "External billing system ID"
+          },
+          {
+            "name": "billable_type",
+            "type": "varchar",
+            "description": "Type of billing entity"
+          },
+          {
+            "name": "paddle_subscription_id",
+            "type": "bigint",
+            "description": "Subscription ID from Paddle payment processor",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "checkout_id",
+            "type": "varchar",
+            "description": "Checkout ID for the transaction"
+          },
+          {
+            "name": "order_id",
+            "type": "varchar",
+            "description": "Order ID for the transaction"
+          },
+          {
+            "name": "amount",
+            "type": "varchar",
+            "description": "Payment amount"
+          },
+          {
+            "name": "tax",
+            "type": "varchar",
+            "description": "Tax amount"
+          },
+          {
+            "name": "currency",
+            "type": "varchar(3)",
+            "description": "Currency code for the payment"
+          },
+          {
+            "name": "quantity",
+            "type": "int",
+            "description": "Quantity of purchased items"
+          },
+          {
+            "name": "receipt_url",
+            "type": "varchar",
+            "description": "URL to access the receipt"
+          },
+          {
+            "name": "paid_at",
+            "type": "timestamp",
+            "description": "Timestamp when payment was made"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Last update timestamp"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Creation timestamp"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "customer_user_relationship",
+        "type": "one_to_one",
+        "description": "Relationship between customers and users/teams",
+        "from": {
+          "table": "customers",
+          "column": "billable_id"
+        },
+        "to": {
+          "table": "users/teams",
+          "column": "id"
+        }
+      },
+      {
+        "name": "user_subscription_relationship",
+        "type": "one_to_many",
+        "description": "Relationship between users/teams and subscriptions",
+        "from": {
+          "table": "users/teams",
+          "column": "id"
+        },
+        "to": {
+          "table": "subscriptions",
+          "column": "billable_id"
+        }
+      },
+      {
+        "name": "user_receipt_relationship",
+        "type": "one_to_many",
+        "description": "Relationship between users/teams and receipts",
+        "from": {
+          "table": "users/teams",
+          "column": "id"
+        },
+        "to": {
+          "table": "receipts",
+          "column": "billable_id"
+        }
+      }
+    ]
+  }

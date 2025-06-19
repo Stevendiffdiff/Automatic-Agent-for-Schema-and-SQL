@@ -1,0 +1,907 @@
+{
+    "tables": [
+      {
+        "name": "app_installations",
+        "description": "Stores information about application installations",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for app installations",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "github_id",
+            "type": "int",
+            "description": "GitHub identifier for the installation"
+          },
+          {
+            "name": "app_id",
+            "type": "int",
+            "description": "Identifier for the application"
+          },
+          {
+            "name": "account_login",
+            "type": "varchar",
+            "description": "Login username for the account"
+          },
+          {
+            "name": "account_id",
+            "type": "int",
+            "description": "Identifier for the account"
+          },
+          {
+            "name": "account_type",
+            "type": "varchar",
+            "description": "Type of the account"
+          },
+          {
+            "name": "target_type",
+            "type": "varchar",
+            "description": "Type of the target"
+          },
+          {
+            "name": "target_id",
+            "type": "int",
+            "description": "Identifier for the target"
+          },
+          {
+            "name": "permission_pull_requests",
+            "type": "varchar",
+            "description": "Permission level for pull requests"
+          },
+          {
+            "name": "permission_issues",
+            "type": "varchar",
+            "description": "Permission level for issues"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of when the installation was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of when the installation was last updated"
+          },
+          {
+            "name": "permission_statuses",
+            "type": "varchar",
+            "description": "Permission level for statuses"
+          }
+        ]
+      },
+      {
+        "name": "app_installation_permissions",
+        "description": "Junction table for app installations and their permissions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "app_installation_id",
+            "type": "int",
+            "description": "Foreign key to the app_installations table",
+            "constraints": {
+              "foreign_key": {
+                "table": "app_installations",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key to the users table",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of when the permission was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of when the permission was last updated"
+          }
+        ]
+      },
+      {
+        "name": "repositories",
+        "description": "Stores information about code repositories",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for repositories",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "full_name",
+            "type": "varchar",
+            "description": "Full name of the repository"
+          },
+          {
+            "name": "github_id",
+            "type": "int",
+            "description": "GitHub identifier for the repository"
+          },
+          {
+            "name": "private",
+            "type": "boolean",
+            "description": "Flag indicating if the repository is private"
+          },
+          {
+            "name": "owner",
+            "type": "varchar",
+            "description": "Owner of the repository"
+          },
+          {
+            "name": "last_synced_at",
+            "type": "datetime",
+            "description": "Timestamp of when the repository was last synced"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of when the repository was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of when the repository was last updated"
+          },
+          {
+            "name": "app_installation_id",
+            "type": "int",
+            "description": "Foreign key to the app_installations table",
+            "constraints": {
+              "foreign_key": {
+                "table": "app_installations",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "users",
+        "description": "Stores information about system users",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for users",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "github_id",
+            "type": "int",
+            "description": "GitHub identifier for the user"
+          },
+          {
+            "name": "github_login",
+            "type": "varchar",
+            "description": "GitHub login username"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of when the user was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of when the user was last updated"
+          },
+          {
+            "name": "last_synced_at",
+            "type": "datetime",
+            "description": "Timestamp of when the user was last synced"
+          },
+          {
+            "name": "refresh_interval",
+            "type": "varchar",
+            "description": "Interval for refreshing user data"
+          },
+          {
+            "name": "api_token",
+            "type": "varchar",
+            "description": "API token for the user"
+          },
+          {
+            "name": "sync_job_id",
+            "type": "varchar",
+            "description": "Identifier for the user's sync job"
+          },
+          {
+            "name": "encrypted_access_token",
+            "type": "varchar",
+            "description": "Encrypted access token"
+          },
+          {
+            "name": "encrypted_access_token_iv",
+            "type": "varchar",
+            "description": "Initialization vector for the encrypted access token"
+          },
+          {
+            "name": "encrypted_personal_access_token",
+            "type": "varchar",
+            "description": "Encrypted personal access token"
+          },
+          {
+            "name": "encrypted_personal_access_token_iv",
+            "type": "varchar",
+            "description": "Initialization vector for the encrypted personal access token"
+          },
+          {
+            "name": "encrypted_app_token",
+            "type": "varchar",
+            "description": "Encrypted app token"
+          },
+          {
+            "name": "encrypted_app_token_iv",
+            "type": "varchar",
+            "description": "Initialization vector for the encrypted app token"
+          },
+          {
+            "name": "theme",
+            "type": "varchar",
+            "description": "User interface theme preference"
+          },
+          {
+            "name": "display_comments",
+            "type": "boolean",
+            "description": "User preference for displaying comments"
+          }
+        ]
+      },
+      {
+        "name": "notifications",
+        "description": "Stores notifications for users",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for notifications",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key to the users table",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "github_id",
+            "type": "int",
+            "description": "GitHub identifier for the notification"
+          },
+          {
+            "name": "repository_id",
+            "type": "int",
+            "description": "Foreign key to the repositories table",
+            "constraints": {
+              "foreign_key": {
+                "table": "repositories",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "repository_full_name",
+            "type": "varchar",
+            "description": "Full name of the repository"
+          },
+          {
+            "name": "subject_title",
+            "type": "text",
+            "description": "Title of the notification subject"
+          },
+          {
+            "name": "subject_url",
+            "type": "varchar",
+            "description": "URL of the notification subject"
+          },
+          {
+            "name": "subject_type",
+            "type": "varchar",
+            "description": "Type of the notification subject"
+          },
+          {
+            "name": "reason",
+            "type": "varchar",
+            "description": "Reason for the notification"
+          },
+          {
+            "name": "unread",
+            "type": "boolean",
+            "description": "Flag indicating if the notification is unread"
+          },
+          {
+            "name": "last_read_at",
+            "type": "varchar",
+            "description": "Timestamp of when the notification was last read"
+          },
+          {
+            "name": "url",
+            "type": "varchar",
+            "description": "URL of the notification"
+          },
+          {
+            "name": "archived",
+            "type": "boolean",
+            "description": "Flag indicating if the notification is archived"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of when the notification was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of when the notification was last updated"
+          },
+          {
+            "name": "starred",
+            "type": "boolean",
+            "description": "Flag indicating if the notification is starred"
+          },
+          {
+            "name": "repository_owner_name",
+            "type": "varchar",
+            "description": "Name of the repository owner"
+          },
+          {
+            "name": "latest_comment_url",
+            "type": "varchar",
+            "description": "URL of the latest comment"
+          },
+          {
+            "name": "muted_at",
+            "type": "datetime",
+            "description": "Timestamp of when the notification was muted"
+          }
+        ]
+      },
+      {
+        "name": "pinned_searches",
+        "description": "Stores users' pinned searches",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for pinned searches",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "Foreign key to the users table",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "query",
+            "type": "varchar",
+            "description": "Search query text"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of when the pinned search was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of when the pinned search was last updated"
+          }
+        ]
+      },
+      {
+        "name": "subjects",
+        "description": "Stores subjects for notifications and comments",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for subjects",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "url",
+            "type": "varchar",
+            "description": "URL of the subject"
+          },
+          {
+            "name": "state",
+            "type": "varchar",
+            "description": "State of the subject"
+          },
+          {
+            "name": "author",
+            "type": "varchar",
+            "description": "Author of the subject"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of when the subject was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of when the subject was last updated"
+          },
+          {
+            "name": "html_url",
+            "type": "varchar",
+            "description": "HTML URL of the subject"
+          },
+          {
+            "name": "assignees",
+            "type": "varchar",
+            "description": "Assignees of the subject"
+          },
+          {
+            "name": "github_id",
+            "type": "varchar",
+            "description": "GitHub identifier for the subject"
+          },
+          {
+            "name": "repository_full_name",
+            "type": "varchar",
+            "description": "Full name of the repository"
+          },
+          {
+            "name": "locked",
+            "type": "boolean",
+            "description": "Flag indicating if the subject is locked"
+          },
+          {
+            "name": "sha",
+            "type": "varchar",
+            "description": "SHA hash for the subject"
+          },
+          {
+            "name": "status",
+            "type": "varchar",
+            "description": "Status of the subject"
+          },
+          {
+            "name": "body",
+            "type": "text",
+            "description": "Body content of the subject"
+          },
+          {
+            "name": "comment_count",
+            "type": "int",
+            "description": "Number of comments on the subject"
+          },
+          {
+            "name": "draft",
+            "type": "boolean",
+            "description": "Flag indicating if the subject is a draft"
+          }
+        ]
+      },
+      {
+        "name": "labels",
+        "description": "Stores labels for subjects",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for labels",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the label"
+          },
+          {
+            "name": "color",
+            "type": "varchar",
+            "description": "Color of the label"
+          },
+          {
+            "name": "subject_id",
+            "type": "bigint",
+            "description": "Foreign key to the subjects table",
+            "constraints": {
+              "foreign_key": {
+                "table": "subjects",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of when the label was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of when the label was last updated"
+          },
+          {
+            "name": "github_id",
+            "type": "int",
+            "description": "GitHub identifier for the label"
+          }
+        ]
+      },
+      {
+        "name": "comments",
+        "description": "Stores comments on subjects",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for comments",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "subject_id",
+            "type": "bigint",
+            "description": "Foreign key to the subjects table",
+            "constraints": {
+              "foreign_key": {
+                "table": "subjects",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "github_id",
+            "type": "bigint",
+            "description": "GitHub identifier for the comment"
+          },
+          {
+            "name": "author",
+            "type": "varchar",
+            "description": "Author of the comment"
+          },
+          {
+            "name": "author_association",
+            "type": "varchar",
+            "description": "Association of the author to the repository"
+          },
+          {
+            "name": "body",
+            "type": "text",
+            "description": "Body content of the comment"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of when the comment was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of when the comment was last updated"
+          },
+          {
+            "name": "review_state",
+            "type": "varchar",
+            "description": "State of the review if the comment is a review comment"
+          },
+          {
+            "name": "url",
+            "type": "varchar",
+            "description": "URL of the comment"
+          }
+        ]
+      },
+      {
+        "name": "subscription_plans",
+        "description": "Stores available subscription plans",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for subscription plans",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "github_id",
+            "type": "int",
+            "description": "GitHub identifier for the plan"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the subscription plan"
+          },
+          {
+            "name": "description",
+            "type": "varchar",
+            "description": "Description of the subscription plan"
+          },
+          {
+            "name": "monthly_price_in_cents",
+            "type": "int",
+            "description": "Monthly price in cents"
+          },
+          {
+            "name": "yearly_price_in_cents",
+            "type": "int",
+            "description": "Yearly price in cents"
+          },
+          {
+            "name": "price_model",
+            "type": "varchar",
+            "description": "Model used for pricing"
+          },
+          {
+            "name": "has_free_trial",
+            "type": "boolean",
+            "description": "Flag indicating if the plan has a free trial"
+          },
+          {
+            "name": "unit_name",
+            "type": "varchar",
+            "description": "Name of the pricing unit"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of when the plan was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of when the plan was last updated"
+          },
+          {
+            "name": "number",
+            "type": "int",
+            "description": "Plan number or identifier"
+          }
+        ]
+      },
+      {
+        "name": "subscription_purchases",
+        "description": "Stores user subscription purchases",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for subscription purchases",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "subscription_plan_id",
+            "type": "int",
+            "description": "Foreign key to the subscription_plans table",
+            "constraints": {
+              "foreign_key": {
+                "table": "subscription_plans",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "account_id",
+            "type": "int",
+            "description": "Identifier for the account making the purchase"
+          },
+          {
+            "name": "billing_cycle",
+            "type": "varchar",
+            "description": "Billing cycle for the subscription"
+          },
+          {
+            "name": "unit_count",
+            "type": "int",
+            "description": "Number of units purchased"
+          },
+          {
+            "name": "on_free_trial",
+            "type": "boolean",
+            "description": "Flag indicating if the subscription is on free trial"
+          },
+          {
+            "name": "free_trial_ends_on",
+            "type": "datetime",
+            "description": "Date when the free trial ends"
+          },
+          {
+            "name": "next_billing_date",
+            "type": "datetime",
+            "description": "Date of the next billing"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of when the purchase was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of when the purchase was last updated"
+          },
+          {
+            "name": "cc_transaction_id",
+            "type": "int",
+            "description": "Credit card transaction identifier"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "app_installation_to_app_installation_permissions",
+        "type": "one_to_many",
+        "description": "An app installation can have many permissions",
+        "from": {
+          "table": "app_installations",
+          "column": "id"
+        },
+        "to": {
+          "table": "app_installation_permissions",
+          "column": "app_installation_id"
+        }
+      },
+      {
+        "name": "app_installation_to_repositories",
+        "type": "one_to_many",
+        "description": "An app installation can be associated with many repositories",
+        "from": {
+          "table": "app_installations",
+          "column": "id"
+        },
+        "to": {
+          "table": "repositories",
+          "column": "app_installation_id"
+        }
+      },
+      {
+        "name": "user_to_app_installation_permissions",
+        "type": "one_to_many",
+        "description": "A user can have many app installation permissions",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "app_installation_permissions",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_to_notifications",
+        "type": "one_to_many",
+        "description": "A user can have many notifications",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "notifications",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_to_pinned_searches",
+        "type": "one_to_many",
+        "description": "A user can have many pinned searches",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "pinned_searches",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "repository_to_notifications",
+        "type": "one_to_many",
+        "description": "A repository can have many notifications",
+        "from": {
+          "table": "repositories",
+          "column": "id"
+        },
+        "to": {
+          "table": "notifications",
+          "column": "repository_id"
+        }
+      },
+      {
+        "name": "subject_to_comments",
+        "type": "one_to_many",
+        "description": "A subject can have many comments",
+        "from": {
+          "table": "subjects",
+          "column": "id"
+        },
+        "to": {
+          "table": "comments",
+          "column": "subject_id"
+        }
+      },
+      {
+        "name": "subject_to_labels",
+        "type": "one_to_many",
+        "description": "A subject can have many labels",
+        "from": {
+          "table": "subjects",
+          "column": "id"
+        },
+        "to": {
+          "table": "labels",
+          "column": "subject_id"
+        }
+      },
+      {
+        "name": "subscription_plan_to_subscription_purchases",
+        "type": "one_to_many",
+        "description": "A subscription plan can have many purchases",
+        "from": {
+          "table": "subscription_plans",
+          "column": "id"
+        },
+        "to": {
+          "table": "subscription_purchases",
+          "column": "subscription_plan_id"
+        }
+      }
+    ]
+  }

@@ -1,0 +1,34 @@
+### Functional Description: Tagging System
+
+**Core Purpose**:  
+The software implements a flexible tagging system that allows users to categorize and organize different types of content (objects) using customizable tags. This is a many-to-many relationship system where:  
+- Multiple tags can be applied to a single object  
+- A single tag can be applied to multiple objects  
+
+**Key Components**:  
+
+1. **Tag Management**  
+   - Tags are defined by a unique name (e.g., "Python", "Tutorial")  
+   - Each tag has a URL-friendly slug (e.g., "python", "tutorial") for web routing  
+   - Tags are stored as independent entities, decoupled from the objects they categorize  
+
+2. **Object Tagging**  
+   - Any object in the system (identified by `object_id`) can be tagged  
+   - The system supports tagging across different content types (e.g., articles, videos, users) via `content_type_id`  
+   - Tag associations are stored as lightweight relationships, enabling efficient filtering/queries  
+
+3. **Relationship Model**  
+   - Many-to-one relationship between tagged items and tags (a tag can be reused across many objects)  
+   - Junction table (`taggit_taggeditem`) resolves the many-to-many relationship between objects and tags  
+
+**Key Characteristics**:  
+- **Extensible**: Designed to tag arbitrary content types without schema modifications  
+- **Web-friendly**: Slug fields enable clean URLs for tag-based navigation  
+- **Normalized**: Tags are stored once and referenced, preventing duplication  
+
+**Example Use Cases**:  
+- Categorizing blog posts by topic  
+- Filtering user-generated content by attributes  
+- Implementing faceted search/filtering  
+
+This description gives engineers enough context to design a similar tagging system while focusing on the functional behavior rather than implementation details. The schema can be derived from the relationships and constraints implied here.

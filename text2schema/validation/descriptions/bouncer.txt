@@ -1,0 +1,28 @@
+### Functional Description:  
+The system is a **flexible permission management platform** that enables role-based access control (RBAC) with granular ability definitions and entity-level restrictions. It supports:  
+
+1. **Ability Management**  
+   - Defines actions (e.g., "create," "view") with metadata (name, title, ownership flag, JSON options).  
+   - Abilities can be scoped (e.g., global, tenant-specific) and linked to entities (e.g., "user," "team").  
+
+2. **Permission Enforcement**  
+   - Permissions reference abilities and specify whether they are allowed/forbidden for specific entities (e.g., "user:123 can’t delete posts").  
+   - Supports entity-level restrictions (e.g., "this permission only applies to documents owned by user X").  
+
+3. **Role Assignment**  
+   - Roles group abilities (e.g., "admin," "editor") with optional hierarchical levels.  
+   - Roles are assignable to any entity (e.g., users, groups) with restrictions (e.g., "editor role only for project X").  
+
+4. **Key Features**  
+   - **Multi-tenancy**: Scopes (e.g., `scope` columns) isolate permissions/roles by domain.  
+   - **Dynamic ownership**: `only_owned` flag restricts abilities to resource owners.  
+   - **Polymorphic relationships**: Roles/permissions apply to diverse entities (via `entity_type`/`entity_id`).  
+
+### Engineering Implications:  
+- **Schema must support**:  
+  - Polymorphic associations (entity types/IDs).  
+  - Complex permission logic (allow/deny, ownership checks).  
+  - Scalable role assignments with constraints (e.g., `restricted_to` fields).  
+- **Extensions**: Add caching for permission evaluation or event hooks for role changes.  
+
+This design prioritizes flexibility (e.g., JSON options, scoping) over simplicity, suitable for systems requiring fine-grained access control.

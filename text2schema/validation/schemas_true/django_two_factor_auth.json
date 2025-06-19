@@ -1,0 +1,157 @@
+{
+    "tables": [
+      {
+        "name": "auth_user",
+        "description": "Stores user authentication information and profile details",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for user identification",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "password",
+            "type": "varchar",
+            "description": "User's hashed password",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "last_login",
+            "type": "datetime",
+            "description": "Timestamp of user's most recent login"
+          },
+          {
+            "name": "is_superuser",
+            "type": "tinyint",
+            "description": "Flag indicating if user has superuser privileges",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "username",
+            "type": "varchar",
+            "description": "Unique username for authentication",
+            "constraints": {
+              "nullable": false,
+              "unique": true
+            }
+          },
+          {
+            "name": "first_name",
+            "type": "varchar",
+            "description": "User's first name"
+          },
+          {
+            "name": "last_name",
+            "type": "varchar",
+            "description": "User's last name"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address"
+          },
+          {
+            "name": "is_staff",
+            "type": "tinyint",
+            "description": "Flag indicating if user is staff member",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "is_active",
+            "type": "tinyint",
+            "description": "Flag indicating if user account is active",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "date_joined",
+            "type": "datetime",
+            "description": "Timestamp when user account was created"
+          }
+        ]
+      },
+      {
+        "name": "two_factor_phonedevice",
+        "description": "Stores information about phone devices used for two-factor authentication",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for phone device identification",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name or description of the phone device"
+          },
+          {
+            "name": "confirmed",
+            "type": "tinyint",
+            "description": "Flag indicating if the phone device has been confirmed for 2FA",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "number",
+            "type": "varchar",
+            "description": "Phone number associated with the device"
+          },
+          {
+            "name": "key",
+            "type": "varchar",
+            "description": "Security key for two-factor authentication"
+          },
+          {
+            "name": "method",
+            "type": "varchar",
+            "description": "Authentication method (SMS, call, etc.)"
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key to link phone device with a user",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "user_to_phone_devices",
+        "type": "one_to_many",
+        "description": "Relationship between users and their two-factor authentication phone devices",
+        "from": {
+          "table": "auth_user",
+          "column": "id"
+        },
+        "to": {
+          "table": "two_factor_phonedevice",
+          "column": "user_id"
+        }
+      }
+    ]
+  }

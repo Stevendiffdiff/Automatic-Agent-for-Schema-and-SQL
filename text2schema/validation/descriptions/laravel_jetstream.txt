@@ -1,0 +1,39 @@
+### Functional Description  
+
+The software is a **team-based collaboration platform** with **user authentication and API access control**. Its core functionality revolves around **user management, team organization, and secure access tokens**.  
+
+#### **Key Features:**  
+
+1. **User Authentication & Management**  
+   - Users can register with email/password and enable **two-factor authentication** (2FA) via secrets and recovery codes.  
+   - Supports "remember me" sessions via a persistent token.  
+   - Email verification is tracked with timestamps.  
+   - Users can upload profile photos.  
+
+2. **Team & Membership System**  
+   - **Teams** can be created by users, with a flag distinguishing **personal teams** (likely single-user) from shared teams.  
+   - **Many-to-many relationship** between users and teams, managed via a junction table (`team_user`) with **role assignments**.  
+   - Users have a **current team**, allowing context switching (e.g., for multi-team workflows).  
+
+3. **Personal Access Tokens (API Authentication)**  
+   - Users can generate **scoped API tokens** with customizable permissions (`abilities` field).  
+   - Tokens are tied to a parent entity (`tokenable_type`/`tokenable_id`), likely supporting both user and machine-level access.  
+   - Usage is tracked (`last_used_at`), and tokens are uniquely hashed.  
+
+#### **Relationships & Business Logic:**  
+- **A user owns teams** (one-to-many via `teams.user_id`).  
+- **Users belong to multiple teams** (many-to-many via `team_user`).  
+- **Tokens are issued to users** (one-to-many via `personal_access_tokens.tokenable_id`).  
+- **Current team selection** (many-to-one via `users.current_team_id`).  
+
+#### **Positioning:**  
+This system is designed for **scalable collaboration**, with granular access control (via tokens and team roles) and security features (2FA, token expiration tracking). The schema suggests a **SaaS or developer-focused product**, possibly with API integrations.  
+
+### **Schema Reconstruction Guidance for Engineers:**  
+- Prioritize **user authentication** (passwords, 2FA, email verification).  
+- Implement **team membership** with roles and a current-team selector.  
+- Support **API token generation** with permission scopes and usage auditing.  
+- Use junction tables (`team_user`) for many-to-many relationships.  
+- Track timestamps (`created_at`, `updated_at`) for auditing.  
+
+This description ensures clarity on functionality without over-specifying schema details.

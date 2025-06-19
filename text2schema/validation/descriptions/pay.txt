@@ -1,0 +1,40 @@
+### Functional Description:  
+
+The competitor’s software is a **subscription billing and payment management system** designed to handle recurring payments, one-time charges, and customer billing information. It supports multiple payment processors, trial periods, and subscription management.  
+
+#### Core Functionality:  
+
+1. **Billing Information Storage**  
+   - Stores customer billing details, including payment processor information (e.g., Stripe, PayPal), credit card metadata (last 4 digits, expiration), and trial period end dates.  
+   - Supports additional billing notes via an `extra_billing_info` field.  
+
+2. **Payment Charges Tracking**  
+   - Records individual transactions (one-time or subscription-related), including:  
+     - Charge amount and refunds (if applicable).  
+     - Payment processor transaction ID.  
+     - Associated owner (e.g., user, organization) via polymorphic `owner_type` and `owner_id`.  
+     - Timestamps for creation and updates.  
+
+3. **Subscription Management**  
+   - Manages recurring subscriptions with:  
+     - Plan details (processor-specific plan ID, quantity).  
+     - Trial period and end date tracking.  
+     - Subscription status (active, canceled, etc.).  
+   - Supports multiple subscriptions per owner (via `owner_id`).  
+
+#### Key Relationships:  
+- A **billable entity** (e.g., user or account) can have:  
+  - **Multiple payment charges** (one-to-many).  
+  - **Multiple subscriptions** (one-to-many).  
+
+#### Business Logic Inferences:  
+- The system likely supports:  
+  - **Multi-tenancy** (via polymorphic `owner_type` in charges).  
+  - **Refund processing** (tracked via `amount_refunded`).  
+  - **Subscription lifecycle management** (trials, cancellations, renewals via `status` and `ends_at`).  
+
+#### Missing/Implied Features:  
+- No explicit invoicing or tax calculation tables.  
+- No webhook or receipt storage, suggesting those may be handled externally.  
+
+This description provides enough detail for engineers to replicate the schema while focusing on the system’s purpose and behavior.

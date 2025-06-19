@@ -1,0 +1,46 @@
+### Functional Description of the URL Shortening Service:
+
+**Core Product**:  
+A web-based URL shortening platform with user accounts, API access, and click analytics. The system allows users to create short aliases for long URLs and tracks detailed visitor information for each shortened link.
+
+**Key Features**:
+
+1. **User Management**:
+   - Secure authentication (username/password with recovery keys)
+   - Role-based access control (admin/user roles)
+   - Account activation system with IP tracking
+   - API access management (keys, quotas, and activation flags)
+   - Soft-delete functionality
+
+2. **URL Shortening**:
+   - Generation of short URLs (both system-generated and custom)
+   - Original URL storage with hash-based deduplication
+   - Link management (disable/enable, secret keys for ownership)
+   - Creator attribution (user who created each link)
+   - API-created link identification
+
+3. **Click Analytics**:
+   - Detailed click tracking per shortened URL
+   - Visitor geo-location (country-level)
+   - Referral source tracking (full URL and domain-level)
+   - User agent capture for device/browser identification
+
+4. **Technical Infrastructure**:
+   - Database versioning via migration tracking
+   - Timestamp tracking for all records (created/updated/deleted)
+   - IP address logging for security/analytics
+
+**User Flows**:
+1. Users register accounts (with email verification implied by 'active' field)
+2. Authenticated users create short URLs via web interface or API
+3. System tracks all redirects with detailed visitor metadata
+4. Users can view analytics for their links and manage link status
+
+**Differentiators**:
+- Comprehensive API support with usage quotas
+- Advanced click analytics including referrer breakdowns
+- Dual URL storage system (original + hash) for optimization
+- Multi-layer security (IP tracking, secret keys, role management)
+
+**Schema Implications**:
+The design suggests a production-ready system with audit capabilities (timestamps/IPs), scalability considerations (hashed URLs for lookups), and both web and API access patterns. The soft-delete pattern indicates a focus on data preservation.

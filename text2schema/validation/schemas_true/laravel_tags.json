@@ -1,0 +1,129 @@
+{
+    "tables": [
+      {
+        "name": "tags",
+        "description": "Stores tag information for categorization",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key for the tags table",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "json",
+            "description": "The name of the tag in JSON format",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "slug",
+            "type": "json",
+            "description": "URL-friendly version of the tag name in JSON format",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "type",
+            "type": "varchar",
+            "description": "Type or category of the tag",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "order_column",
+            "type": "integer",
+            "description": "Used for custom ordering of tags",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the tag was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the tag was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "taggables",
+        "description": "Junction table implementing a polymorphic many-to-many relationship between tags and other entities",
+        "columns": [
+          {
+            "name": "tag_id",
+            "type": "integer",
+            "description": "Foreign key referencing the tags table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "tags",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "taggable_id",
+            "type": "integer",
+            "description": "ID of the entity being tagged",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "taggable_type",
+            "type": "varchar",
+            "description": "Type/class of the entity being tagged, enabling polymorphic relationships",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "tags_taggables",
+        "type": "one_to_many",
+        "description": "One tag can be associated with many taggable entities",
+        "from": {
+          "table": "tags",
+          "column": "id"
+        },
+        "to": {
+          "table": "taggables",
+          "column": "tag_id"
+        }
+      },
+      {
+        "name": "polymorphic_tagging",
+        "type": "polymorphic",
+        "description": "Polymorphic relationship allowing different entity types to be tagged",
+        "from": {
+          "table": "taggables",
+          "columns": ["taggable_id", "taggable_type"]
+        },
+        "to": {
+          "description": "Any table that can be tagged"
+        }
+      }
+    ]
+  }

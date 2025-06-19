@@ -1,0 +1,42 @@
+### Functional Description of the Competitor's Software:
+
+The system is a **comprehensive monitoring and alerting platform** with integrated user management, team collaboration, and subscription billing capabilities. Its core functionality revolves around **health checks** that monitor services/endpoints, with configurable alerts and notifications.
+
+#### Core Components:
+
+1. **User Management System**  
+   - Standard authentication (username/password) with email, staff/superuser flags  
+   - Each user has an associated profile with usage limits (SMS, checks, team members) and activity tracking  
+   - Supports team collaboration through project membership  
+
+2. **Subscription & Billing**  
+   - Tracks payment methods and subscription plans  
+   - Supports invoice generation and delivery  
+   - Linked to user accounts for access control  
+
+3. **Project Workspaces**  
+   - Projects act as containers for monitoring resources  
+   - Each has API keys (read/write), members, and owner  
+   - Contains all checks and notification channels  
+
+4. **Monitoring Engine**  
+   - **Checks**: Configurable health checks with schedules, timeouts, and status tracking  
+   - **Pings**: Records of check executions with timing and request data  
+   - **Status Flips**: History of status changes (up/down transitions)  
+
+5. **Alerting System**  
+   - **Channels**: Multiple notification methods (email, SMS, etc.) with verification  
+   - **Notifications**: Records of sent alerts with error tracking  
+   - Configurable channel-check associations  
+
+6. **Rate Limiting**  
+   - Token bucket implementation for API request throttling  
+
+#### Key Workflows:
+- Users create projects and configure checks with expected schedules  
+- The system monitors check pings, triggering alerts when missing or failing  
+- Status changes generate notifications through linked channels  
+- Subscription tier enforces usage limits (checks/SMS/team size)  
+- Teams collaborate through shared project access  
+
+The schema suggests a **developer-focused SaaS product** where technical users monitor infrastructure/APIs with fine-grained alert controls and team collaboration features. The presence of subscription billing indicates a commercial product with tiered pricing based on usage limits.

@@ -1,0 +1,679 @@
+{
+    "tables": [
+      {
+        "name": "streak_activities",
+        "description": "Defines the different types of streak activities that users can maintain",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for streak activities",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the streak activity",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Detailed description of the streak activity",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "streak_histories",
+        "description": "Records the historical data of user streaks",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for streak histories",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "Reference to the user who owns this streak history",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "streak_activity_id",
+            "type": "bigint",
+            "description": "Reference to the streak activity type",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "streak_activities",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "count",
+            "type": "int",
+            "description": "The count or length of the streak",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "started_at",
+            "type": "datetime",
+            "description": "Timestamp when the streak started",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "ended_at",
+            "type": "datetime",
+            "description": "Timestamp when the streak ended",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "streaks",
+        "description": "Tracks the current active streaks for users",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for streaks",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "Reference to the user who owns this streak",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "activity_id",
+            "type": "bigint",
+            "description": "Reference to the streak activity type",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "streak_activities",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "count",
+            "type": "int",
+            "description": "The current count or length of the streak",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "activity_at",
+            "type": "datetime",
+            "description": "Timestamp of the last streak activity",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "frozen_until",
+            "type": "datetime",
+            "description": "Timestamp until when the streak is frozen (cannot be broken)",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "achievements",
+        "description": "Defines available achievements that users can earn",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for achievements",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the achievement",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "is_secret",
+            "type": "boolean",
+            "description": "Whether the achievement is secret/hidden until earned",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Detailed description of the achievement",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "image",
+            "type": "varchar",
+            "description": "Path or reference to the achievement image/badge",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "achievement_user",
+        "description": "Junction table tracking user achievements and progress",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for user achievement records",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "Reference to the user",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "achievement_id",
+            "type": "bigint",
+            "description": "Reference to the achievement",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "achievements",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "progress",
+            "type": "int",
+            "description": "User's progress toward completing the achievement",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "users",
+        "description": "Stores user account information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for users",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "level_id",
+            "type": "bigint",
+            "description": "Reference to the user's current level",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "levels",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "levels",
+        "description": "Defines the level system for users",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for levels",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "level",
+            "type": "int",
+            "description": "Numeric value of the level",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "next_level_experience",
+            "type": "int",
+            "description": "Experience points required to reach the next level",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "bigint",
+            "description": "Timestamp when the record was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "bigint",
+            "description": "Timestamp when the record was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "experiences",
+        "description": "Tracks users' experience points",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for experience records",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "Reference to the user",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "level_id",
+            "type": "bigint",
+            "description": "Reference to the level",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "levels",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "experience_points",
+            "type": "int",
+            "description": "Amount of experience points the user has",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "experience_audits",
+        "description": "Audit log for experience point changes",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for experience audit records",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "Reference to the user",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "points",
+            "type": "int",
+            "description": "Amount of experience points added or removed",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "levelled_up",
+            "type": "boolean",
+            "description": "Whether this experience change resulted in a level up",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "level_to",
+            "type": "int",
+            "description": "The level user advanced to if they leveled up",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "type",
+            "type": "enum",
+            "description": "The type of activity that generated the experience points",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "reason",
+            "type": "varchar",
+            "description": "Description of why the experience points were awarded",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "user_streak_activities",
+        "type": "one_to_many",
+        "description": "A user can have many streak activities",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "streaks",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "activity_streaks",
+        "type": "one_to_many",
+        "description": "A streak activity can be tracked by many users",
+        "from": {
+          "table": "streak_activities",
+          "column": "id"
+        },
+        "to": {
+          "table": "streaks",
+          "column": "activity_id"
+        }
+      },
+      {
+        "name": "user_streak_histories",
+        "type": "one_to_many",
+        "description": "A user can have many streak histories",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "streak_histories",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "activity_streak_histories",
+        "type": "one_to_many",
+        "description": "A streak activity can have many histories",
+        "from": {
+          "table": "streak_activities",
+          "column": "id"
+        },
+        "to": {
+          "table": "streak_histories",
+          "column": "streak_activity_id"
+        }
+      },
+      {
+        "name": "user_achievements",
+        "type": "many_to_many",
+        "description": "Users can earn many achievements, and achievements can be earned by many users",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "achievements",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "achievement_user",
+          "source_column": "user_id",
+          "target_column": "achievement_id"
+        }
+      },
+      {
+        "name": "user_levels",
+        "type": "many_to_one",
+        "description": "Many users can be at the same level",
+        "from": {
+          "table": "users",
+          "column": "level_id"
+        },
+        "to": {
+          "table": "levels",
+          "column": "id"
+        }
+      },
+      {
+        "name": "user_experiences",
+        "type": "one_to_many",
+        "description": "A user can have many experience records",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "experiences",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "level_experiences",
+        "type": "one_to_many",
+        "description": "A level can be associated with many experience records",
+        "from": {
+          "table": "levels",
+          "column": "id"
+        },
+        "to": {
+          "table": "experiences",
+          "column": "level_id"
+        }
+      },
+      {
+        "name": "user_experience_audits",
+        "type": "one_to_many",
+        "description": "A user can have many experience audit logs",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "experience_audits",
+          "column": "user_id"
+        }
+      }
+    ]
+  }

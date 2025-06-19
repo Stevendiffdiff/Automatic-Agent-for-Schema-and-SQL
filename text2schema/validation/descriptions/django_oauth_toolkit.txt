@@ -1,0 +1,53 @@
+### Functional Description: OAuth2 Provider System
+
+This is an OAuth2 authorization server implementation that enables third-party applications to securely access user data via API tokens. The system manages the complete OAuth2 flow including application registration, authorization grants, token issuance, and refresh tokens.
+
+#### Core Components:
+
+1. **User Management**  
+   - Stores user accounts with authentication details (username/password)
+   - Supports user roles (regular user, staff, superuser)
+   - Tracks authentication state (last login, active status)
+
+2. **Application Registry**  
+   - Allows users to register OAuth2 client applications
+   - Stores client credentials (ID/secret) and configuration:
+     - Authorized redirect URIs
+     - Grant types supported
+     - Client type (confidential/public)
+     - Option to skip authorization for trusted apps
+
+3. **Authorization Flow**  
+   - Generates time-limited authorization codes (PKCE supported)
+   - Tracks granted permissions (scopes)
+   - Manages redirect URIs for callback
+   - Links grants to both users and applications
+
+4. **Token Service**  
+   - Issues access tokens with configurable:
+     - Expiration times
+     - Permission scopes
+     - Associated applications
+   - Supports token refresh mechanism:
+     - Refresh tokens with revocation capability
+     - Token rotation (new access tokens reference their source refresh token)
+
+5. **Security Features**  
+   - PKCE support (code challenge/method)
+   - Token expiration tracking
+   - Explicit revocation capability for refresh tokens
+   - Client secret storage
+
+#### Key Relationships:
+- All OAuth2 entities are owned by either a user or application
+- Tokens maintain references to both their issuing application and target user
+- Refresh tokens have a two-way relationship with access tokens
+- Authorization grants are intermediate steps that result in tokens
+
+#### Operational Characteristics:
+- All entities track creation/modification timestamps
+- Designed for high security with proper foreign key constraints
+- Supports standard OAuth2 flows including:
+  - Authorization Code (with PKCE)
+  - Refresh Token flow
+  - Implicit flow (via token expiration)

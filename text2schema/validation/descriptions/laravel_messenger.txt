@@ -1,0 +1,29 @@
+### Functional Description:  
+
+The software is a **message threading system** that enables users to participate in threaded conversations. It supports:  
+
+1. **Thread Management**  
+   - Threads are conversation containers with optional subjects.  
+   - Track creation, updates, and soft deletes.  
+
+2. **Message Posting**  
+   - Messages belong to threads and are authored by users.  
+   - Supports text content and tracks timestamps for creation, updates, and soft deletes.  
+
+3. **User Participation Tracking**  
+   - Users can join multiple threads, and threads can have multiple participants.  
+   - Tracks when users last read a thread and when they were added/removed.  
+
+4. **Key Relationships**  
+   - **One-to-Many**: A thread contains multiple messages; a user can send multiple messages.  
+   - **Many-to-Many**: Users participate in threads via a junction table (`participants`), which tracks read status and membership changes.  
+
+### Core Features Implied by Schema:  
+- **Soft Deletion**: Threads, messages, and participants can be archived rather than permanently deleted.  
+- **Activity Tracking**: Timestamps (`created_at`, `updated_at`) enable sorting and filtering by recency.  
+- **Read Receipts**: `last_read` in `participants` indicates user engagement per thread.  
+
+This design suggests a **collaborative messaging platform** (e.g., forums, team chats, or support tickets) where users converse in organized threads with persistent history.  
+
+---  
+**Note for Engineers**: The schema uses foreign keys, auto-incrementing IDs, and nullable fields for optional metadata. The `participants` junction table resolves many-to-many relationships between users and threads.

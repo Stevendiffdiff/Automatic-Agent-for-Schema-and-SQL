@@ -1,0 +1,272 @@
+{
+    "tables": [
+      {
+        "name": "users",
+        "description": "Stores user information including payment details and trial status",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for users",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "stripe_id",
+            "type": "varchar",
+            "description": "Stripe customer identifier",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "pm_type",
+            "type": "varchar",
+            "description": "Payment method type",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "pm_last_four",
+            "type": "varchar(4)",
+            "description": "Last four digits of payment method",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "trial_ends_at",
+            "type": "timestamp",
+            "description": "When user's trial period ends",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When user was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When user was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "subscriptions",
+        "description": "Stores subscription information linked to users",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for subscriptions",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "Foreign key to users table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the subscription",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "stripe_id",
+            "type": "varchar",
+            "description": "Stripe subscription identifier",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "stripe_status",
+            "type": "varchar",
+            "description": "Status of the subscription in Stripe",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "stripe_price",
+            "type": "varchar",
+            "description": "Stripe price identifier",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "quantity",
+            "type": "int",
+            "description": "Quantity of subscription items",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "trial_ends_at",
+            "type": "timestamp",
+            "description": "When subscription trial period ends",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "ends_at",
+            "type": "timestamp",
+            "description": "When subscription ends",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "When subscription was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "When subscription was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "subscription_items",
+        "description": "Stores individual items within subscriptions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for subscription items",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "subscription_id",
+            "type": "bigint",
+            "description": "Foreign key to subscriptions table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "subscriptions",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "stripe_id",
+            "type": "varchar",
+            "description": "Stripe subscription item identifier",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "stripe_product",
+            "type": "varchar",
+            "description": "Stripe product identifier",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "stripe_price",
+            "type": "varchar",
+            "description": "Stripe price identifier",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "quantity",
+            "type": "int",
+            "description": "Quantity of this specific subscription item",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "When subscription item was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "When subscription item was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "user_subscriptions",
+        "type": "one_to_many",
+        "description": "A user can have multiple subscriptions",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "subscriptions",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "subscription_items_relationship",
+        "type": "one_to_many",
+        "description": "A subscription can have multiple subscription items",
+        "from": {
+          "table": "subscriptions",
+          "column": "id"
+        },
+        "to": {
+          "table": "subscription_items",
+          "column": "subscription_id"
+        }
+      }
+    ]
+  }

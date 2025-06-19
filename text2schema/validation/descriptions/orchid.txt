@@ -1,0 +1,31 @@
+### Functional Description  
+
+The competitor's software appears to be a **user-centric web application** with **role-based access control (RBAC), file attachments, notifications, and system settings**. Below is a breakdown of its core functionalities:  
+
+#### **1. User Management & Authentication**  
+- **User accounts** store credentials (email, hashed password), profile information (name), and authentication state (email verification, remember token).  
+- Supports **last login tracking** and granular **user-specific permissions** (stored as JSON).  
+- **Email uniqueness** is enforced, and verification timestamps are recorded.  
+
+#### **2. Role-Based Access Control (RBAC)**  
+- **Roles** define permission sets (e.g., admin, editor) with machine-readable slugs (`slug`) and human-readable names (`name`).  
+- **Many-to-many user-role assignments** via a junction table (`role_users`), allowing flexible role assignments.  
+
+#### **3. File Attachments & Polymorphic Relationships**  
+- **File uploads** track metadata (name, MIME type, size, storage path) and support **grouping** (e.g., by category).  
+- **Polymorphic attachments** can be linked to any entity (e.g., posts, comments) via the `attachmentable` pivot table.  
+- Features **deduplication** (via file `hash`) and **alt text** for accessibility.  
+
+#### **4. Notifications System**  
+- **Notifications** are polymorphic, meaning they can target any entity type (`notifiable_type` and `notifiable_id`).  
+- Supports **marking as read** (`read_at`) and stores structured notification data (`data`).  
+
+#### **5. System Settings**  
+- **Key-value configuration** stored as JSON, allowing dynamic runtime adjustments (e.g., feature flags, UI preferences).  
+
+#### **Key Technical Notes**  
+- **Timestamps** (`created_at`, `updated_at`) are pervasive for auditing.  
+- **Polymorphic relationships** (attachments, notifications) enable flexible associations across the system.  
+- **File storage** is disk-agnostic (`disk` column), suggesting support for cloud/local storage.  
+
+This design suggests a **modular, permission-driven platform** with extensible file handling and notifications—suitable for applications like CMSes, collaboration tools, or SaaS products. Engineers should focus on **RBAC implementation**, **polymorphic relationships**, and **file storage abstraction** when replicating.

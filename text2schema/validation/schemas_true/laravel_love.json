@@ -1,0 +1,345 @@
+{
+    "tables": [
+      {
+        "name": "love_reactants",
+        "description": "Stores information about reactable entities",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for identifying reactants",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "type",
+            "type": "varchar",
+            "description": "Type of the reactant entity"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the reactant was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the reactant was last updated"
+          }
+        ]
+      },
+      {
+        "name": "love_reaction_types",
+        "description": "Defines different types of reactions available",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for reaction types",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the reaction type"
+          },
+          {
+            "name": "mass",
+            "type": "tinyint",
+            "description": "Weight or importance assigned to this reaction type"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the reaction type was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the reaction type was last updated"
+          }
+        ]
+      },
+      {
+        "name": "love_reactions",
+        "description": "Records individual reactions given by reactors to reactants",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for reactions",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "reactant_id",
+            "type": "bigint",
+            "description": "Reference to the reactant entity receiving the reaction",
+            "constraints": {
+              "foreign_key": {
+                "table": "love_reactants",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "reactor_id",
+            "type": "bigint",
+            "description": "Reference to the reactor entity giving the reaction",
+            "constraints": {
+              "foreign_key": {
+                "table": "love_reactors",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "reaction_type_id",
+            "type": "bigint",
+            "description": "Reference to the type of reaction",
+            "constraints": {
+              "foreign_key": {
+                "table": "love_reaction_types",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "rate",
+            "type": "decimal",
+            "description": "Rating or intensity of the reaction"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the reaction was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the reaction was last updated"
+          }
+        ]
+      },
+      {
+        "name": "love_reactors",
+        "description": "Stores information about entities that can give reactions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for reactors",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "type",
+            "type": "varchar",
+            "description": "Type of the reactor entity"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the reactor was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the reactor was last updated"
+          }
+        ]
+      },
+      {
+        "name": "love_reactant_reaction_counters",
+        "description": "Counters for reactions on each reactant by reaction type",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "reactant_id",
+            "type": "bigint",
+            "description": "Reference to the reactant",
+            "constraints": {
+              "foreign_key": {
+                "table": "love_reactants",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "reaction_type_id",
+            "type": "bigint",
+            "description": "Reference to the reaction type",
+            "constraints": {
+              "foreign_key": {
+                "table": "love_reaction_types",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "count",
+            "type": "bigint",
+            "description": "Number of reactions of this type for this reactant"
+          },
+          {
+            "name": "weight",
+            "type": "decimal",
+            "description": "Weighted count based on reaction type mass"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the counter was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the counter was last updated"
+          }
+        ]
+      },
+      {
+        "name": "love_reactant_reaction_totals",
+        "description": "Total reaction counts aggregated for each reactant",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "reactant_id",
+            "type": "bigint",
+            "description": "Reference to the reactant",
+            "constraints": {
+              "foreign_key": {
+                "table": "love_reactants",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "count",
+            "type": "bigint",
+            "description": "Total number of reactions for this reactant"
+          },
+          {
+            "name": "weight",
+            "type": "decimal",
+            "description": "Total weighted count for this reactant"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the totals record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the totals record was last updated"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "reactant_to_counters",
+        "type": "one_to_many",
+        "description": "A reactant can have multiple reaction counters",
+        "from": {
+          "table": "love_reactants",
+          "column": "id"
+        },
+        "to": {
+          "table": "love_reactant_reaction_counters",
+          "column": "reactant_id"
+        }
+      },
+      {
+        "name": "reaction_type_to_counters",
+        "type": "one_to_many",
+        "description": "A reaction type can be counted in multiple counters",
+        "from": {
+          "table": "love_reaction_types",
+          "column": "id"
+        },
+        "to": {
+          "table": "love_reactant_reaction_counters",
+          "column": "reaction_type_id"
+        }
+      },
+      {
+        "name": "reactant_to_reactions",
+        "type": "one_to_many",
+        "description": "A reactant can receive multiple reactions",
+        "from": {
+          "table": "love_reactants",
+          "column": "id"
+        },
+        "to": {
+          "table": "love_reactions",
+          "column": "reactant_id"
+        }
+      },
+      {
+        "name": "reactor_to_reactions",
+        "type": "one_to_many",
+        "description": "A reactor can give multiple reactions",
+        "from": {
+          "table": "love_reactors",
+          "column": "id"
+        },
+        "to": {
+          "table": "love_reactions",
+          "column": "reactor_id"
+        }
+      },
+      {
+        "name": "reaction_type_to_reactions",
+        "type": "one_to_many",
+        "description": "A reaction type can be used in multiple reactions",
+        "from": {
+          "table": "love_reaction_types",
+          "column": "id"
+        },
+        "to": {
+          "table": "love_reactions",
+          "column": "reaction_type_id"
+        }
+      },
+      {
+        "name": "reactant_to_totals",
+        "type": "one_to_one",
+        "description": "A reactant has one aggregated total record",
+        "from": {
+          "table": "love_reactants",
+          "column": "id"
+        },
+        "to": {
+          "table": "love_reactant_reaction_totals",
+          "column": "reactant_id"
+        }
+      }
+    ]
+  }

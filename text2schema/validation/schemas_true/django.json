@@ -1,0 +1,494 @@
+{
+    "tables": [
+      {
+        "name": "auth_user",
+        "description": "Stores user account information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for the user",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "password",
+            "type": "varchar",
+            "description": "Hashed password for user authentication"
+          },
+          {
+            "name": "last_login",
+            "type": "datetime",
+            "description": "Timestamp of the user's last login"
+          },
+          {
+            "name": "is_superuser",
+            "type": "tinyint",
+            "description": "Flag indicating if user has superuser privileges"
+          },
+          {
+            "name": "username",
+            "type": "varchar",
+            "description": "Unique username for the account",
+            "constraints": {
+              "unique": true
+            }
+          },
+          {
+            "name": "first_name",
+            "type": "varchar",
+            "description": "User's first name"
+          },
+          {
+            "name": "last_name",
+            "type": "varchar",
+            "description": "User's last name"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address"
+          },
+          {
+            "name": "is_staff",
+            "type": "tinyint",
+            "description": "Flag indicating if user is staff member"
+          },
+          {
+            "name": "is_active",
+            "type": "tinyint",
+            "description": "Flag indicating if the account is active"
+          },
+          {
+            "name": "date_joined",
+            "type": "datetime",
+            "description": "Timestamp when user account was created"
+          }
+        ]
+      },
+      {
+        "name": "auth_group",
+        "description": "Stores user groups for permission management",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for the group",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the group",
+            "constraints": {
+              "unique": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "auth_user_groups",
+        "description": "Junction table linking users to groups",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key to auth_user table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "group_id",
+            "type": "int",
+            "description": "Foreign key to auth_group table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "auth_group",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "auth_permission",
+        "description": "Stores available permissions in the system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for the permission",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Human-readable name of the permission"
+          },
+          {
+            "name": "content_type_id",
+            "type": "int",
+            "description": "Foreign key to django_content_type table",
+            "constraints": {
+              "foreign_key": {
+                "table": "django_content_type",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "codename",
+            "type": "varchar",
+            "description": "Codename of the permission, unique per content type"
+          }
+        ]
+      },
+      {
+        "name": "auth_group_permissions",
+        "description": "Junction table linking groups to permissions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "group_id",
+            "type": "int",
+            "description": "Foreign key to auth_group table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "auth_group",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "permission_id",
+            "type": "int",
+            "description": "Foreign key to auth_permission table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "auth_permission",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "auth_user_user_permissions",
+        "description": "Junction table linking users directly to permissions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key to auth_user table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "permission_id",
+            "type": "int",
+            "description": "Foreign key to auth_permission table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "auth_permission",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "django_content_type",
+        "description": "Stores content types for the Django permissions framework",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "app_label",
+            "type": "varchar",
+            "description": "Name of the Django application"
+          },
+          {
+            "name": "model",
+            "type": "varchar",
+            "description": "Name of the model class"
+          }
+        ]
+      },
+      {
+        "name": "django_admin_log",
+        "description": "Stores admin action logs",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "action_time",
+            "type": "datetime",
+            "description": "When the action was performed"
+          },
+          {
+            "name": "object_id",
+            "type": "longtext",
+            "description": "Primary key of the modified object"
+          },
+          {
+            "name": "object_repr",
+            "type": "varchar",
+            "description": "String representation of the modified object"
+          },
+          {
+            "name": "action_flag",
+            "type": "smallint",
+            "description": "Flag indicating the type of action performed"
+          },
+          {
+            "name": "change_message",
+            "type": "longtext",
+            "description": "Detailed message about the change"
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key to the user who performed the action",
+            "constraints": {
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "content_type_id",
+            "type": "int",
+            "description": "Foreign key to content type of modified object",
+            "constraints": {
+              "foreign_key": {
+                "table": "django_content_type",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "django_session",
+        "description": "Stores session data",
+        "columns": [
+          {
+            "name": "session_key",
+            "type": "varchar",
+            "description": "Primary key identifier for the session",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "session_data",
+            "type": "longtext",
+            "description": "Encoded session data"
+          },
+          {
+            "name": "expire_date",
+            "type": "datetime",
+            "description": "Timestamp when the session expires"
+          }
+        ]
+      },
+      {
+        "name": "django_migrations",
+        "description": "Tracks applied database migrations",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "app",
+            "type": "varchar",
+            "description": "Name of the Django app"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the migration"
+          },
+          {
+            "name": "applied",
+            "type": "datetime",
+            "description": "Timestamp when migration was applied"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "user_to_groups",
+        "type": "many_to_many",
+        "description": "Users can belong to multiple groups, and groups can contain multiple users",
+        "from": {
+          "table": "auth_user",
+          "column": "id"
+        },
+        "to": {
+          "table": "auth_group",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "auth_user_groups",
+          "source_column": "user_id",
+          "target_column": "group_id"
+        }
+      },
+      {
+        "name": "user_to_permissions",
+        "type": "many_to_many",
+        "description": "Users can have multiple direct permissions, and permissions can be assigned to multiple users",
+        "from": {
+          "table": "auth_user",
+          "column": "id"
+        },
+        "to": {
+          "table": "auth_permission",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "auth_user_user_permissions",
+          "source_column": "user_id",
+          "target_column": "permission_id"
+        }
+      },
+      {
+        "name": "group_to_permissions",
+        "type": "many_to_many",
+        "description": "Groups can have multiple permissions, and permissions can be assigned to multiple groups",
+        "from": {
+          "table": "auth_group",
+          "column": "id"
+        },
+        "to": {
+          "table": "auth_permission",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "auth_group_permissions",
+          "source_column": "group_id",
+          "target_column": "permission_id"
+        }
+      },
+      {
+        "name": "permission_to_content_type",
+        "type": "many_to_one",
+        "description": "Multiple permissions can be defined for a content type",
+        "from": {
+          "table": "auth_permission",
+          "column": "content_type_id"
+        },
+        "to": {
+          "table": "django_content_type",
+          "column": "id"
+        }
+      },
+      {
+        "name": "admin_log_to_user",
+        "type": "many_to_one",
+        "description": "A user can have multiple admin log entries",
+        "from": {
+          "table": "django_admin_log",
+          "column": "user_id"
+        },
+        "to": {
+          "table": "auth_user",
+          "column": "id"
+        }
+      },
+      {
+        "name": "admin_log_to_content_type",
+        "type": "many_to_one",
+        "description": "A content type can have multiple admin log entries",
+        "from": {
+          "table": "django_admin_log",
+          "column": "content_type_id"
+        },
+        "to": {
+          "table": "django_content_type",
+          "column": "id"
+        }
+      }
+    ]
+  }

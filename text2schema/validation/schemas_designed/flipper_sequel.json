@@ -1,0 +1,123 @@
+{
+  "tables": [
+    {
+      "name": "flipper_features",
+      "description": "Stores metadata for each feature flag, including a unique identifier and timestamps for creation/modification.",
+      "columns": [
+        {
+          "name": "key",
+          "type": "string",
+          "description": "Unique identifier for the feature flag",
+          "constraints": {
+            "primary_key": true,
+            "nullable": false,
+            "unique": true,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp",
+          "description": "Timestamp when the feature was created",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp",
+          "description": "Timestamp when the feature was last updated",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "flipper_gates",
+      "description": "Defines activation rules for features, including rule type, value, and timestamps for creation/modification.",
+      "columns": [
+        {
+          "name": "feature_key",
+          "type": "string",
+          "description": "Foreign key to the flipper_features table",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false,
+            "foreign_key": {
+              "table": "flipper_features",
+              "column": "key"
+            }
+          }
+        },
+        {
+          "name": "key",
+          "type": "string",
+          "description": "Rule type identifier (e.g., 'percentage', 'user_list')",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Configurable value for the rule (e.g., '50' for 50% rollout)",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp",
+          "description": "Timestamp when the rule was created",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp",
+          "description": "Timestamp when the rule was last updated",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "name": "has-rules",
+      "type": "one_to_many",
+      "description": "A feature can have multiple rules, but each rule is associated with one feature.",
+      "from": {
+        "table": "flipper_features",
+        "column": "key"
+      },
+      "to": {
+        "table": "flipper_gates",
+        "column": "feature_key"
+      }
+    }
+  ]
+}

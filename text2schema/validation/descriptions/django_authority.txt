@@ -1,0 +1,36 @@
+### Functional Description:  
+
+The software is a **user authentication and permission management system** built on Django’s framework. It provides:  
+
+1. **User Management** (`auth_user`):  
+   - Stores user credentials (username, hashed password, email) and metadata (first/last name, staff/superuser flags, account status).  
+   - Tracks login activity (`last_login`) and account creation time (`date_joined`).  
+
+2. **Content Type Registry** (`django_content_type`):  
+   - Maps application models (e.g., `app_label.model`) to unique IDs, enabling dynamic permissions tied to database models.  
+
+3. **Group Management** (`auth_group`):  
+   - Defines named user groups (e.g., "Admins", "Editors") for bulk permission assignments.  
+
+4. **Permission Workflow** (`authority_permission`):  
+   - Grants granular access control via `codename` (e.g., "view_report") linked to:  
+     - **Objects** (`object_id`) of a specific **content type** (e.g., a "Report" model).  
+     - **Users** (`user_id`) or **groups** (`group_id`).  
+   - Supports an approval workflow:  
+     - Permissions are requested (`date_requested`) and approved (`date_approved`).  
+     - Tracked by a `creator_id` (user who requested) and `approved` flag.  
+
+#### Key Interactions:  
+- Permissions can be assigned to **individual users** or **groups**.  
+- Each permission is scoped to a **content type** (e.g., "Can edit BlogPost").  
+- Superusers (`is_superuser`) bypass permission checks.  
+
+#### Engineering Implications:  
+- **Schema must enforce**:  
+  - Unique usernames and group names.  
+  - Non-null content types for permissions.  
+  - Optional user/group assignment (permissions can target either).  
+- **Relationships**:  
+  - One-to-many links from users/groups/content types to permissions.  
+
+This design enables flexible, model-aware access control with audit trails for permission requests.

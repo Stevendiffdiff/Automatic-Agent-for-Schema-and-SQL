@@ -1,0 +1,34 @@
+### Functional Description:  
+
+The software is a **subscription management system** integrated with Stripe for payment processing. It enables user registration, subscription management, and tracking of subscription items.  
+
+#### Core Functionality:  
+
+1. **User Management**  
+   - Stores user accounts with payment details (Stripe customer ID, payment method type, and last four digits of payment method).  
+   - Supports trial periods via a `trial_ends_at` timestamp.  
+   - Tracks creation and last update timestamps.  
+
+2. **Subscription Management**  
+   - Each user can have multiple subscriptions (one-to-many relationship).  
+   - Subscriptions are linked to Stripe (via `stripe_id`, `stripe_status`, and `stripe_price`).  
+   - Supports trial periods (`trial_ends_at`) and manual/automatic subscription expiration (`ends_at`).  
+   - Tracks subscription quantity (e.g., for multi-seat licenses).  
+
+3. **Subscription Items**  
+   - Each subscription can contain multiple items (one-to-many relationship).  
+   - Items are linked to Stripe products and prices (`stripe_product`, `stripe_price`).  
+   - Supports item-specific quantities (e.g., add-ons or tiered pricing).  
+
+#### Key Features:  
+- **Stripe Integration**: Full synchronization with Stripe for customers, subscriptions, and billing.  
+- **Trial Support**: Tracks trial periods at both user and subscription levels.  
+- **Multi-Item Subscriptions**: Allows complex subscription plans with multiple products.  
+- **Audit Logging**: Tracks creation and modification timestamps for all entities.  
+
+#### Business Logic Implications:  
+- Users can have multiple active subscriptions (e.g., different products or plans).  
+- Subscription statuses (active, canceled, expired) are managed via Stripe (`stripe_status`).  
+- Payment method details are stored securely (only last four digits retained).  
+
+This system is well-suited for SaaS platforms requiring flexible subscription models with Stripe integration.

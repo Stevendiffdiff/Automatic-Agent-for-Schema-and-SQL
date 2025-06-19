@@ -1,0 +1,857 @@
+{
+    "tables": [
+      {
+        "name": "translations",
+        "description": "Stores translations for tables and columns across different locales",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "table_name",
+            "type": "varchar",
+            "description": "Name of the table being translated",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "column_name",
+            "type": "varchar",
+            "description": "Name of the column being translated",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "foreign_key",
+            "type": "integer",
+            "description": "Foreign key reference to the record being translated",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "locale",
+            "type": "varchar",
+            "description": "Language code for the translation",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "value",
+            "type": "text",
+            "description": "Translated text",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when record was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when record was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "permissions",
+        "description": "Stores available permissions in the system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "key",
+            "type": "varchar",
+            "description": "Unique identifier for the permission",
+            "constraints": {
+              "nullable": false,
+              "unique": true
+            }
+          },
+          {
+            "name": "table_name",
+            "type": "varchar",
+            "description": "Table the permission applies to",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when record was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when record was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "roles",
+        "description": "Defines user roles in the system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the role",
+            "constraints": {
+              "nullable": false,
+              "unique": true
+            }
+          },
+          {
+            "name": "display_name",
+            "type": "varchar",
+            "description": "Human-readable name for the role",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when record was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when record was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "permission_role",
+        "description": "Junction table connecting permissions to roles",
+        "columns": [
+          {
+            "name": "permission_id",
+            "type": "bigint",
+            "description": "Foreign key to permissions table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "permissions",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "role_id",
+            "type": "bigint",
+            "description": "Foreign key to roles table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "roles",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "users",
+        "description": "Stores user account information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "avatar",
+            "type": "varchar",
+            "description": "User's profile image path",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "role_id",
+            "type": "bigint",
+            "description": "Foreign key to roles table",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "roles",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "settings",
+            "type": "text",
+            "description": "User preferences and settings",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "user_roles",
+        "description": "Junction table connecting users to roles",
+        "columns": [
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "Foreign key to users table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "role_id",
+            "type": "bigint",
+            "description": "Foreign key to roles table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "roles",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "settings",
+        "description": "System-wide configuration settings",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "key",
+            "type": "varchar",
+            "description": "Unique identifier for the setting",
+            "constraints": {
+              "nullable": false,
+              "unique": true
+            }
+          },
+          {
+            "name": "display_name",
+            "type": "varchar",
+            "description": "Human-readable name for the setting",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "value",
+            "type": "text",
+            "description": "Value of the setting",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "details",
+            "type": "text",
+            "description": "Additional information about the setting",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "type",
+            "type": "varchar",
+            "description": "Data type of the setting",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "order",
+            "type": "integer",
+            "description": "Display order for the setting",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "group",
+            "type": "integer",
+            "description": "Group identifier for the setting",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "menus",
+        "description": "Navigation menu definitions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the menu",
+            "constraints": {
+              "nullable": false,
+              "unique": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when record was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when record was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "menu_items",
+        "description": "Items within navigation menus",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "menu_id",
+            "type": "integer",
+            "description": "Foreign key to menus table",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "menus",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "title",
+            "type": "varchar",
+            "description": "Display title for the menu item",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "url",
+            "type": "varchar",
+            "description": "URL the menu item links to",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "target",
+            "type": "varchar",
+            "description": "Link target attribute",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "icon_class",
+            "type": "varchar",
+            "description": "CSS class for the menu item icon",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "color",
+            "type": "varchar",
+            "description": "Color for the menu item",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "parent_id",
+            "type": "integer",
+            "description": "Foreign key to parent menu item",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "menu_items",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "order",
+            "type": "integer",
+            "description": "Display order for the menu item",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when record was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when record was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "route",
+            "type": "varchar",
+            "description": "Named route for the menu item",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "parameters",
+            "type": "text",
+            "description": "JSON parameters for the route",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "data_types",
+        "description": "Defines custom data types for the system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the data type",
+            "constraints": {
+              "nullable": false,
+              "unique": true
+            }
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "URL-friendly identifier for the data type",
+            "constraints": {
+              "nullable": false,
+              "unique": true
+            }
+          },
+          {
+            "name": "display_name_singular",
+            "type": "varchar",
+            "description": "Singular display name for the data type",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "display_name_plural",
+            "type": "varchar",
+            "description": "Plural display name for the data type",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "icon",
+            "type": "varchar",
+            "description": "Icon for the data type",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "model_name",
+            "type": "varchar",
+            "description": "Model class name for the data type",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "policy_name",
+            "type": "varchar",
+            "description": "Policy class name for the data type",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "controller",
+            "type": "varchar",
+            "description": "Controller class for the data type",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "description",
+            "type": "varchar",
+            "description": "Description of the data type",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "generate_permissions",
+            "type": "boolean",
+            "description": "Whether to auto-generate permissions for this data type",
+            "constraints": {
+              "nullable": false,
+              "default": true
+            }
+          },
+          {
+            "name": "server_side",
+            "type": "tinyint",
+            "description": "Whether to use server-side processing for this data type",
+            "constraints": {
+              "nullable": false,
+              "default": 0
+            }
+          },
+          {
+            "name": "details",
+            "type": "text",
+            "description": "Additional JSON configuration for the data type",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when record was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when record was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "data_rows",
+        "description": "Defines fields for custom data types",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "data_type_id",
+            "type": "integer",
+            "description": "Foreign key to data_types table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "data_types",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "field",
+            "type": "varchar",
+            "description": "Field name in the database",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "type",
+            "type": "varchar",
+            "description": "Field input type",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "display_name",
+            "type": "varchar",
+            "description": "Human-readable name for the field",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "required",
+            "type": "boolean",
+            "description": "Whether the field is required",
+            "constraints": {
+              "nullable": false,
+              "default": false
+            }
+          },
+          {
+            "name": "browse",
+            "type": "boolean",
+            "description": "Whether the field is shown in browse views",
+            "constraints": {
+              "nullable": false,
+              "default": true
+            }
+          },
+          {
+            "name": "read",
+            "type": "boolean",
+            "description": "Whether the field is shown in read views",
+            "constraints": {
+              "nullable": false,
+              "default": true
+            }
+          },
+          {
+            "name": "edit",
+            "type": "boolean",
+            "description": "Whether the field is editable",
+            "constraints": {
+              "nullable": false,
+              "default": true
+            }
+          },
+          {
+            "name": "add",
+            "type": "boolean",
+            "description": "Whether the field is shown in add forms",
+            "constraints": {
+              "nullable": false,
+              "default": true
+            }
+          },
+          {
+            "name": "delete",
+            "type": "boolean",
+            "description": "Whether the field is shown in delete views",
+            "constraints": {
+              "nullable": false,
+              "default": true
+            }
+          },
+          {
+            "name": "details",
+            "type": "text",
+            "description": "Additional JSON configuration for the field",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "order",
+            "type": "integer",
+            "description": "Display order for the field",
+            "constraints": {
+              "nullable": false,
+              "default": 1
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "role_has_permissions",
+        "type": "many_to_many",
+        "description": "Roles can have multiple permissions, and permissions can be assigned to multiple roles",
+        "from": {
+          "table": "roles",
+          "column": "id"
+        },
+        "to": {
+          "table": "permissions",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "permission_role",
+          "source_column": "role_id",
+          "target_column": "permission_id"
+        }
+      },
+      {
+        "name": "user_has_one_role",
+        "type": "many_to_one",
+        "description": "A user has one primary role",
+        "from": {
+          "table": "users",
+          "column": "role_id"
+        },
+        "to": {
+          "table": "roles",
+          "column": "id"
+        }
+      },
+      {
+        "name": "user_has_many_roles",
+        "type": "many_to_many",
+        "description": "Users can have multiple roles, and roles can be assigned to multiple users",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "roles",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "user_roles",
+          "source_column": "user_id",
+          "target_column": "role_id"
+        }
+      },
+      {
+        "name": "menu_has_items",
+        "type": "one_to_many",
+        "description": "A menu can have multiple menu items",
+        "from": {
+          "table": "menus",
+          "column": "id"
+        },
+        "to": {
+          "table": "menu_items",
+          "column": "menu_id"
+        }
+      },
+      {
+        "name": "menu_item_has_parent",
+        "type": "one_to_many",
+        "description": "A menu item can have child menu items (hierarchical structure)",
+        "from": {
+          "table": "menu_items",
+          "column": "id"
+        },
+        "to": {
+          "table": "menu_items",
+          "column": "parent_id"
+        }
+      },
+      {
+        "name": "data_type_has_rows",
+        "type": "one_to_many",
+        "description": "A data type can have multiple data rows defining its fields",
+        "from": {
+          "table": "data_types",
+          "column": "id"
+        },
+        "to": {
+          "table": "data_rows",
+          "column": "data_type_id"
+        }
+      }
+    ]
+  }

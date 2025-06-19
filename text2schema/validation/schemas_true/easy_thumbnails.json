@@ -1,0 +1,168 @@
+{
+    "tables": [
+      {
+        "name": "easy_thumbnails_thumbnaildimensions",
+        "description": "Stores thumbnail dimension information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for the thumbnail dimensions",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "thumbnail_id",
+            "type": "int",
+            "description": "Foreign key to the thumbnail table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "easy_thumbnails_thumbnail",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "width",
+            "type": "int",
+            "description": "Width of the thumbnail in pixels",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "height",
+            "type": "int",
+            "description": "Height of the thumbnail in pixels",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "easy_thumbnails_thumbnail",
+        "description": "Stores thumbnail information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for the thumbnail",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "storage_hash",
+            "type": "varchar",
+            "description": "Hash value for the storage location",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the thumbnail file",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "modified",
+            "type": "datetime",
+            "description": "Last modification timestamp",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "source_id",
+            "type": "int",
+            "description": "Foreign key to the source image",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "easy_thumbnails_source",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "easy_thumbnails_source",
+        "description": "Stores source image information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key for the source image",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "storage_hash",
+            "type": "varchar",
+            "description": "Hash value for the storage location",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the source image file",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "modified",
+            "type": "datetime",
+            "description": "Last modification timestamp",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "thumbnail_dimensions_to_thumbnail",
+        "type": "many_to_one",
+        "description": "Each thumbnail dimension record belongs to a thumbnail",
+        "from": {
+          "table": "easy_thumbnails_thumbnaildimensions",
+          "column": "thumbnail_id"
+        },
+        "to": {
+          "table": "easy_thumbnails_thumbnail",
+          "column": "id"
+        }
+      },
+      {
+        "name": "thumbnail_to_source",
+        "type": "many_to_one",
+        "description": "Each thumbnail is derived from a source image",
+        "from": {
+          "table": "easy_thumbnails_thumbnail",
+          "column": "source_id"
+        },
+        "to": {
+          "table": "easy_thumbnails_source",
+          "column": "id"
+        }
+      }
+    ]
+  }

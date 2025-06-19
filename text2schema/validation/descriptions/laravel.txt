@@ -1,0 +1,37 @@
+### Functional Description of the Software:
+
+The software is a **community-driven discussion platform** with GitHub integration, designed to facilitate threaded conversations, user engagement, and content organization. The core functionality revolves around:
+
+1. **User Management**  
+   - Supports GitHub OAuth (stores GitHub ID/username) and traditional email/password authentication  
+   - Includes account confirmation, password resets, and user banning capabilities  
+   - Tracks user profiles with bios and display names  
+
+2. **Discussion System**  
+   - Thread-based conversations with subjects and rich text bodies  
+   - Reply functionality supporting nested conversations (replies to threads or other replies)  
+   - Solution marking (thread authors can designate a reply as the accepted solution)  
+
+3. **Engagement Features**  
+   - Polymorphic liking system for various content types (threads, replies, etc.)  
+   - Subscription model allowing users to follow specific content  
+   - Notification system for user activity tracking  
+
+4. **Content Organization**  
+   - Tagging system with slug-based routing for categorization  
+   - Polymorphic tagging supporting multiple content types  
+
+5. **Technical Infrastructure**  
+   - Background job processing with failure tracking  
+   - Standard database migration patterns  
+
+### Key Relationships:  
+- Users author threads and replies  
+- Threads contain replies and can have a marked solution  
+- All core content types (threads/replies) support:  
+  - Tagging (via taggables)  
+  - Liking  
+  - Subscriptions  
+  - Notifications  
+
+The system emphasizes **extensible engagement patterns** through polymorphic relationships, allowing consistent interaction models across different content types while maintaining relational integrity. The GitHub integration suggests a technical audience, likely developers or technical communities.

@@ -1,0 +1,42 @@
+### Functional Description: Subscription Billing System
+
+**Core Purpose**:  
+A SaaS billing system that manages customer subscriptions, payments, and receipts through integration with Paddle payment processor. Supports both individual users and teams with trial periods, subscription management, and payment tracking.
+
+**Key Functionality**:
+
+1. **Customer Management**:
+   - Tracks customers (users/teams) with unique identifiers
+   - Supports trial periods with configurable end dates
+   - Links to an external billing system (via `billable_id`/`billable_type`)
+
+2. **Subscription Management**:
+   - Manages multiple subscriptions per customer (user/team)
+   - Tracks Paddle-specific data (status, plan IDs, subscription IDs)
+   - Supports subscription states: active, trial, paused, and canceled (via `paddle_status`, `trial_ends_at`, `paused_from`, `ends_at`)
+   - Handles quantity-based billing (e.g., seat-based pricing)
+
+3. **Payment Processing**:
+   - Records transaction details (amount, tax, currency) via receipts
+   - Stores Paddle checkout and order references
+   - Maintains receipt URLs for customer access
+   - Tracks payment timestamps
+
+4. **Relationships**:
+   - 1:1 relationship between customers and users/teams
+   - 1:N relationships where:
+     - A user/team can have multiple subscriptions
+     - A user/team can have multiple payment receipts
+
+**Key Business Logic**:
+- The system distinguishes between billing entities (users vs. teams) via `billable_type`
+- Supports subscription lifecycle management (trials, pauses, cancellations)
+- Designed for Paddle integration (plan IDs, subscription IDs, statuses)
+- Tracks both subscription metadata and transactional payment data separately
+
+**Technical Notes**:
+- All entities include standard timestamp tracking (`created_at`, `updated_at`)
+- Uses bigint for relational IDs and varchar for Paddle-specific codes
+- Nullable fields indicate optional/conditional data (e.g., trial periods)
+
+This description provides sufficient detail for engineers to reconstruct a similar schema while focusing on the system's functional behavior rather than implementation specifics.

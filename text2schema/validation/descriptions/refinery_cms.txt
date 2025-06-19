@@ -1,0 +1,69 @@
+### Functional Description of the CMS Platform:
+
+This is a **multilingual content management system** with **user authentication**, **role-based permissions**, and **plugin architecture**. The system manages hierarchical pages with editable parts, supports file/image resources, and tracks user activity. Here are the core functional components:
+
+---
+
+#### **1. User Management & Authentication**
+- **User accounts** with:
+  - Standard credentials (username/email/password)
+  - Login tracking (timestamps, IPs, sign-in count)
+  - Password reset functionality
+  - "Remember me" sessions
+- **Role-based access control**:
+  - Many-to-many relationship between users and roles (e.g., "Admin," "Editor")
+  - Roles define permissions (implied by schema; exact permissions not specified)
+- **Plugins** can be assigned to users (likely for extending functionality per user).
+
+---
+
+#### **2. Content Management**
+- **Hierarchical pages**:
+  - Nested structure (parent/child relationships via `parent_id`, `lft`/`rgt`/`depth` for tree traversal)
+  - Configurable visibility (`show_in_menu`, `draft` status)
+  - Customizable URLs (`path`, `slug`) and templates (`view_template`, `layout_template`)
+- **Page parts**:
+  - Modular content blocks (e.g., "Header," "Footer") with ordering (`position`)
+  - Editable independently (e.g., `body` content in translations)
+- **Deletion control** (`deletable` flag) and menu behavior (`skip_to_first_child`).
+
+---
+
+#### **3. Multilingual Support**
+- **Translations** for:
+  - Pages (titles, slugs, menu labels)
+  - Page parts (content bodies)
+  - Images (alt text, titles)
+  - Resources (titles)
+- Locale-based variants (`locale` field) with fallback likely handled at application level.
+
+---
+
+#### **4. Media & File Management**
+- **Images**:
+  - Stored with metadata (dimensions, MIME type, file size)
+  - Unique storage identifiers (`image_uid`)
+- **Generic resources** (e.g., PDFs, documents):
+  - Similar to images but with extensions (`file_ext`) and no dimension tracking.
+- Both support translations for display attributes.
+
+---
+
+#### **5. Technical Notes**
+- **Activity tracking**: Timestamps (`created_at`, `updated_at`) on all tables.
+- **URL handling**: Slugs ensure SEO-friendly paths.
+- **Plugin system**: User-specific plugins (`name`, `position`) suggest extendable features (e.g., dashboards).
+
+---
+
+### Key Omissions (Not in Schema):
+- **Permission granularity**: Roles lack specific permissions (likely defined elsewhere).
+- **Frontend rendering**: How templates/pages are served isn’t specified.
+- **Plugin implementation**: No details on plugin functionality or hooks.
+
+This schema suggests a **flexible, enterprise-ready CMS** akin to RefineryCMS or similar platforms, with strong i18n support and modular content editing. Engineers can replicate this with:
+1. A relational DB (PostgreSQL/MySQL)
+2. User/auth tables + junction tables for roles
+3. Nested set model for pages
+4. Translation tables with locale keys
+5. File storage (via `*_uid` fields) likely using a service like S3.

@@ -1,0 +1,1229 @@
+{
+    "tables": [
+      {
+        "name": "djpaypal_webhookeventtrigger",
+        "description": "Stores webhook event trigger data from PayPal",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "remote_id",
+            "type": "varchar",
+            "description": "PayPal remote identifier"
+          },
+          {
+            "name": "headers",
+            "type": "jsonb",
+            "description": "HTTP headers from webhook"
+          },
+          {
+            "name": "body",
+            "type": "text",
+            "description": "Request body content"
+          },
+          {
+            "name": "valid",
+            "type": "boolean",
+            "description": "Indicates if the webhook is valid"
+          },
+          {
+            "name": "processed",
+            "type": "boolean",
+            "description": "Indicates if the webhook has been processed"
+          },
+          {
+            "name": "exception",
+            "type": "varchar",
+            "description": "Exception information if processing failed"
+          },
+          {
+            "name": "traceback",
+            "type": "text",
+            "description": "Error traceback if applicable"
+          },
+          {
+            "name": "djpaypal_version",
+            "type": "varchar",
+            "description": "Version of djpaypal library"
+          },
+          {
+            "name": "created",
+            "type": "timestamp",
+            "description": "Creation timestamp"
+          },
+          {
+            "name": "updated",
+            "type": "timestamp",
+            "description": "Last update timestamp"
+          },
+          {
+            "name": "webhook_event_id",
+            "type": "varchar",
+            "description": "Reference to webhook event",
+            "constraints": {
+              "foreign_key": {
+                "table": "djpaypal_webhookevent",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "djpaypal_webhookevent",
+        "description": "Stores webhook events from PayPal",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "livemode",
+            "type": "boolean",
+            "description": "Indicates if the event is from live mode or test mode"
+          },
+          {
+            "name": "djpaypal_created",
+            "type": "timestamp",
+            "description": "When this record was created in the system"
+          },
+          {
+            "name": "djpaypal_updated",
+            "type": "timestamp",
+            "description": "When this record was last updated"
+          },
+          {
+            "name": "event_version",
+            "type": "varchar",
+            "description": "Version of the event"
+          },
+          {
+            "name": "create_time",
+            "type": "timestamp",
+            "description": "When the event was created in PayPal"
+          },
+          {
+            "name": "event_type",
+            "type": "varchar",
+            "description": "Type of webhook event"
+          },
+          {
+            "name": "resource_type",
+            "type": "varchar",
+            "description": "Type of resource this event relates to"
+          },
+          {
+            "name": "resource",
+            "type": "jsonb",
+            "description": "JSON data of the resource"
+          },
+          {
+            "name": "status",
+            "type": "varchar",
+            "description": "Status of the webhook event"
+          },
+          {
+            "name": "summary",
+            "type": "varchar",
+            "description": "Summary of the event"
+          },
+          {
+            "name": "transmissions",
+            "type": "jsonb",
+            "description": "Transmission details"
+          }
+        ]
+      },
+      {
+        "name": "djpaypal_payment",
+        "description": "Stores payment information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "livemode",
+            "type": "boolean",
+            "description": "Indicates if the payment is from live mode or test mode"
+          },
+          {
+            "name": "djpaypal_created",
+            "type": "timestamp",
+            "description": "When this record was created in the system"
+          },
+          {
+            "name": "djpaypal_updated",
+            "type": "timestamp",
+            "description": "When this record was last updated"
+          },
+          {
+            "name": "event",
+            "type": "varchar",
+            "description": "Associated event identifier"
+          },
+          {
+            "name": "intent",
+            "type": "varchar",
+            "description": "Payment intent type"
+          },
+          {
+            "name": "payer",
+            "type": "jsonb",
+            "description": "Payer information"
+          },
+          {
+            "name": "transactions",
+            "type": "jsonb",
+            "description": "Transaction details"
+          },
+          {
+            "name": "state",
+            "type": "varchar",
+            "description": "Payment state"
+          },
+          {
+            "name": "experience_profile_id",
+            "type": "varchar",
+            "description": "Experience profile identifier"
+          },
+          {
+            "name": "note_to_payer",
+            "type": "varchar",
+            "description": "Note to the payer"
+          },
+          {
+            "name": "create_time",
+            "type": "timestamp",
+            "description": "When the payment was created"
+          },
+          {
+            "name": "update_time",
+            "type": "timestamp",
+            "description": "When the payment was last updated"
+          },
+          {
+            "name": "redirect_urls",
+            "type": "jsonb",
+            "description": "Redirect URLs for payment flow"
+          },
+          {
+            "name": "failure_reason",
+            "type": "varchar",
+            "description": "Reason for payment failure if applicable"
+          }
+        ]
+      },
+      {
+        "name": "djpaypal_refund",
+        "description": "Stores refund information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "livemode",
+            "type": "boolean",
+            "description": "Indicates if the refund is from live mode or test mode"
+          },
+          {
+            "name": "djpaypal_created",
+            "type": "timestamp",
+            "description": "When this record was created in the system"
+          },
+          {
+            "name": "djpaypal_updated",
+            "type": "timestamp",
+            "description": "When this record was last updated"
+          },
+          {
+            "name": "amount",
+            "type": "jsonb",
+            "description": "Refund amount details"
+          },
+          {
+            "name": "state",
+            "type": "varchar",
+            "description": "Refund state"
+          },
+          {
+            "name": "reason",
+            "type": "varchar",
+            "description": "Reason for the refund"
+          },
+          {
+            "name": "invoice_number",
+            "type": "varchar",
+            "description": "Associated invoice number"
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Refund description"
+          },
+          {
+            "name": "create_time",
+            "type": "timestamp",
+            "description": "When the refund was created"
+          },
+          {
+            "name": "update_time",
+            "type": "timestamp",
+            "description": "When the refund was last updated"
+          },
+          {
+            "name": "reason_code",
+            "type": "varchar",
+            "description": "Code for the refund reason"
+          },
+          {
+            "name": "refund_reason_code",
+            "type": "varchar",
+            "description": "Additional refund reason code"
+          },
+          {
+            "name": "refund_funding_type",
+            "type": "varchar",
+            "description": "Type of refund funding"
+          },
+          {
+            "name": "parent_payment_id",
+            "type": "varchar",
+            "description": "Reference to parent payment",
+            "constraints": {
+              "foreign_key": {
+                "table": "djpaypal_payment",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "sale_id",
+            "type": "varchar",
+            "description": "Reference to sale",
+            "constraints": {
+              "foreign_key": {
+                "table": "djpaypal_sale",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "refund_from_received_amount",
+            "type": "jsonb",
+            "description": "Refund amount from received amount"
+          },
+          {
+            "name": "refund_from_transaction_fee",
+            "type": "jsonb",
+            "description": "Refund amount from transaction fee"
+          },
+          {
+            "name": "total_refunded_amount",
+            "type": "jsonb",
+            "description": "Total refunded amount"
+          },
+          {
+            "name": "refund_to_payer",
+            "type": "jsonb",
+            "description": "Amount refunded to payer"
+          }
+        ]
+      },
+      {
+        "name": "djpaypal_dispute",
+        "description": "Stores dispute information",
+        "columns": [
+          {
+            "name": "dispute_id",
+            "type": "varchar",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "livemode",
+            "type": "boolean",
+            "description": "Indicates if the dispute is from live mode or test mode"
+          },
+          {
+            "name": "djpaypal_created",
+            "type": "timestamp",
+            "description": "When this record was created in the system"
+          },
+          {
+            "name": "djpaypal_updated",
+            "type": "timestamp",
+            "description": "When this record was last updated"
+          },
+          {
+            "name": "create_time",
+            "type": "timestamp",
+            "description": "When the dispute was created"
+          },
+          {
+            "name": "update_time",
+            "type": "timestamp",
+            "description": "When the dispute was last updated"
+          },
+          {
+            "name": "disputed_transactions",
+            "type": "jsonb",
+            "description": "Transactions being disputed"
+          },
+          {
+            "name": "reason",
+            "type": "varchar",
+            "description": "Reason for the dispute"
+          },
+          {
+            "name": "status",
+            "type": "varchar",
+            "description": "Dispute status"
+          },
+          {
+            "name": "dispute_amount",
+            "type": "jsonb",
+            "description": "Amount being disputed"
+          },
+          {
+            "name": "dispute_outcome",
+            "type": "jsonb",
+            "description": "Outcome of the dispute"
+          },
+          {
+            "name": "messages",
+            "type": "jsonb",
+            "description": "Messages related to the dispute"
+          },
+          {
+            "name": "seller_response_due_date",
+            "type": "varchar",
+            "description": "Due date for seller response"
+          },
+          {
+            "name": "dispute_flow",
+            "type": "varchar",
+            "description": "Flow type of the dispute"
+          },
+          {
+            "name": "dispute_channel",
+            "type": "varchar",
+            "description": "Channel through which dispute was initiated"
+          },
+          {
+            "name": "dispute_life_cycle_stage",
+            "type": "varchar",
+            "description": "Current lifecycle stage of the dispute"
+          },
+          {
+            "name": "offer",
+            "type": "jsonb",
+            "description": "Settlement offer details"
+          },
+          {
+            "name": "buyer_response_due_date",
+            "type": "timestamp",
+            "description": "Due date for buyer response"
+          },
+          {
+            "name": "refund_details",
+            "type": "jsonb",
+            "description": "Details about refunds related to this dispute"
+          }
+        ]
+      },
+      {
+        "name": "djpaypal_chargemodel",
+        "description": "Stores charge model information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "livemode",
+            "type": "boolean",
+            "description": "Indicates if the charge model is from live mode or test mode"
+          },
+          {
+            "name": "djpaypal_created",
+            "type": "timestamp",
+            "description": "When this record was created in the system"
+          },
+          {
+            "name": "djpaypal_updated",
+            "type": "timestamp",
+            "description": "When this record was last updated"
+          },
+          {
+            "name": "type",
+            "type": "varchar",
+            "description": "Type of charge model"
+          },
+          {
+            "name": "amount",
+            "type": "jsonb",
+            "description": "Amount details for the charge model"
+          }
+        ]
+      },
+      {
+        "name": "djpaypal_paymentdefinition_cha rge_models",
+        "description": "Junction table linking payment definitions to charge models",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "paymentdefinition_id",
+            "type": "varchar",
+            "description": "Reference to payment definition",
+            "constraints": {
+              "foreign_key": {
+                "table": "djpaypal_paymentdefinition",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "chargemodel_id",
+            "type": "varchar",
+            "description": "Reference to charge model",
+            "constraints": {
+              "foreign_key": {
+                "table": "djpaypal_chargemodel",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "djpaypal_paymentdefinition",
+        "description": "Stores payment definition information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "livemode",
+            "type": "boolean",
+            "description": "Indicates if the payment definition is from live mode or test mode"
+          },
+          {
+            "name": "djpaypal_created",
+            "type": "timestamp",
+            "description": "When this record was created in the system"
+          },
+          {
+            "name": "djpaypal_updated",
+            "type": "timestamp",
+            "description": "When this record was last updated"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the payment definition"
+          },
+          {
+            "name": "type",
+            "type": "varchar",
+            "description": "Type of payment definition"
+          },
+          {
+            "name": "frequency_interval",
+            "type": "varchar",
+            "description": "Interval frequency"
+          },
+          {
+            "name": "frequency",
+            "type": "varchar",
+            "description": "Frequency of payment"
+          },
+          {
+            "name": "cycles",
+            "type": "varchar",
+            "description": "Number of payment cycles"
+          },
+          {
+            "name": "amount",
+            "type": "jsonb",
+            "description": "Amount details"
+          }
+        ]
+      },
+      {
+        "name": "djpaypal_preparedbillingagreem ent",
+        "description": "Stores prepared billing agreement information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "livemode",
+            "type": "boolean",
+            "description": "Indicates if from live mode or test mode"
+          },
+          {
+            "name": "data",
+            "type": "jsonb",
+            "description": "Agreement data"
+          },
+          {
+            "name": "executed_at",
+            "type": "timestamp",
+            "description": "When the agreement was executed"
+          },
+          {
+            "name": "canceled_at",
+            "type": "timestamp",
+            "description": "When the agreement was canceled"
+          },
+          {
+            "name": "created",
+            "type": "timestamp",
+            "description": "When this record was created"
+          },
+          {
+            "name": "updated",
+            "type": "timestamp",
+            "description": "When this record was last updated"
+          },
+          {
+            "name": "executed_agreement_id",
+            "type": "varchar",
+            "description": "Reference to executed agreement",
+            "constraints": {
+              "foreign_key": {
+                "table": "djpaypal_billingagreement",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Reference to user"
+          }
+        ]
+      },
+      {
+        "name": "djpaypal_sale",
+        "description": "Stores sale information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "livemode",
+            "type": "boolean",
+            "description": "Indicates if the sale is from live mode or test mode"
+          },
+          {
+            "name": "djpaypal_created",
+            "type": "timestamp",
+            "description": "When this record was created in the system"
+          },
+          {
+            "name": "djpaypal_updated",
+            "type": "timestamp",
+            "description": "When this record was last updated"
+          },
+          {
+            "name": "amount",
+            "type": "jsonb",
+            "description": "Sale amount details"
+          },
+          {
+            "name": "payment_mode",
+            "type": "varchar",
+            "description": "Mode of payment"
+          },
+          {
+            "name": "state",
+            "type": "varchar",
+            "description": "State of the sale"
+          },
+          {
+            "name": "reason_code",
+            "type": "varchar",
+            "description": "Reason code if applicable"
+          },
+          {
+            "name": "protection_eligibility",
+            "type": "varchar",
+            "description": "Eligibility for protection"
+          },
+          {
+            "name": "protection_eligibility_type",
+            "type": "varchar",
+            "description": "Type of protection eligibility"
+          },
+          {
+            "name": "clearing_time",
+            "type": "timestamp",
+            "description": "When the payment cleared"
+          },
+          {
+            "name": "transaction_fee",
+            "type": "jsonb",
+            "description": "Fee for the transaction"
+          },
+          {
+            "name": "receivable_amount",
+            "type": "jsonb",
+            "description": "Amount receivable"
+          },
+          {
+            "name": "exchange_rate",
+            "type": "varchar",
+            "description": "Exchange rate if applicable"
+          },
+          {
+            "name": "fmf_details",
+            "type": "jsonb",
+            "description": "Fraud Management Filter details"
+          },
+          {
+            "name": "receipt_id",
+            "type": "varchar",
+            "description": "Receipt identifier"
+          },
+          {
+            "name": "processor_response",
+            "type": "jsonb",
+            "description": "Response from payment processor"
+          },
+          {
+            "name": "create_time",
+            "type": "timestamp",
+            "description": "When the sale was created"
+          },
+          {
+            "name": "update_time",
+            "type": "timestamp",
+            "description": "When the sale was last updated"
+          },
+          {
+            "name": "soft_descriptor",
+            "type": "varchar",
+            "description": "Descriptor that appears on statement"
+          },
+          {
+            "name": "billing_agreement_id",
+            "type": "varchar",
+            "description": "Reference to billing agreement",
+            "constraints": {
+              "foreign_key": {
+                "table": "djpaypal_billingagreement",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "parent_payment_id",
+            "type": "varchar",
+            "description": "Reference to parent payment",
+            "constraints": {
+              "foreign_key": {
+                "table": "djpaypal_payment",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "invoice_number",
+            "type": "varchar",
+            "description": "Invoice number"
+          },
+          {
+            "name": "payment_hold_reasons",
+            "type": "jsonb",
+            "description": "Reasons for payment hold"
+          },
+          {
+            "name": "payment_hold_status",
+            "type": "varchar",
+            "description": "Status of payment hold"
+          }
+        ]
+      },
+      {
+        "name": "djpaypal_billingagreement",
+        "description": "Stores billing agreement information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the billing agreement"
+          },
+          {
+            "name": "state",
+            "type": "varchar",
+            "description": "State of the billing agreement"
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Agreement description"
+          },
+          {
+            "name": "agreement_details",
+            "type": "jsonb",
+            "description": "Detailed agreement information"
+          },
+          {
+            "name": "payer",
+            "type": "jsonb",
+            "description": "Payer information"
+          },
+          {
+            "name": "shipping_address",
+            "type": "jsonb",
+            "description": "Shipping address details"
+          },
+          {
+            "name": "override_merchant_preferences",
+            "type": "jsonb",
+            "description": "Merchant preferences override"
+          },
+          {
+            "name": "override_charge_mode",
+            "type": "jsonb",
+            "description": "Charge mode override"
+          },
+          {
+            "name": "plan",
+            "type": "jsonb",
+            "description": "Plan details"
+          },
+          {
+            "name": "merchant",
+            "type": "jsonb",
+            "description": "Merchant information"
+          },
+          {
+            "name": "payer_model_id",
+            "type": "varchar",
+            "description": "Reference to payer model",
+            "constraints": {
+              "foreign_key": {
+                "table": "djpaypal_payer",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Reference to user"
+          },
+          {
+            "name": "plan_model_id",
+            "type": "varchar",
+            "description": "Reference to plan model",
+            "constraints": {
+              "foreign_key": {
+                "table": "djpaypal_billingplan",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "livemode",
+            "type": "boolean",
+            "description": "Indicates if from live mode or test mode"
+          },
+          {
+            "name": "djpaypal_created",
+            "type": "timestamp",
+            "description": "When this record was created in the system"
+          },
+          {
+            "name": "djpaypal_updated",
+            "type": "timestamp",
+            "description": "When this record was last updated"
+          },
+          {
+            "name": "start_date",
+            "type": "timestamp",
+            "description": "When the agreement starts"
+          },
+          {
+            "name": "end_of_period",
+            "type": "timestamp",
+            "description": "When the agreement period ends"
+          }
+        ]
+      },
+      {
+        "name": "djpaypal_payer",
+        "description": "Stores payer information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "first_name",
+            "type": "varchar",
+            "description": "Payer's first name"
+          },
+          {
+            "name": "last_name",
+            "type": "varchar",
+            "description": "Payer's last name"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "Payer's email address"
+          },
+          {
+            "name": "shipping_address",
+            "type": "jsonb",
+            "description": "Payer's shipping address"
+          },
+          {
+            "name": "livemode",
+            "type": "boolean",
+            "description": "Indicates if from live mode or test mode"
+          },
+          {
+            "name": "djpaypal_created",
+            "type": "timestamp",
+            "description": "When this record was created in the system"
+          },
+          {
+            "name": "djpaypal_updated",
+            "type": "timestamp",
+            "description": "When this record was last updated"
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Reference to user"
+          },
+          {
+            "name": "time_created",
+            "type": "timestamp",
+            "description": "When this payer was created"
+          }
+        ]
+      },
+      {
+        "name": "djpaypal_billingplan",
+        "description": "Stores billing plan information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "livemode",
+            "type": "boolean",
+            "description": "Indicates if from live mode or test mode"
+          },
+          {
+            "name": "djpaypal_created",
+            "type": "timestamp",
+            "description": "When this record was created in the system"
+          },
+          {
+            "name": "djpaypal_updated",
+            "type": "timestamp",
+            "description": "When this record was last updated"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Plan name"
+          },
+          {
+            "name": "description",
+            "type": "varchar",
+            "description": "Plan description"
+          },
+          {
+            "name": "type",
+            "type": "varchar",
+            "description": "Plan type"
+          },
+          {
+            "name": "state",
+            "type": "varchar",
+            "description": "Plan state"
+          },
+          {
+            "name": "create_time",
+            "type": "timestamp",
+            "description": "When the plan was created"
+          },
+          {
+            "name": "update_time",
+            "type": "timestamp",
+            "description": "When the plan was last updated"
+          },
+          {
+            "name": "merchant_preferences",
+            "type": "jsonb",
+            "description": "Merchant preferences for this plan"
+          }
+        ]
+      },
+      {
+        "name": "djpaypal_billingplan_payment_d efinitions",
+        "description": "Junction table linking billing plans to payment definitions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "billingplan_id",
+            "type": "varchar",
+            "description": "Reference to billing plan",
+            "constraints": {
+              "foreign_key": {
+                "table": "djpaypal_billingplan",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "paymentdefinition_id",
+            "type": "varchar",
+            "description": "Reference to payment definition",
+            "constraints": {
+              "foreign_key": {
+                "table": "djpaypal_paymentdefinition",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "webhook_event_trigger_to_webhook_event",
+        "type": "one_to_one",
+        "description": "Links webhook event trigger to webhook event",
+        "from": {
+          "table": "djpaypal_webhookeventtrigger",
+          "column": "webhook_event_id"
+        },
+        "to": {
+          "table": "djpaypal_webhookevent",
+          "column": "id"
+        }
+      },
+      {
+        "name": "refund_to_payment",
+        "type": "many_to_one",
+        "description": "Links refund to its parent payment",
+        "from": {
+          "table": "djpaypal_refund",
+          "column": "parent_payment_id"
+        },
+        "to": {
+          "table": "djpaypal_payment",
+          "column": "id"
+        }
+      },
+      {
+        "name": "refund_to_sale",
+        "type": "many_to_one",
+        "description": "Links refund to associated sale",
+        "from": {
+          "table": "djpaypal_refund",
+          "column": "sale_id"
+        },
+        "to": {
+          "table": "djpaypal_sale",
+          "column": "id"
+        }
+      },
+      {
+        "name": "sale_to_billing_agreement",
+        "type": "many_to_one",
+        "description": "Links sale to associated billing agreement",
+        "from": {
+          "table": "djpaypal_sale",
+          "column": "billing_agreement_id"
+        },
+        "to": {
+          "table": "djpaypal_billingagreement",
+          "column": "id"
+        }
+      },
+      {
+        "name": "sale_to_payment",
+        "type": "many_to_one",
+        "description": "Links sale to parent payment",
+        "from": {
+          "table": "djpaypal_sale",
+          "column": "parent_payment_id"
+        },
+        "to": {
+          "table": "djpaypal_payment",
+          "column": "id"
+        }
+      },
+      {
+        "name": "prepared_billing_agreement_to_billing_agreement",
+        "type": "one_to_one",
+        "description": "Links prepared billing agreement to executed agreement",
+        "from": {
+          "table": "djpaypal_preparedbillingagreement",
+          "column": "executed_agreement_id"
+        },
+        "to": {
+          "table": "djpaypal_billingagreement",
+          "column": "id"
+        }
+      },
+      {
+        "name": "billing_agreement_to_payer",
+        "type": "many_to_one",
+        "description": "Links billing agreement to payer model",
+        "from": {
+          "table": "djpaypal_billingagreement",
+          "column": "payer_model_id"
+        },
+        "to": {
+          "table": "djpaypal_payer",
+          "column": "id"
+        }
+      },
+      {
+        "name": "billing_agreement_to_plan",
+        "type": "many_to_one", 
+        "description": "Links billing agreement to billing plan",
+        "from": {
+          "table": "djpaypal_billingagreement",
+          "column": "plan_model_id"
+        },
+        "to": {
+          "table": "djpaypal_billingplan",
+          "column": "id"
+        }
+      },
+      {
+        "name": "payment_definition_charge_models",
+        "type": "many_to_many",
+        "description": "Links payment definitions to charge models",
+        "from": {
+          "table": "djpaypal_paymentdefinition",
+          "column": "id"
+        },
+        "to": {
+          "table": "djpaypal_chargemodel",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "djpaypal_paymentdefinition_cha rge_models",
+          "source_column": "paymentdefinition_id",
+          "target_column": "chargemodel_id"
+        }
+      },
+      {
+        "name": "billing_plan_payment_definitions",
+        "type": "many_to_many",
+        "description": "Links billing plans to payment definitions",
+        "from": {
+          "table": "djpaypal_billingplan",
+          "column": "id"
+        },
+        "to": {
+          "table": "djpaypal_paymentdefinition",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "djpaypal_billingplan_payment_d efinitions",
+          "source_column": "billingplan_id",
+          "target_column": "paymentdefinition_id"
+        }
+      }
+    ]
+  }

@@ -1,0 +1,118 @@
+{
+    "tables": [
+        {
+            "name": "flipper_features",
+            "description": "Stores feature definitions for feature flagging system",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "bigint",
+                    "description": "Primary key identifier for features",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "key",
+                    "type": "varchar",
+                    "description": "Unique key identifier for the feature",
+                    "constraints": {
+                        "nullable": false,
+                        "unique": true
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the feature was created",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the feature was last updated",
+                    "constraints": {
+                        "nullable": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "flipper_gates",
+            "description": "Stores feature flag configurations and rules",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "bigint",
+                    "description": "Primary key identifier for gates",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "feature_key",
+                    "type": "varchar",
+                    "description": "Reference to the feature key this gate belongs to",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "flipper_features",
+                            "column": "key"
+                        }
+                    }
+                },
+                {
+                    "name": "key",
+                    "type": "varchar",
+                    "description": "Identifier for the gate type or criterion",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "value",
+                    "type": "varchar",
+                    "description": "Value setting for the gate configuration",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the gate was created",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "Timestamp when the gate was last updated",
+                    "constraints": {
+                        "nullable": false
+                    }
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "name": "feature_gates",
+            "type": "one_to_many",
+            "description": "A feature can have multiple gates/rules that control its activation",
+            "from": {
+                "table": "flipper_features",
+                "column": "key"
+            },
+            "to": {
+                "table": "flipper_gates",
+                "column": "feature_key"
+            }
+        }
+    ]
+}

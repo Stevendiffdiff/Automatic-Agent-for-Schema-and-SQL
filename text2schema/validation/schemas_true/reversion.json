@@ -1,0 +1,178 @@
+{
+    "tables": [
+      {
+        "name": "django_content_type",
+        "description": "Stores content type information for Django's contenttypes framework",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for content types",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "auth_user",
+        "description": "Stores user authentication information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for users",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "reversion_version",
+        "description": "Stores version information for tracked objects",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for object versions",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "object_id",
+            "type": "varchar",
+            "description": "Identifier of the versioned object"
+          },
+          {
+            "name": "format",
+            "type": "varchar",
+            "description": "Format of the serialized data"
+          },
+          {
+            "name": "serialized_data",
+            "type": "text",
+            "description": "The serialized version data"
+          },
+          {
+            "name": "object_repr",
+            "type": "text",
+            "description": "String representation of the object"
+          },
+          {
+            "name": "content_type_id",
+            "type": "int",
+            "description": "Foreign key to content type",
+            "constraints": {
+              "foreign_key": {
+                "table": "django_content_type",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "revision_id",
+            "type": "int",
+            "description": "Foreign key to revision",
+            "constraints": {
+              "foreign_key": {
+                "table": "reversion_revision",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "db",
+            "type": "varchar",
+            "description": "Database identifier"
+          }
+        ]
+      },
+      {
+        "name": "reversion_revision",
+        "description": "Stores revision information for groups of versions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for revisions",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "date_created",
+            "type": "datetime",
+            "description": "When the revision was created"
+          },
+          {
+            "name": "comment",
+            "type": "text",
+            "description": "Optional comment about the revision"
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "Foreign key to the user who created the revision",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "content_type_to_version",
+        "type": "one_to_many",
+        "description": "A content type can have many versions",
+        "from": {
+          "table": "django_content_type",
+          "column": "id"
+        },
+        "to": {
+          "table": "reversion_version",
+          "column": "content_type_id"
+        }
+      },
+      {
+        "name": "revision_to_version",
+        "type": "one_to_many",
+        "description": "A revision can have many versions",
+        "from": {
+          "table": "reversion_revision",
+          "column": "id"
+        },
+        "to": {
+          "table": "reversion_version",
+          "column": "revision_id"
+        }
+      },
+      {
+        "name": "user_to_revision",
+        "type": "one_to_many",
+        "description": "A user can create many revisions",
+        "from": {
+          "table": "auth_user",
+          "column": "id"
+        },
+        "to": {
+          "table": "reversion_revision",
+          "column": "user_id"
+        }
+      }
+    ]
+  }

@@ -1,0 +1,33 @@
+### Functional Description:
+
+The software appears to be a **host monitoring and management system** designed to track and verify the status of remote hosts through automated checks. Here's the core functionality:
+
+#### 1. **Host Management**
+- Stores information about monitored hosts, including:
+  - Basic identifiers (name, IP, SSH credentials)
+  - Network configuration (port)
+  - Flexible custom properties (stored as JSON)
+- Tracks creation/modification timestamps for audit purposes
+
+#### 2. **Automated Check System**
+- Supports multiple types of checks per host (one-to-many relationship)
+- Each check has:
+  - A specific type (e.g., ping, port check, custom script)
+  - Configurable enabled/disabled state
+  - Status tracking with detailed run outputs (message + structured JSON data)
+  - Scheduling controls (next run timing)
+  - Failure notification throttling to prevent alert fatigue
+
+#### 3. **Operational Features**
+- Maintains comprehensive check execution history:
+  - Last run status and output
+  - Precise timing of executions
+- Supports custom configurations for both hosts and checks via JSON fields
+- Designed for programmatic access through structured data storage
+
+#### Key Characteristics:
+- **Infrastructure-focused**: Clearly designed for technical users managing servers/services
+- **Automation-ready**: Structured output and scheduling suggest integration with automated systems
+- **Extensible**: Custom JSON fields allow for flexible use cases beyond core functionality
+
+The system appears optimized for reliability monitoring with features like status tracking, detailed check outputs, and notification throttling - suggesting it's designed to minimize false alerts while providing comprehensive monitoring data.

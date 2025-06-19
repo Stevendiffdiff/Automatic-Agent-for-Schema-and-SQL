@@ -1,0 +1,39 @@
+### Functional Description of the Ticketing System:
+
+The software is a **customer support ticketing system** designed to manage, track, and resolve user-submitted issues. It follows a structured workflow with configurable categories, priorities, and statuses, while supporting collaboration between users (customers) and agents (support staff).  
+
+#### Core Features:  
+
+1. **Ticket Management**  
+   - Tickets are created by users with a subject, content (plaintext and HTML), and metadata (category, priority, status).  
+   - Each ticket is assigned to an agent and can be tracked via timestamps (creation, updates, completion).  
+
+2. **Categorization & Prioritization**  
+   - Tickets are organized into **categories** (e.g., "Billing," "Technical"), each with a name and color code for visual distinction.  
+   - **Priorities** (e.g., "Low," "Critical") and **statuses** (e.g., "Open," "Resolved") are predefined and color-coded.  
+
+3. **User Roles & Permissions**  
+   - Users are classified as:  
+     - **Customers**: Submit tickets and add comments.  
+     - **Agents**: Assigned to tickets (via `agent_id`) and resolve issues.  
+     - **Admins**: Have elevated privileges (e.g., system configuration).  
+   - A many-to-many relationship links agents to categories, allowing specialization (e.g., an agent handles only "Technical" tickets).  
+
+4. **Collaboration**  
+   - **Comments**: Threaded discussions per ticket, with plaintext and HTML support.  
+   - **Audit Logs**: All ticket modifications (e.g., status changes) are recorded with the acting user, operation type, and timestamp.  
+
+5. **System Configuration**  
+   - **Settings** (e.g., language, default values) are stored as key-value pairs (`slug`-`value`) with optional overrides.  
+
+#### Key Relationships:  
+- Tickets **belong to** one category, priority, status, creator (user), and agent.  
+- Agents **can be assigned to multiple categories**.  
+- Tickets **have many** comments and audit records.  
+
+#### Engineering Notes:  
+- **Timestamps**: Use `datetime`/`bigint` for creation/update tracking.  
+- **HTML content**: Optional field for rich-text rendering.  
+- **Auditability**: All changes are logged via the `ticketit_audits` table.  
+
+This design supports a typical helpdesk workflow, emphasizing traceability, role-based access, and flexible categorization.

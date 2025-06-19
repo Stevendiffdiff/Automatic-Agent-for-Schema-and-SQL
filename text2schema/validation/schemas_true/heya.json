@@ -1,0 +1,157 @@
+{
+    "tables": [
+      {
+        "name": "users",
+        "description": "Store user information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key for users",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "heya_campaign_memberships",
+        "description": "Stores campaign membership information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_type",
+            "type": "varchar",
+            "description": "Type of user"
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "Reference to user ID",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "campaign_gid",
+            "type": "varchar",
+            "description": "Campaign global identifier"
+          },
+          {
+            "name": "concurrent",
+            "type": "tinyint",
+            "description": "Flag for concurrent membership"
+          },
+          {
+            "name": "last_sent_at",
+            "type": "datetime",
+            "description": "Timestamp of last message sent"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of record creation"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of last update"
+          }
+        ]
+      },
+      {
+        "name": "heya_campaign_receipts",
+        "description": "Stores campaign receipt information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_type",
+            "type": "varchar",
+            "description": "Type of user"
+          },
+          {
+            "name": "user_id",
+            "type": "bigint",
+            "description": "Reference to user ID",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "step_gid",
+            "type": "varchar",
+            "description": "Step global identifier"
+          },
+          {
+            "name": "sent_at",
+            "type": "datetime",
+            "description": "Timestamp when sent",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of record creation"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of last update"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "users_memberships",
+        "type": "one_to_many",
+        "description": "A user can have multiple campaign memberships",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "heya_campaign_memberships",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "users_receipts",
+        "type": "one_to_many",
+        "description": "A user can have multiple campaign receipts",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "heya_campaign_receipts",
+          "column": "user_id"
+        }
+      }
+    ]
+  }

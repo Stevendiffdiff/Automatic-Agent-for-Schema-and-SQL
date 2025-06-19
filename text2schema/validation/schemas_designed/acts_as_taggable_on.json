@@ -1,0 +1,230 @@
+{
+  "tables": [
+    {
+      "name": "tagger",
+      "description": "Stores information about the tagger (user or system) who applied a tag.",
+      "columns": [
+        {
+          "name": "tagger_id",
+          "type": "integer",
+          "description": "Primary key for the tagger",
+          "constraints": {
+            "primary_key": true,
+            "nullable": false,
+            "unique": true,
+            "auto_increment": true
+          }
+        },
+        {
+          "name": "tagger_type",
+          "type": "string",
+          "description": "Type of the tagger (e.g., 'User', 'System')",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "tags",
+      "description": "Stores metadata about tags, including their usage count and timestamps.",
+      "columns": [
+        {
+          "name": "tag_id",
+          "type": "integer",
+          "description": "Primary key for the tag",
+          "constraints": {
+            "primary_key": true,
+            "nullable": false,
+            "unique": true,
+            "auto_increment": true
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Name of the tag",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp",
+          "description": "Timestamp when the tag was created",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp",
+          "description": "Timestamp when the tag was last updated",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "taggings_count",
+          "type": "integer",
+          "description": "Count of how many times the tag has been used",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "taggings",
+      "description": "Junction table that links tags, taggers, and tagged entities. Supports polymorphic tagging.",
+      "columns": [
+        {
+          "name": "tagging_id",
+          "type": "integer",
+          "description": "Primary key for the tagging",
+          "constraints": {
+            "primary_key": true,
+            "nullable": false,
+            "unique": true,
+            "auto_increment": true
+          }
+        },
+        {
+          "name": "tag_id",
+          "type": "integer",
+          "description": "Foreign key to the tags table",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false,
+            "foreign_key": {
+              "table": "tags",
+              "column": "tag_id"
+            }
+          }
+        },
+        {
+          "name": "tagger_id",
+          "type": "integer",
+          "description": "Foreign key to the tagger table",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false,
+            "foreign_key": {
+              "table": "tagger",
+              "column": "tagger_id"
+            }
+          }
+        },
+        {
+          "name": "taggable_id",
+          "type": "integer",
+          "description": "ID of the tagged entity",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "taggable_type",
+          "type": "string",
+          "description": "Type of the tagged entity (e.g., 'Document', 'Image', 'User')",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "context",
+          "type": "string",
+          "description": "Optional context for the tagging (e.g., categorization, purpose)",
+          "constraints": {
+            "primary_key": false,
+            "nullable": true,
+            "unique": false,
+            "auto_increment": false
+          }
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp",
+          "description": "Timestamp when the tagging was created",
+          "constraints": {
+            "primary_key": false,
+            "nullable": false,
+            "unique": false,
+            "auto_increment": false
+          }
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "name": "creates",
+      "type": "one_to_many",
+      "description": "A tagger can create multiple taggings",
+      "from": {
+        "table": "tagger",
+        "column": "tagger_id"
+      },
+      "to": {
+        "table": "taggings",
+        "column": "tagger_id"
+      }
+    },
+    {
+      "name": "is_used_in",
+      "type": "one_to_many",
+      "description": "A tag can be used in multiple taggings",
+      "from": {
+        "table": "tags",
+        "column": "tag_id"
+      },
+      "to": {
+        "table": "taggings",
+        "column": "tag_id"
+      }
+    },
+    {
+      "name": "tags",
+      "type": "many_to_many",
+      "description": "Taggings link tags to various types of entities (polymorphic)",
+      "from": {
+        "table": "taggings",
+        "column": "taggable_id"
+      },
+      "to": {
+        "table": "taggable_entity",
+        "column": "id"
+      },
+      "junction_table": {
+        "name": "taggings",
+        "source_column": "taggable_id",
+        "target_column": "taggable_type"
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+### Functional Description:  
+
+The competitor’s software is a **messaging platform** that enables **one-on-one conversations between users**. The system is structured around three core entities:  
+
+1. **Users** – Stores basic user information. Each user has a unique ID and can participate in multiple conversations.  
+
+2. **Conversations** – Represents a chat thread between two users (`user_one` and `user_two`). Conversations have a status (likely indicating active/archived) and track creation/update timestamps.  
+
+3. **Messages** – Contains the actual content exchanged in conversations. Each message:  
+   - Is linked to a sender (`user_id`) and a conversation (`conversation_id`).  
+   - Supports read receipts (`is_seen`).  
+   - Allows independent deletion for sender and receiver (`deleted_from_sender`, `deleted_from_receiver`).  
+   - Tracks creation and last update times.  
+
+#### Key Behaviors:  
+- **User Participation**: A user can be part of multiple conversations (as either `user_one` or `user_two`).  
+- **Message Management**: Messages persist even if deleted by one participant (enabling "delete for me" functionality).  
+- **Conversation Lifecycle**: Conversations can be toggled (via `status`) but are not deleted, preserving message history.  
+
+#### Schema Implications:  
+- **Foreign Keys**: Enforce relational integrity (e.g., a message must belong to a valid user and conversation).  
+- **Timestamps**: Enable sorting and activity tracking.  
+- **Soft Deletion**: Uses boolean flags instead of hard deletes for messages.  
+
+This design suggests a **persistent, user-centric messaging system** similar to direct messaging in social apps (e.g., WhatsApp or Messenger). Engineers should replicate:  
+- User/conversation/message hierarchy.  
+- Dual deletion flags for messages.  
+- Timestamp-based ordering.

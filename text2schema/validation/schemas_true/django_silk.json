@@ -1,0 +1,413 @@
+{
+    "tables": [
+      {
+        "name": "silk_profile_queries",
+        "description": "Stores profile query relationships",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "profile_id",
+            "type": "int",
+            "description": "Foreign key to silk_profile",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "silk_profile",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "sqlquery_id",
+            "type": "int",
+            "description": "Foreign key to silk_sqlquery",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "silk_sqlquery",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "silk_sqlquery",
+        "description": "Stores SQL query information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "query",
+            "type": "longtext",
+            "description": "The SQL query text"
+          },
+          {
+            "name": "start_time",
+            "type": "datetime",
+            "description": "When the query started"
+          },
+          {
+            "name": "end_time",
+            "type": "datetime",
+            "description": "When the query ended",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "time_taken",
+            "type": "double",
+            "description": "Time taken for the query to execute",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "traceback",
+            "type": "longtext",
+            "description": "Error traceback if any"
+          },
+          {
+            "name": "request_id",
+            "type": "varchar",
+            "description": "Foreign key to silk_request",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "silk_request",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "identifier",
+            "type": "int",
+            "description": "Query identifier"
+          }
+        ]
+      },
+      {
+        "name": "silk_profile",
+        "description": "Stores profiling information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Profile name"
+          },
+          {
+            "name": "start_time",
+            "type": "datetime",
+            "description": "When the profile started"
+          },
+          {
+            "name": "end_time",
+            "type": "datetime",
+            "description": "When the profile ended",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "time_taken",
+            "type": "double",
+            "description": "Time taken for the profile",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "file_path",
+            "type": "varchar",
+            "description": "Path to the source file"
+          },
+          {
+            "name": "line_num",
+            "type": "int",
+            "description": "Line number in the source file",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_line_num",
+            "type": "int",
+            "description": "End line number in the source file",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "func_name",
+            "type": "varchar",
+            "description": "Function name being profiled"
+          },
+          {
+            "name": "exception_raised",
+            "type": "tinyint",
+            "description": "Whether an exception was raised"
+          },
+          {
+            "name": "dynamic",
+            "type": "tinyint",
+            "description": "Whether the profile is dynamic"
+          },
+          {
+            "name": "request_id",
+            "type": "varchar",
+            "description": "Foreign key to silk_request",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "silk_request",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "silk_request",
+        "description": "Stores HTTP request information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "path",
+            "type": "varchar",
+            "description": "Request path"
+          },
+          {
+            "name": "query_params",
+            "type": "longtext",
+            "description": "Query parameters"
+          },
+          {
+            "name": "raw_body",
+            "type": "longtext",
+            "description": "Raw request body"
+          },
+          {
+            "name": "body",
+            "type": "longtext",
+            "description": "Processed request body"
+          },
+          {
+            "name": "method",
+            "type": "varchar",
+            "description": "HTTP method"
+          },
+          {
+            "name": "start_time",
+            "type": "datetime",
+            "description": "When the request started"
+          },
+          {
+            "name": "view_name",
+            "type": "varchar",
+            "description": "Name of the view handling the request",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_time",
+            "type": "datetime",
+            "description": "When the request ended",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "time_taken",
+            "type": "double",
+            "description": "Time taken to process the request",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "encoded_headers",
+            "type": "longtext",
+            "description": "Encoded request headers"
+          },
+          {
+            "name": "meta_time",
+            "type": "double",
+            "description": "Time for metadata processing",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "meta_num_queries",
+            "type": "int",
+            "description": "Number of queries in metadata",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "meta_time_spent_queries",
+            "type": "double",
+            "description": "Time spent on queries in metadata",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "pyprofile",
+            "type": "longtext",
+            "description": "Python profiling data"
+          },
+          {
+            "name": "num_sql_queries",
+            "type": "int",
+            "description": "Number of SQL queries"
+          },
+          {
+            "name": "prof_file",
+            "type": "varchar",
+            "description": "Profile file path"
+          }
+        ]
+      },
+      {
+        "name": "silk_response",
+        "description": "Stores HTTP response information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "status_code",
+            "type": "int",
+            "description": "HTTP status code"
+          },
+          {
+            "name": "raw_body",
+            "type": "longtext",
+            "description": "Raw response body"
+          },
+          {
+            "name": "body",
+            "type": "longtext",
+            "description": "Processed response body"
+          },
+          {
+            "name": "encoded_headers",
+            "type": "longtext",
+            "description": "Encoded response headers"
+          },
+          {
+            "name": "request_id",
+            "type": "varchar",
+            "description": "Foreign key to silk_request",
+            "constraints": {
+              "foreign_key": {
+                "table": "silk_request",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "profile_to_queries",
+        "type": "many_to_many",
+        "description": "Profile to SQL query relationship",
+        "from": {
+          "table": "silk_profile",
+          "column": "id"
+        },
+        "to": {
+          "table": "silk_sqlquery",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "silk_profile_queries",
+          "source_column": "profile_id",
+          "target_column": "sqlquery_id"
+        }
+      },
+      {
+        "name": "request_to_sqlquery",
+        "type": "one_to_many",
+        "description": "Request to SQL queries relationship",
+        "from": {
+          "table": "silk_request",
+          "column": "id"
+        },
+        "to": {
+          "table": "silk_sqlquery",
+          "column": "request_id"
+        }
+      },
+      {
+        "name": "request_to_profile",
+        "type": "one_to_many",
+        "description": "Request to profiles relationship",
+        "from": {
+          "table": "silk_request",
+          "column": "id"
+        },
+        "to": {
+          "table": "silk_profile",
+          "column": "request_id"
+        }
+      },
+      {
+        "name": "request_to_response",
+        "type": "one_to_one",
+        "description": "Request to response relationship",
+        "from": {
+          "table": "silk_request",
+          "column": "id"
+        },
+        "to": {
+          "table": "silk_response",
+          "column": "request_id"
+        }
+      }
+    ]
+  }

@@ -1,0 +1,918 @@
+{
+    "tables": [
+      {
+        "name": "auth_user",
+        "description": "Authentication user table storing user login credentials and basic information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "password",
+            "type": "varchar",
+            "description": "User password"
+          },
+          {
+            "name": "last_login",
+            "type": "datetime",
+            "description": "Timestamp of last user login"
+          },
+          {
+            "name": "is_superuser",
+            "type": "boolean",
+            "description": "Flag indicating if user has superuser privileges"
+          },
+          {
+            "name": "username",
+            "type": "varchar",
+            "description": "Username for login",
+            "constraints": {
+              "unique": true
+            }
+          },
+          {
+            "name": "first_name",
+            "type": "varchar",
+            "description": "User's first name"
+          },
+          {
+            "name": "last_name",
+            "type": "varchar",
+            "description": "User's last name"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address"
+          },
+          {
+            "name": "is_staff",
+            "type": "boolean",
+            "description": "Flag indicating if user is staff member"
+          },
+          {
+            "name": "is_active",
+            "type": "boolean",
+            "description": "Flag indicating if user account is active"
+          },
+          {
+            "name": "date_joined",
+            "type": "datetime",
+            "description": "Timestamp when user account was created"
+          }
+        ]
+      },
+      {
+        "name": "payments_subscription",
+        "description": "Stores subscription information for payment processing",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "customer_id",
+            "type": "varchar",
+            "description": "External customer identifier"
+          },
+          {
+            "name": "payment_method_token",
+            "type": "varchar",
+            "description": "Token representing payment method"
+          },
+          {
+            "name": "subscription_id",
+            "type": "varchar",
+            "description": "External subscription identifier"
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "description": "Reference to the user",
+            "constraints": {
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "plan_id",
+            "type": "varchar",
+            "description": "Identifier for the subscription plan"
+          },
+          {
+            "name": "address_id",
+            "type": "varchar",
+            "description": "Reference to billing address"
+          },
+          {
+            "name": "send_invoices",
+            "type": "boolean",
+            "description": "Flag indicating whether to send invoices"
+          },
+          {
+            "name": "plan_name",
+            "type": "varchar",
+            "description": "Name of the subscription plan"
+          },
+          {
+            "name": "invoice_email",
+            "type": "varchar",
+            "description": "Email address for invoice delivery"
+          }
+        ]
+      },
+      {
+        "name": "accounts_member",
+        "description": "Represents membership of users in projects",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "description": "Reference to user",
+            "constraints": {
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "project_id",
+            "type": "integer",
+            "description": "Reference to project",
+            "constraints": {
+              "foreign_key": {
+                "table": "accounts_project",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "accounts_profile",
+        "description": "Extended user profile information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "next_report_date",
+            "type": "datetime",
+            "description": "Date for next report generation"
+          },
+          {
+            "name": "reports_allowed",
+            "type": "boolean",
+            "description": "Flag indicating if reports are allowed"
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "description": "Reference to user",
+            "constraints": {
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              },
+              "nullable": false
+            }
+          },
+          {
+            "name": "ping_log_limit",
+            "type": "integer",
+            "description": "Limit for ping logs"
+          },
+          {
+            "name": "token",
+            "type": "varchar",
+            "description": "Authentication token"
+          },
+          {
+            "name": "check_limit",
+            "type": "integer",
+            "description": "Limit for checks"
+          },
+          {
+            "name": "last_sms_date",
+            "type": "datetime",
+            "description": "Date of last SMS sent"
+          },
+          {
+            "name": "sms_limit",
+            "type": "integer",
+            "description": "Limit for SMS messages"
+          },
+          {
+            "name": "sms_sent",
+            "type": "integer",
+            "description": "Count of SMS messages sent"
+          },
+          {
+            "name": "team_limit",
+            "type": "integer",
+            "description": "Limit for team members"
+          },
+          {
+            "name": "sort",
+            "type": "varchar",
+            "description": "Sort preference"
+          },
+          {
+            "name": "rag_period",
+            "type": "boolean",
+            "description": "Period for RAG (Red-Amber-Green) status"
+          },
+          {
+            "name": "next_nag_date",
+            "type": "datetime",
+            "description": "Date for next notification"
+          },
+          {
+            "name": "deletion_notice_date",
+            "type": "datetime",
+            "description": "Date for deletion notice"
+          },
+          {
+            "name": "last_active_date",
+            "type": "datetime",
+            "description": "Date of last activity"
+          }
+        ]
+      },
+      {
+        "name": "accounts_project",
+        "description": "Project information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "code",
+            "type": "char",
+            "description": "Project code"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Project name"
+          },
+          {
+            "name": "api_key",
+            "type": "varchar",
+            "description": "API key for project"
+          },
+          {
+            "name": "api_key_readonly",
+            "type": "varchar",
+            "description": "Read-only API key"
+          },
+          {
+            "name": "owner_id",
+            "type": "integer",
+            "description": "Reference to project owner",
+            "constraints": {
+              "foreign_key": {
+                "table": "auth_user",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "badge_key",
+            "type": "varchar",
+            "description": "Key for project badge"
+          }
+        ]
+      },
+      {
+        "name": "api_tokenbucket",
+        "description": "Token bucket for API rate limiting",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "value",
+            "type": "numeric",
+            "description": "Token bucket value"
+          },
+          {
+            "name": "tokens",
+            "type": "double",
+            "description": "Number of tokens"
+          },
+          {
+            "name": "updated",
+            "type": "datetime",
+            "description": "Last update timestamp"
+          }
+        ]
+      },
+      {
+        "name": "api_channel",
+        "description": "Communication channel for notifications",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "code",
+            "type": "char",
+            "description": "Channel code"
+          },
+          {
+            "name": "created",
+            "type": "datetime",
+            "description": "Creation timestamp"
+          },
+          {
+            "name": "kind",
+            "type": "varchar",
+            "description": "Channel type"
+          },
+          {
+            "name": "value",
+            "type": "longtext",
+            "description": "Channel value or configuration"
+          },
+          {
+            "name": "email_verified",
+            "type": "boolean",
+            "description": "Flag indicating if email is verified"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Channel name"
+          },
+          {
+            "name": "project_id",
+            "type": "integer",
+            "description": "Reference to project",
+            "constraints": {
+              "foreign_key": {
+                "table": "accounts_project",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "last_error",
+            "type": "varchar",
+            "description": "Last error message"
+          }
+        ]
+      },
+      {
+        "name": "api_channel_checks",
+        "description": "Junction table linking channels to checks",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "channel_id",
+            "type": "integer",
+            "description": "Reference to channel",
+            "constraints": {
+              "foreign_key": {
+                "table": "api_channel",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "check_id",
+            "type": "integer",
+            "description": "Reference to check",
+            "constraints": {
+              "foreign_key": {
+                "table": "api_check",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "channel_id_check_id",
+            "type": "indexes",
+            "description": "Composite index for channel_id and check_id"
+          }
+        ]
+      },
+      {
+        "name": "api_check",
+        "description": "Health check configuration",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "code",
+            "type": "char",
+            "description": "Check code"
+          },
+          {
+            "name": "last_ping",
+            "type": "datetime",
+            "description": "Timestamp of last ping"
+          },
+          {
+            "name": "alert_after",
+            "type": "datetime",
+            "description": "Time after which to trigger alert"
+          },
+          {
+            "name": "status",
+            "type": "varchar",
+            "description": "Current status"
+          },
+          {
+            "name": "timeout",
+            "type": "bigint",
+            "description": "Timeout in seconds"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Check name"
+          },
+          {
+            "name": "created",
+            "type": "datetime",
+            "description": "Creation timestamp"
+          },
+          {
+            "name": "grace",
+            "type": "bigint",
+            "description": "Grace period"
+          },
+          {
+            "name": "tags",
+            "type": "varchar",
+            "description": "Tags for categorization"
+          },
+          {
+            "name": "n_pings",
+            "type": "integer",
+            "description": "Number of pings received"
+          },
+          {
+            "name": "kind",
+            "type": "varchar",
+            "description": "Check type"
+          },
+          {
+            "name": "schedule",
+            "type": "varchar",
+            "description": "Check schedule"
+          },
+          {
+            "name": "tz",
+            "type": "varchar",
+            "description": "Timezone"
+          },
+          {
+            "name": "has_confirmation_link",
+            "type": "boolean",
+            "description": "Flag indicating if confirmation link exists"
+          },
+          {
+            "name": "last_ping_was_fail",
+            "type": "boolean",
+            "description": "Flag indicating if last ping failed"
+          },
+          {
+            "name": "desc",
+            "type": "longtext",
+            "description": "Description"
+          },
+          {
+            "name": "last_start",
+            "type": "datetime",
+            "description": "Last start timestamp"
+          },
+          {
+            "name": "subject",
+            "type": "varchar",
+            "description": "Email subject"
+          },
+          {
+            "name": "project_id",
+            "type": "integer",
+            "description": "Reference to project",
+            "constraints": {
+              "foreign_key": {
+                "table": "accounts_project",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "last_duration",
+            "type": "bigint",
+            "description": "Duration of last check"
+          },
+          {
+            "name": "methods",
+            "type": "varchar",
+            "description": "HTTP methods"
+          }
+        ]
+      },
+      {
+        "name": "api_flip",
+        "description": "Status change records",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "created",
+            "type": "datetime",
+            "description": "Creation timestamp"
+          },
+          {
+            "name": "processed",
+            "type": "datetime",
+            "description": "Processing timestamp"
+          },
+          {
+            "name": "old_status",
+            "type": "varchar",
+            "description": "Previous status"
+          },
+          {
+            "name": "new_status",
+            "type": "varchar",
+            "description": "New status"
+          },
+          {
+            "name": "owner_id",
+            "type": "integer",
+            "description": "Reference to owner",
+            "constraints": {
+              "foreign_key": {
+                "table": "api_check",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "api_ping",
+        "description": "Ping data from health checks",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "created",
+            "type": "datetime",
+            "description": "Creation timestamp"
+          },
+          {
+            "name": "remote_addr",
+            "type": "varchar",
+            "description": "Remote IP address"
+          },
+          {
+            "name": "method",
+            "type": "varchar",
+            "description": "HTTP method"
+          },
+          {
+            "name": "ua",
+            "type": "varchar",
+            "description": "User agent"
+          },
+          {
+            "name": "owner_id",
+            "type": "integer",
+            "description": "Reference to check",
+            "constraints": {
+              "foreign_key": {
+                "table": "api_check",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "scheme",
+            "type": "varchar",
+            "description": "HTTP scheme"
+          },
+          {
+            "name": "n",
+            "type": "integer",
+            "description": "Sequence number"
+          },
+          {
+            "name": "body",
+            "type": "longtext",
+            "description": "Request body"
+          },
+          {
+            "name": "kind",
+            "type": "varchar",
+            "description": "Ping type"
+          }
+        ]
+      },
+      {
+        "name": "api_notification",
+        "description": "Notification records",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "check_status",
+            "type": "varchar",
+            "description": "Status of the check"
+          },
+          {
+            "name": "created",
+            "type": "datetime",
+            "description": "Creation timestamp"
+          },
+          {
+            "name": "channel_id",
+            "type": "integer",
+            "description": "Reference to channel",
+            "constraints": {
+              "foreign_key": {
+                "table": "api_channel",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "owner_id",
+            "type": "integer",
+            "description": "Reference to check",
+            "constraints": {
+              "foreign_key": {
+                "table": "api_check",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "error",
+            "type": "varchar",
+            "description": "Error message if any"
+          },
+          {
+            "name": "code",
+            "type": "char",
+            "description": "Notification code"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "user_to_payments_subscription",
+        "type": "one_to_many",
+        "description": "A user can have multiple payment subscriptions",
+        "from": {
+          "table": "auth_user",
+          "column": "id"
+        },
+        "to": {
+          "table": "payments_subscription",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_to_accounts_profile",
+        "type": "one_to_one",
+        "description": "A user has one profile",
+        "from": {
+          "table": "auth_user",
+          "column": "id"
+        },
+        "to": {
+          "table": "accounts_profile",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_to_project_membership",
+        "type": "many_to_many",
+        "description": "Users can be members of multiple projects",
+        "from": {
+          "table": "auth_user",
+          "column": "id"
+        },
+        "to": {
+          "table": "accounts_project",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "accounts_member",
+          "source_column": "user_id",
+          "target_column": "project_id"
+        }
+      },
+      {
+        "name": "user_to_owned_projects",
+        "type": "one_to_many",
+        "description": "A user can own multiple projects",
+        "from": {
+          "table": "auth_user",
+          "column": "id"
+        },
+        "to": {
+          "table": "accounts_project",
+          "column": "owner_id"
+        }
+      },
+      {
+        "name": "project_to_channels",
+        "type": "one_to_many",
+        "description": "A project can have multiple notification channels",
+        "from": {
+          "table": "accounts_project",
+          "column": "id"
+        },
+        "to": {
+          "table": "api_channel",
+          "column": "project_id"
+        }
+      },
+      {
+        "name": "project_to_checks",
+        "type": "one_to_many",
+        "description": "A project can have multiple health checks",
+        "from": {
+          "table": "accounts_project",
+          "column": "id"
+        },
+        "to": {
+          "table": "api_check",
+          "column": "project_id"
+        }
+      },
+      {
+        "name": "check_to_pings",
+        "type": "one_to_many",
+        "description": "A check can have multiple pings",
+        "from": {
+          "table": "api_check",
+          "column": "id"
+        },
+        "to": {
+          "table": "api_ping",
+          "column": "owner_id"
+        }
+      },
+      {
+        "name": "check_to_flips",
+        "type": "one_to_many",
+        "description": "A check can have multiple status changes",
+        "from": {
+          "table": "api_check",
+          "column": "id"
+        },
+        "to": {
+          "table": "api_flip",
+          "column": "owner_id"
+        }
+      },
+      {
+        "name": "check_to_notifications",
+        "type": "one_to_many",
+        "description": "A check can have multiple notifications",
+        "from": {
+          "table": "api_check",
+          "column": "id"
+        },
+        "to": {
+          "table": "api_notification",
+          "column": "owner_id"
+        }
+      },
+      {
+        "name": "channel_to_notifications",
+        "type": "one_to_many",
+        "description": "A channel can send multiple notifications",
+        "from": {
+          "table": "api_channel",
+          "column": "id"
+        },
+        "to": {
+          "table": "api_notification",
+          "column": "channel_id"
+        }
+      },
+      {
+        "name": "channel_to_checks",
+        "type": "many_to_many",
+        "description": "Channels can be associated with multiple checks",
+        "from": {
+          "table": "api_channel",
+          "column": "id"
+        },
+        "to": {
+          "table": "api_check",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "api_channel_checks",
+          "source_column": "channel_id",
+          "target_column": "check_id"
+        }
+      }
+    ]
+  }

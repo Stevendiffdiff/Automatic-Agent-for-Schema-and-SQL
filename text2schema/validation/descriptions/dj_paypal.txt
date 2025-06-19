@@ -1,0 +1,44 @@
+### Functional Description of PayPal Integration System
+
+This system is a comprehensive PayPal integration platform that handles payment processing, subscription management, dispute resolution, and webhook event handling. The core functionality can be grouped into four main areas:
+
+**1. Payment Processing Core**
+- Processes one-time payments with full transaction lifecycle tracking (created → processed → completed/refunded)
+- Supports multiple payment modes with detailed transaction records
+- Handles payment failures with reason tracking
+- Manages payment holds with status and reason documentation
+- Processes refunds with detailed amount breakdowns (received amount, transaction fees)
+- Links refunds to original payments and sales
+
+**2. Subscription Management**
+- Manages billing plans with configurable payment definitions (frequency, cycles, amounts)
+- Supports charge models with flexible pricing structures
+- Handles billing agreement creation and execution
+- Tracks agreement states (active, canceled) with period management
+- Associates agreements with users and payer information
+- Links subscriptions to payment events through sales records
+
+**3. Dispute Resolution**
+- Tracks dispute lifecycle from creation to resolution
+- Documents disputed transactions and amounts
+- Manages communication between parties (messages)
+- Tracks response deadlines for buyers and sellers
+- Records dispute outcomes and settlement offers
+- Associates disputes with related refunds
+
+**4. Webhook Infrastructure**
+- Receives and validates PayPal webhook events
+- Processes event triggers with success/failure tracking
+- Stores complete event payloads (headers + body)
+- Maintains event processing status (processed/unprocessed)
+- Links events to payment/sale/subscription entities
+- Preserves error information for failed processing attempts
+
+**Key Relationships:**
+- Payments → Sales → Billing Agreements form the core transaction chain
+- Refunds reference both payments and sales
+- Billing agreements connect to plans and payer information
+- Webhook events trigger updates across all entity types
+- Payment definitions and charge models form flexible pricing structures
+
+The system maintains clear separation between PayPal's native data (remote IDs, timestamps) and system-managed data (local timestamps, processing flags), with comprehensive JSON storage for all PayPal-native object structures.

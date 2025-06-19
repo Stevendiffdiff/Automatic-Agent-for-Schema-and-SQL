@@ -1,0 +1,24 @@
+### Functional Description: Reaction Tracking System
+
+This system enables users to apply and track reactions (e.g., likes, ratings, or custom emoji) on various content types (reactants) with the following core capabilities:
+
+1. **Reaction Framework**
+   - Supports multiple reaction types (e.g., like, love, angry) with configurable weights ("mass")
+   - Tracks both simple counts and weighted aggregates
+   - Records reaction intensity ("rate") for scaled reactions (e.g., 1-5 stars)
+
+2. **Entity Model**
+   - **Reactants**: Content objects that receive reactions (posts, comments, etc.)
+   - **Reactors**: Entities that give reactions (users, bots, etc.)
+   - Both support polymorphic typing via "type" fields
+
+3. **Analytics Features**
+   - Per-reaction-type counters for each content item
+   - Real-time aggregated totals (raw count and weighted sum)
+   - All records include temporal tracking (created/updated timestamps)
+
+4. **Performance Optimization**
+   - Dedicated counters table avoids expensive reaction counting queries
+   - Pre-computed totals enable fast leaderboard/sorting queries
+
+The system is designed for high-volume interaction tracking while maintaining real-time analytics capabilities. The schema supports polymorphic content and user systems through type identifiers rather than rigid foreign keys.

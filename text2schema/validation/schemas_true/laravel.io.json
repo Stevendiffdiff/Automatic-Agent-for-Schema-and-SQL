@@ -1,0 +1,648 @@
+{
+    "tables": [
+      {
+        "name": "users",
+        "description": "Stores user account information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "github_id",
+            "type": "varchar",
+            "description": "GitHub user ID"
+          },
+          {
+            "name": "github_username",
+            "type": "varchar",
+            "description": "GitHub username"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "User's display name"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the user account was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the user account was last updated"
+          },
+          {
+            "name": "remember_token",
+            "type": "varchar",
+            "description": "Token for 'remember me' functionality"
+          },
+          {
+            "name": "confirmed",
+            "type": "tinyint",
+            "description": "Flag indicating if the user has confirmed their account"
+          },
+          {
+            "name": "confirmation_code",
+            "type": "varchar",
+            "description": "Code used for account confirmation"
+          },
+          {
+            "name": "username",
+            "type": "varchar",
+            "description": "User's username in the system"
+          },
+          {
+            "name": "password",
+            "type": "varchar",
+            "description": "User's hashed password"
+          },
+          {
+            "name": "type",
+            "type": "smallint",
+            "description": "User account type"
+          },
+          {
+            "name": "bio",
+            "type": "varchar",
+            "description": "User's biography"
+          },
+          {
+            "name": "banned_at",
+            "type": "datetime",
+            "description": "Timestamp when the user was banned, if applicable"
+          }
+        ]
+      },
+      {
+        "name": "subscriptions",
+        "description": "Stores subscription information",
+        "columns": [
+          {
+            "name": "uuid",
+            "type": "char",
+            "description": "Unique identifier for the subscription",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "description": "Foreign key to users table",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "subscriptionable_id",
+            "type": "integer",
+            "description": "ID of the entity being subscribed to (polymorphic)"
+          },
+          {
+            "name": "subscriptionable_type",
+            "type": "varchar",
+            "description": "Type of the entity being subscribed to (polymorphic)"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the subscription was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the subscription was last updated"
+          }
+        ]
+      },
+      {
+        "name": "likes",
+        "description": "Stores user likes for various content types",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "description": "Foreign key to users table",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "likeable_id",
+            "type": "integer",
+            "description": "ID of the entity being liked (polymorphic)"
+          },
+          {
+            "name": "likeable_type",
+            "type": "varchar",
+            "description": "Type of the entity being liked (polymorphic)"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the like was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the like was last updated"
+          }
+        ]
+      },
+      {
+        "name": "replies",
+        "description": "Stores replies to various content types",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "body",
+            "type": "text",
+            "description": "Content of the reply"
+          },
+          {
+            "name": "author_id",
+            "type": "integer",
+            "description": "Foreign key to users table, the author of the reply",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "replyable_id",
+            "type": "integer",
+            "description": "ID of the entity being replied to (polymorphic)"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the reply was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the reply was last updated"
+          },
+          {
+            "name": "replyable_type",
+            "type": "varchar",
+            "description": "Type of the entity being replied to (polymorphic)"
+          }
+        ]
+      },
+      {
+        "name": "notifications",
+        "description": "Stores user notifications",
+        "columns": [
+          {
+            "name": "id",
+            "type": "char",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "type",
+            "type": "varchar",
+            "description": "Type of notification"
+          },
+          {
+            "name": "notifiable_type",
+            "type": "varchar",
+            "description": "Type of the entity the notification relates to (polymorphic)"
+          },
+          {
+            "name": "notifiable_id",
+            "type": "bigint",
+            "description": "ID of the entity the notification relates to (polymorphic)"
+          },
+          {
+            "name": "data",
+            "type": "text",
+            "description": "Additional notification data in JSON format"
+          },
+          {
+            "name": "read_at",
+            "type": "timestamp",
+            "description": "Timestamp when the notification was read by the user"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the notification was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the notification was last updated"
+          }
+        ]
+      },
+      {
+        "name": "taggables",
+        "description": "Junction table for many-to-many relationships between tags and various content types",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "taggable_id",
+            "type": "integer",
+            "description": "ID of the entity being tagged (polymorphic)"
+          },
+          {
+            "name": "tag_id",
+            "type": "integer",
+            "description": "Foreign key to tags table",
+            "constraints": {
+              "foreign_key": {
+                "table": "tags",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the taggable relationship was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the taggable relationship was last updated"
+          },
+          {
+            "name": "taggable_type",
+            "type": "varchar",
+            "description": "Type of the entity being tagged (polymorphic)"
+          }
+        ]
+      },
+      {
+        "name": "tags",
+        "description": "Stores tags that can be applied to various content",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the tag"
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "URL-friendly version of the tag name"
+          }
+        ]
+      },
+      {
+        "name": "threads",
+        "description": "Stores discussion threads",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "author_id",
+            "type": "integer",
+            "description": "Foreign key to users table, the author of the thread",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "subject",
+            "type": "varchar",
+            "description": "Subject/title of the thread"
+          },
+          {
+            "name": "body",
+            "type": "text",
+            "description": "Content of the thread"
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "URL-friendly version of the subject"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the thread was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the thread was last updated"
+          },
+          {
+            "name": "solution_reply_id",
+            "type": "integer",
+            "description": "Foreign key to replies table, indicating which reply is marked as the solution",
+            "constraints": {
+              "foreign_key": {
+                "table": "replies",
+                "column": "id"
+              },
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "password_resets",
+        "description": "Stores password reset tokens",
+        "columns": [
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "Email address associated with the reset token"
+          },
+          {
+            "name": "token",
+            "type": "varchar",
+            "description": "Reset token"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the reset token was created"
+          }
+        ]
+      },
+      {
+        "name": "migrations",
+        "description": "Tracks database migrations",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "migration",
+            "type": "varchar",
+            "description": "Name of the migration"
+          },
+          {
+            "name": "batch",
+            "type": "integer",
+            "description": "Batch number the migration belongs to"
+          }
+        ]
+      },
+      {
+        "name": "failed_jobs",
+        "description": "Stores information about failed queue jobs",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "connection",
+            "type": "text",
+            "description": "Connection information for the failed job"
+          },
+          {
+            "name": "queue",
+            "type": "text",
+            "description": "Queue the failed job was in"
+          },
+          {
+            "name": "payload",
+            "type": "longtext",
+            "description": "Serialized job payload"
+          },
+          {
+            "name": "exception",
+            "type": "longtext",
+            "description": "The exception that caused the job to fail"
+          },
+          {
+            "name": "failed_at",
+            "type": "timestamp",
+            "description": "Timestamp when the job failed"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "user_subscriptions",
+        "type": "one_to_many",
+        "description": "A user can have multiple subscriptions",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "subscriptions",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_likes",
+        "type": "one_to_many",
+        "description": "A user can like multiple items",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "likes",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_replies",
+        "type": "one_to_many",
+        "description": "A user can author multiple replies",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "replies",
+          "column": "author_id"
+        }
+      },
+      {
+        "name": "thread_replies",
+        "type": "one_to_many",
+        "description": "A thread can have multiple replies",
+        "from": {
+          "table": "threads",
+          "column": "id"
+        },
+        "to": {
+          "table": "replies",
+          "column": "replyable_id"
+        }
+      },
+      {
+        "name": "user_threads",
+        "type": "one_to_many",
+        "description": "A user can author multiple threads",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "threads",
+          "column": "author_id"
+        }
+      },
+      {
+        "name": "thread_solution",
+        "type": "many_to_one",
+        "description": "A thread can have one reply marked as solution",
+        "from": {
+          "table": "threads",
+          "column": "solution_reply_id"
+        },
+        "to": {
+          "table": "replies",
+          "column": "id"
+        }
+      },
+      {
+        "name": "tag_taggables",
+        "type": "one_to_many",
+        "description": "A tag can be applied to multiple items",
+        "from": {
+          "table": "tags",
+          "column": "id"
+        },
+        "to": {
+          "table": "taggables",
+          "column": "tag_id"
+        }
+      },
+      {
+        "name": "polymorphic_likes",
+        "type": "polymorphic",
+        "description": "Various entities can be liked (threads, replies, etc.)",
+        "from": {
+          "table": "likes",
+          "columns": ["likeable_id", "likeable_type"]
+        }
+      },
+      {
+        "name": "polymorphic_replies",
+        "type": "polymorphic",
+        "description": "Various entities can be replied to (threads, other replies, etc.)",
+        "from": {
+          "table": "replies",
+          "columns": ["replyable_id", "replyable_type"]
+        }
+      },
+      {
+        "name": "polymorphic_notifications",
+        "type": "polymorphic",
+        "description": "Various entities can generate notifications",
+        "from": {
+          "table": "notifications",
+          "columns": ["notifiable_id", "notifiable_type"]
+        }
+      },
+      {
+        "name": "polymorphic_taggables",
+        "type": "polymorphic",
+        "description": "Various entities can be tagged (threads, replies, etc.)",
+        "from": {
+          "table": "taggables",
+          "columns": ["taggable_id", "taggable_type"]
+        }
+      },
+      {
+        "name": "polymorphic_subscriptions",
+        "type": "polymorphic",
+        "description": "Users can subscribe to various entities",
+        "from": {
+          "table": "subscriptions",
+          "columns": ["subscriptionable_id", "subscriptionable_type"]
+        }
+      }
+    ]
+  }

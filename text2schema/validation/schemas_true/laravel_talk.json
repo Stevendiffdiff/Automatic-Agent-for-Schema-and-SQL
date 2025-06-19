@@ -1,0 +1,195 @@
+{
+    "tables": [
+      {
+        "name": "users",
+        "description": "Contains user information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "messages",
+        "description": "Contains message data for conversations",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "message",
+            "type": "text",
+            "description": "Content of the message"
+          },
+          {
+            "name": "is_seen",
+            "type": "boolean",
+            "description": "Indicates if the message has been seen"
+          },
+          {
+            "name": "deleted_from_sender",
+            "type": "boolean",
+            "description": "Indicates if the message is deleted for the sender"
+          },
+          {
+            "name": "deleted_from_receiver",
+            "type": "boolean",
+            "description": "Indicates if the message is deleted for the receiver"
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "ID of the user who sent the message",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "conversation_id",
+            "type": "int",
+            "description": "ID of the conversation this message belongs to",
+            "constraints": {
+              "foreign_key": {
+                "table": "conversations",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the message was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the message was last updated"
+          }
+        ]
+      },
+      {
+        "name": "conversations",
+        "description": "Represents conversations between users",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_one",
+            "type": "int",
+            "description": "ID of the first participant in the conversation",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "user_two",
+            "type": "int",
+            "description": "ID of the second participant in the conversation",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "status",
+            "type": "boolean",
+            "description": "Status of the conversation"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the conversation was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the conversation was last updated"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "user_conversation",
+        "type": "one_to_many",
+        "description": "One user can participate in many conversations",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "conversations",
+          "column": "user_one"
+        }
+      },
+      {
+        "name": "user_conversation_two",
+        "type": "one_to_many",
+        "description": "One user can participate in many conversations as the second participant",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "conversations",
+          "column": "user_two"
+        }
+      },
+      {
+        "name": "user_message",
+        "type": "one_to_many",
+        "description": "One user can send many messages",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "messages",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "conversation_message",
+        "type": "one_to_many",
+        "description": "One conversation can have many messages",
+        "from": {
+          "table": "conversations",
+          "column": "id"
+        },
+        "to": {
+          "table": "messages",
+          "column": "conversation_id"
+        }
+      }
+    ]
+  }

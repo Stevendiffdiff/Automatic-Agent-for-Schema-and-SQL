@@ -1,0 +1,856 @@
+{
+    "tables": [
+      {
+        "name": "users",
+        "description": "Stores user account information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key for users",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_name",
+            "type": "varchar",
+            "description": "Username for login"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address"
+          },
+          {
+            "name": "first_name",
+            "type": "varchar",
+            "description": "User's first name"
+          },
+          {
+            "name": "last_name",
+            "type": "varchar",
+            "description": "User's last name"
+          },
+          {
+            "name": "locale",
+            "type": "varchar",
+            "description": "User's locale setting"
+          },
+          {
+            "name": "theme",
+            "type": "varchar",
+            "description": "User's theme preference",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "group_id",
+            "type": "integer",
+            "description": "User's group ID",
+            "constraints": {
+              "foreign_key": {
+                "table": "groups",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "flag_verified",
+            "type": "tinyint",
+            "description": "Flag indicating if user is verified"
+          },
+          {
+            "name": "flag_enabled",
+            "type": "tinyint",
+            "description": "Flag indicating if user account is enabled"
+          },
+          {
+            "name": "last_activity_id",
+            "type": "integer",
+            "description": "Reference to user's last activity",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "activities",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "password",
+            "type": "varchar",
+            "description": "User's password (hashed)"
+          },
+          {
+            "name": "deleted_at",
+            "type": "timestamp",
+            "description": "Soft delete timestamp",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When user was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When user was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "sessions",
+        "description": "Stores user session information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar",
+            "description": "Primary key for sessions",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "description": "Foreign key to users table",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "ip_address",
+            "type": "varchar",
+            "description": "IP address of the session",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "user_agent",
+            "type": "text",
+            "description": "User agent of the session",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "payload",
+            "type": "text",
+            "description": "Session payload data"
+          },
+          {
+            "name": "last_activity",
+            "type": "integer",
+            "description": "Timestamp of the last activity"
+          }
+        ]
+      },
+      {
+        "name": "activities",
+        "description": "Records of user activities in the system",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key for activities",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "ip_address",
+            "type": "varchar",
+            "description": "IP address where activity occurred",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "description": "Foreign key to users table",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "type",
+            "type": "varchar",
+            "description": "Type of activity"
+          },
+          {
+            "name": "occurred_at",
+            "type": "timestamp",
+            "description": "When the activity occurred",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Description of the activity",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "verifications",
+        "description": "Stores verification information for users",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key for verifications",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "description": "Foreign key to users table",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "hash",
+            "type": "varchar",
+            "description": "Verification hash"
+          },
+          {
+            "name": "completed",
+            "type": "tinyint",
+            "description": "Flag indicating if verification is complete"
+          },
+          {
+            "name": "expires_at",
+            "type": "timestamp",
+            "description": "When the verification expires",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "completed_at",
+            "type": "timestamp",
+            "description": "When the verification was completed",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the verification was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the verification was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "persistences",
+        "description": "Stores persistence tokens for remembering users",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key for persistences",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "description": "Foreign key to users table",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "token",
+            "type": "varchar",
+            "description": "Persistence token"
+          },
+          {
+            "name": "persistent_token",
+            "type": "varchar",
+            "description": "Persistent token for long term authentication"
+          },
+          {
+            "name": "expires_at",
+            "type": "timestamp",
+            "description": "When the persistence expires",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the persistence was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the persistence was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "password_resets",
+        "description": "Stores password reset information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key for password resets",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "description": "Foreign key to users table",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "hash",
+            "type": "varchar",
+            "description": "Reset token hash"
+          },
+          {
+            "name": "completed",
+            "type": "tinyint",
+            "description": "Flag indicating if reset is complete"
+          },
+          {
+            "name": "expires_at",
+            "type": "timestamp",
+            "description": "When the reset expires",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "completed_at",
+            "type": "timestamp",
+            "description": "When the reset was completed",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the reset was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the reset was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "throttles",
+        "description": "Stores rate limiting information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key for throttles",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "type",
+            "type": "varchar",
+            "description": "Type of throttle"
+          },
+          {
+            "name": "ip",
+            "type": "varchar",
+            "description": "IP address being throttled",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "request_data",
+            "type": "text",
+            "description": "Data associated with the throttled request",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the throttle was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the throttle was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "permissions",
+        "description": "Stores permission definitions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key for permissions",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "Unique identifier for the permission"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Human-readable name for the permission"
+          },
+          {
+            "name": "conditions",
+            "type": "text",
+            "description": "Conditions for the permission",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Description of the permission",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the permission was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the permission was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "roles",
+        "description": "Stores role definitions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key for roles",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "Unique identifier for the role"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Human-readable name for the role"
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Description of the role",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the role was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the role was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "role_users",
+        "description": "Junction table for users and roles",
+        "columns": [
+          {
+            "name": "user_id",
+            "type": "integer",
+            "description": "Foreign key to users table",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "role_id",
+            "type": "integer",
+            "description": "Foreign key to roles table",
+            "constraints": {
+              "foreign_key": {
+                "table": "roles",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the role-user assignment was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the role-user assignment was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "permission_roles",
+        "description": "Junction table for permissions and roles",
+        "columns": [
+          {
+            "name": "permission_id",
+            "type": "integer",
+            "description": "Foreign key to permissions table",
+            "constraints": {
+              "foreign_key": {
+                "table": "permissions",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "role_id",
+            "type": "integer",
+            "description": "Foreign key to roles table",
+            "constraints": {
+              "foreign_key": {
+                "table": "roles",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the permission-role assignment was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the permission-role assignment was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "groups",
+        "description": "Stores group definitions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Primary key for groups",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "Unique identifier for the group"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Human-readable name for the group"
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Description of the group",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "icon",
+            "type": "varchar",
+            "description": "Icon for the group"
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "When the group was created",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "When the group was last updated",
+            "constraints": {
+              "nullable": true
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "user_group",
+        "type": "many_to_one",
+        "description": "Users belong to a group",
+        "from": {
+          "table": "users",
+          "column": "group_id"
+        },
+        "to": {
+          "table": "groups",
+          "column": "id"
+        }
+      },
+      {
+        "name": "user_activities",
+        "type": "one_to_many",
+        "description": "Users have many activities",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "activities",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_last_activity",
+        "type": "many_to_one",
+        "description": "User's last activity",
+        "from": {
+          "table": "users",
+          "column": "last_activity_id"
+        },
+        "to": {
+          "table": "activities",
+          "column": "id"
+        }
+      },
+      {
+        "name": "user_verifications",
+        "type": "one_to_many",
+        "description": "Users have many verifications",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "verifications",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_persistences",
+        "type": "one_to_many",
+        "description": "Users have many persistences",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "persistences",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_password_resets",
+        "type": "one_to_many",
+        "description": "Users have many password resets",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "password_resets",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_sessions",
+        "type": "one_to_many",
+        "description": "Users have many sessions",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "sessions",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_roles",
+        "type": "many_to_many",
+        "description": "Users have many roles",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "roles",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "role_users",
+          "source_column": "user_id",
+          "target_column": "role_id"
+        }
+      },
+      {
+        "name": "role_permissions",
+        "type": "many_to_many",
+        "description": "Roles have many permissions",
+        "from": {
+          "table": "roles",
+          "column": "id"
+        },
+        "to": {
+          "table": "permissions",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "permission_roles",
+          "source_column": "role_id",
+          "target_column": "permission_id"
+        }
+      }
+    ]
+  }

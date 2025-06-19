@@ -1,0 +1,646 @@
+{
+    "tables": [
+      {
+        "name": "users",
+        "description": "User accounts information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "User's name"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address",
+            "constraints": {
+              "unique": true
+            }
+          },
+          {
+            "name": "password",
+            "type": "varchar",
+            "description": "User's password"
+          },
+          {
+            "name": "is_admin",
+            "type": "boolean",
+            "description": "Flag indicating if user has admin privileges"
+          },
+          {
+            "name": "preferences",
+            "type": "text",
+            "description": "User preferences"
+          },
+          {
+            "name": "remember_token",
+            "type": "varchar",
+            "description": "Token for 'remember me' functionality"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated"
+          }
+        ]
+      },
+      {
+        "name": "personal_access_tokens",
+        "description": "API tokens for authentication",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "tokenable_id",
+            "type": "bigint",
+            "description": "ID of the entity that owns the token"
+          },
+          {
+            "name": "tokenable_type",
+            "type": "varchar",
+            "description": "Type of the entity that owns the token"
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the token"
+          },
+          {
+            "name": "token",
+            "type": "varchar",
+            "description": "Hashed token string",
+            "constraints": {
+              "unique": true
+            }
+          },
+          {
+            "name": "abilities",
+            "type": "text",
+            "description": "Permissions granted to this token"
+          },
+          {
+            "name": "last_used_at",
+            "type": "datetime",
+            "description": "When the token was last used"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated"
+          }
+        ]
+      },
+      {
+        "name": "password_resets",
+        "description": "Stores password reset information",
+        "columns": [
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "Email associated with the reset request"
+          },
+          {
+            "name": "token",
+            "type": "varchar",
+            "description": "Reset token"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "When the reset was requested"
+          }
+        ]
+      },
+      {
+        "name": "settings",
+        "description": "Application settings",
+        "columns": [
+          {
+            "name": "key",
+            "type": "varchar",
+            "description": "Setting key",
+            "constraints": {
+              "primary_key": true
+            }
+          },
+          {
+            "name": "value",
+            "type": "text",
+            "description": "Setting value"
+          }
+        ]
+      },
+      {
+        "name": "playlists",
+        "description": "User playlists",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "User ID who owns the playlist",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Playlist name"
+          },
+          {
+            "name": "rules",
+            "type": "text",
+            "description": "Playlist rules or criteria"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated"
+          },
+          {
+            "name": "folder_id",
+            "type": "varchar(36)",
+            "description": "Folder containing this playlist",
+            "constraints": {
+              "foreign_key": {
+                "table": "playlist_folders",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "playlist_folders",
+        "description": "Folders for organizing playlists",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar(36)",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Folder name"
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "User ID who owns the folder",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated"
+          }
+        ]
+      },
+      {
+        "name": "playlist_song",
+        "description": "Junction table for playlists and songs",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "playlist_id",
+            "type": "int",
+            "description": "Playlist ID",
+            "constraints": {
+              "foreign_key": {
+                "table": "playlists",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "song_id",
+            "type": "varchar(36)",
+            "description": "Song ID",
+            "constraints": {
+              "foreign_key": {
+                "table": "songs",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "interactions",
+        "description": "User interactions with songs",
+        "columns": [
+          {
+            "name": "id",
+            "type": "bigint",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "User ID",
+            "constraints": {
+              "foreign_key": {
+                "table": "users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "song_id",
+            "type": "varchar(36)",
+            "description": "Song ID",
+            "constraints": {
+              "foreign_key": {
+                "table": "songs",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "liked",
+            "type": "boolean",
+            "description": "Whether user liked the song"
+          },
+          {
+            "name": "play_count",
+            "type": "int",
+            "description": "Number of times user played the song"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated"
+          }
+        ]
+      },
+      {
+        "name": "songs",
+        "description": "Music songs information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "varchar(36)",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "album_id",
+            "type": "int",
+            "description": "Album ID",
+            "constraints": {
+              "foreign_key": {
+                "table": "albums",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "artist_id",
+            "type": "int",
+            "description": "Artist ID",
+            "constraints": {
+              "foreign_key": {
+                "table": "artists",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "title",
+            "type": "varchar",
+            "description": "Song title"
+          },
+          {
+            "name": "length",
+            "type": "float",
+            "description": "Song duration in seconds"
+          },
+          {
+            "name": "track",
+            "type": "int",
+            "description": "Track number on album"
+          },
+          {
+            "name": "disc",
+            "type": "int",
+            "description": "Disc number for multi-disc albums"
+          },
+          {
+            "name": "lyrics",
+            "type": "text",
+            "description": "Song lyrics"
+          },
+          {
+            "name": "path",
+            "type": "text",
+            "description": "File path to song"
+          },
+          {
+            "name": "mtime",
+            "type": "int",
+            "description": "File modification time"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated"
+          }
+        ]
+      },
+      {
+        "name": "albums",
+        "description": "Music albums information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "artist_id",
+            "type": "int",
+            "description": "Artist ID",
+            "constraints": {
+              "foreign_key": {
+                "table": "artists",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Album name"
+          },
+          {
+            "name": "cover",
+            "type": "varchar",
+            "description": "Album cover art path"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated"
+          }
+        ]
+      },
+      {
+        "name": "artists",
+        "description": "Music artists information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Artist name"
+          },
+          {
+            "name": "image",
+            "type": "varchar",
+            "description": "Artist image path"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when the record was last updated"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "user_playlists",
+        "type": "one_to_many",
+        "description": "A user can have many playlists",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "playlists",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "user_playlist_folders",
+        "type": "one_to_many",
+        "description": "A user can have many playlist folders",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "playlist_folders",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "folder_playlists",
+        "type": "one_to_many",
+        "description": "A folder can contain many playlists",
+        "from": {
+          "table": "playlist_folders",
+          "column": "id"
+        },
+        "to": {
+          "table": "playlists",
+          "column": "folder_id"
+        }
+      },
+      {
+        "name": "playlist_songs",
+        "type": "many_to_many",
+        "description": "Playlists can have many songs, and songs can belong to many playlists",
+        "from": {
+          "table": "playlists",
+          "column": "id"
+        },
+        "to": {
+          "table": "songs",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "playlist_song",
+          "source_column": "playlist_id",
+          "target_column": "song_id"
+        }
+      },
+      {
+        "name": "user_song_interactions",
+        "type": "one_to_many",
+        "description": "A user can have many interactions with songs",
+        "from": {
+          "table": "users",
+          "column": "id"
+        },
+        "to": {
+          "table": "interactions",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "song_interactions",
+        "type": "one_to_many",
+        "description": "A song can have many user interactions",
+        "from": {
+          "table": "songs",
+          "column": "id"
+        },
+        "to": {
+          "table": "interactions",
+          "column": "song_id"
+        }
+      },
+      {
+        "name": "artist_albums",
+        "type": "one_to_many",
+        "description": "An artist can have many albums",
+        "from": {
+          "table": "artists",
+          "column": "id"
+        },
+        "to": {
+          "table": "albums",
+          "column": "artist_id"
+        }
+      },
+      {
+        "name": "album_songs",
+        "type": "one_to_many",
+        "description": "An album can have many songs",
+        "from": {
+          "table": "albums",
+          "column": "id"
+        },
+        "to": {
+          "table": "songs",
+          "column": "album_id"
+        }
+      },
+      {
+        "name": "artist_songs",
+        "type": "one_to_many",
+        "description": "An artist can have many songs",
+        "from": {
+          "table": "artists",
+          "column": "id"
+        },
+        "to": {
+          "table": "songs",
+          "column": "artist_id"
+        }
+      }
+    ]
+  }

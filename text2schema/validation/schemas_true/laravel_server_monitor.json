@@ -1,0 +1,207 @@
+{
+    "tables": [
+      {
+        "name": "hosts",
+        "description": "Table for storing host information",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for hosts",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Name of the host",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "ssh_user",
+            "type": "varchar",
+            "description": "SSH username for accessing the host",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "port",
+            "type": "int",
+            "description": "Port number for the host",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "ip",
+            "type": "varchar",
+            "description": "IP address of the host",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "custom_properties",
+            "type": "json",
+            "description": "Custom properties stored in JSON format",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the host record was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the host record was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "checks",
+        "description": "Table for storing check information related to hosts",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key identifier for checks",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "host_id",
+            "type": "int",
+            "description": "Foreign key reference to the hosts table",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "hosts",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "type",
+            "type": "varchar",
+            "description": "Type of check being performed",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "status",
+            "type": "varchar",
+            "description": "Current status of the check",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "enabled",
+            "type": "boolean",
+            "description": "Whether the check is enabled or disabled",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "last_run_message",
+            "type": "text",
+            "description": "Message from the last check run",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "last_run_output",
+            "type": "json",
+            "description": "Detailed output from the last check run in JSON format",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "last_ran_at",
+            "type": "time",
+            "description": "Time when the check was last executed",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "next_run_in_minutes",
+            "type": "int",
+            "description": "Minutes until the next scheduled check run",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "started_throttling_failing_notifications_at",
+            "type": "timestamp",
+            "description": "When throttling of failing notifications started",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "custom_properties",
+            "type": "json",
+            "description": "Custom properties for the check stored in JSON format",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "description": "Timestamp when the check record was created",
+            "constraints": {
+              "nullable": false
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": "timestamp",
+            "description": "Timestamp when the check record was last updated",
+            "constraints": {
+              "nullable": false
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "host_checks",
+        "type": "one_to_many",
+        "description": "One host can have many checks",
+        "from": {
+          "table": "hosts",
+          "column": "id"
+        },
+        "to": {
+          "table": "checks",
+          "column": "host_id"
+        }
+      }
+    ]
+  }

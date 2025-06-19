@@ -1,0 +1,44 @@
+### Functional Description of the File Management System:
+
+This is a **hierarchical file management system** with user permissions, clipboard functionality, and specialized image handling. The core functionality includes:
+
+1. **File & Folder Management**  
+   - Supports nested folder structures using a nested set model (lft/rght/tree_id/level) for efficient hierarchy operations  
+   - Each file/folder has ownership (user), timestamps, and can track original filenames  
+   - Files maintain integrity through SHA1 hashing and size tracking  
+
+2. **User System Integration**  
+   - Full user authentication system with groups  
+   - All file operations are user-aware (ownership tracked for both files and folders)  
+
+3. **Clipboard Functionality**  
+   - Per-user clipboard storage for file operations  
+   - Supports storing multiple file references in clipboard items  
+
+4. **Permission System**  
+   - Granular folder permissions (read/edit/add children)  
+   - Supports user-specific, group-wide, and global permission settings  
+
+5. **Image Handling**  
+   - Specialized image metadata storage (dimensions, author, copyright, alt text)  
+   - Inherits all base file properties while adding image-specific fields  
+
+6. **Thumbnail Generation**  
+   - Configurable thumbnail presets with dimension and cropping options  
+
+7. **Polymorphic Content**  
+   - Supports extending file types through Django's content type system  
+
+Key Relationships:  
+- Users own folders/files and have clipboards  
+- Folders contain files and other folders (nested hierarchy)  
+- Permissions apply to folders and cascade to contents  
+- Images are specialized file types with additional metadata  
+
+The system appears designed for **web-based content management**, with particular attention to:  
+- Media asset management (images with metadata)  
+- Team collaboration (permissions system)  
+- Batch operations (clipboard functionality)  
+- Content organization (hierarchical folder structure)  
+
+The schema suggests this powers a CMS-like interface where users need to manage files with varying permission levels, particularly for media-rich content.

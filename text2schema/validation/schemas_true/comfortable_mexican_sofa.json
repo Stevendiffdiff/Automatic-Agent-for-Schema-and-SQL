@@ -1,0 +1,821 @@
+{
+    "tables": [
+      {
+        "name": "comfy_cms_files",
+        "description": "Stores CMS file metadata",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "site_id",
+            "type": "int",
+            "description": "Reference to site this file belongs to",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "comfy_cms_sites",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "label",
+            "type": "varchar",
+            "description": "Human-readable name for the file"
+          },
+          {
+            "name": "description",
+            "type": "text",
+            "description": "Detailed description of the file"
+          },
+          {
+            "name": "position",
+            "type": "int",
+            "description": "Ordering position"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when record was last updated"
+          }
+        ]
+      },
+      {
+        "name": "comfy_cms_translations",
+        "description": "Stores translations for multilingual content",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "locale",
+            "type": "varchar",
+            "description": "Language code for the translation"
+          },
+          {
+            "name": "page_id",
+            "type": "int",
+            "description": "Reference to the page being translated",
+            "constraints": {
+              "foreign_key": {
+                "table": "comfy_cms_pages",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "layout_id",
+            "type": "int",
+            "description": "Reference to the layout for this translation",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "comfy_cms_layouts",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "label",
+            "type": "int",
+            "description": "Label for the translation"
+          },
+          {
+            "name": "content_cache",
+            "type": "text",
+            "description": "Cached content of the translation"
+          },
+          {
+            "name": "is_published",
+            "type": "boolean",
+            "description": "Flag indicating if the translation is published"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when record was last updated"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when record was created"
+          }
+        ]
+      },
+      {
+        "name": "comfy_cms_pages",
+        "description": "Stores CMS page content and metadata",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "site_id",
+            "type": "int",
+            "description": "Reference to the site this page belongs to",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "comfy_cms_sites",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "layout_id",
+            "type": "int",
+            "description": "Reference to the layout for this page",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "comfy_cms_layouts",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "parent_id",
+            "type": "int",
+            "description": "Reference to parent page for hierarchical structure",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "comfy_cms_pages",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "target_page_id",
+            "type": "int",
+            "description": "Target page for redirection",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "comfy_cms_pages",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "label",
+            "type": "varchar",
+            "description": "Human-readable name for the page"
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "URL-friendly identifier",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "full_path",
+            "type": "varchar",
+            "description": "Full URL path to the page",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "content_cache",
+            "type": "text",
+            "description": "Cached rendered content"
+          },
+          {
+            "name": "position",
+            "type": "int",
+            "description": "Ordering position"
+          },
+          {
+            "name": "children_count",
+            "type": "int",
+            "description": "Number of child pages"
+          },
+          {
+            "name": "is_published",
+            "type": "boolean",
+            "description": "Flag indicating if the page is published"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when record was last updated"
+          }
+        ]
+      },
+      {
+        "name": "comfy_cms_sites",
+        "description": "Stores information about different sites in the CMS",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "label",
+            "type": "varchar",
+            "description": "Human-readable name for the site"
+          },
+          {
+            "name": "identifier",
+            "type": "varchar",
+            "description": "Unique identifier for the site"
+          },
+          {
+            "name": "hostname",
+            "type": "varchar",
+            "description": "Domain name for the site",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "path",
+            "type": "varchar",
+            "description": "Base path for the site",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "locale",
+            "type": "varchar",
+            "description": "Default language for the site"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when record was last updated"
+          }
+        ]
+      },
+      {
+        "name": "comfy_cms_layouts",
+        "description": "Stores layout templates for pages",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "site_id",
+            "type": "int",
+            "description": "Reference to site this layout belongs to",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "comfy_cms_sites",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "parent_id",
+            "type": "int",
+            "description": "Reference to parent layout for inheritance",
+            "constraints": {
+              "nullable": true,
+              "foreign_key": {
+                "table": "comfy_cms_layouts",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "app_layout",
+            "type": "varchar",
+            "description": "Application layout to use"
+          },
+          {
+            "name": "label",
+            "type": "varchar",
+            "description": "Human-readable name for the layout"
+          },
+          {
+            "name": "identifier",
+            "type": "varchar",
+            "description": "Unique identifier for the layout"
+          },
+          {
+            "name": "content",
+            "type": "text",
+            "description": "Template content",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "css",
+            "type": "text",
+            "description": "CSS styles for the layout",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "js",
+            "type": "text",
+            "description": "JavaScript for the layout",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "position",
+            "type": "int",
+            "description": "Ordering position"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when record was last updated"
+          }
+        ]
+      },
+      {
+        "name": "comfy_cms_fragments",
+        "description": "Stores content fragments that can be used in pages",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "recordable_id",
+            "type": "int",
+            "description": "ID of the record this fragment belongs to"
+          },
+          {
+            "name": "recordable_type",
+            "type": "varchar",
+            "description": "Type of record this fragment belongs to"
+          },
+          {
+            "name": "identifier",
+            "type": "varchar",
+            "description": "Unique identifier for the fragment",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "tag",
+            "type": "varchar",
+            "description": "Type of content for the fragment"
+          },
+          {
+            "name": "content",
+            "type": "text",
+            "description": "Content of the fragment"
+          },
+          {
+            "name": "boolean",
+            "type": "boolean",
+            "description": "Boolean value for the fragment",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "datetime",
+            "type": "datetime",
+            "description": "Date value for the fragment",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp when record was last updated"
+          }
+        ]
+      },
+      {
+        "name": "comfy_cms_categorizations",
+        "description": "Junction table linking content to categories",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "category_id",
+            "type": "int",
+            "description": "Reference to the category",
+            "constraints": {
+              "foreign_key": {
+                "table": "comfy_cms_categories",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "categorized_type",
+            "type": "varchar",
+            "description": "Type of content being categorized"
+          },
+          {
+            "name": "categorized_id",
+            "type": "int",
+            "description": "ID of content being categorized"
+          }
+        ]
+      },
+      {
+        "name": "comfy_cms_categories",
+        "description": "Stores content categories for organization",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "site_id",
+            "type": "int",
+            "description": "Reference to site this category belongs to",
+            "constraints": {
+              "foreign_key": {
+                "table": "comfy_cms_sites",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "label",
+            "type": "varchar",
+            "description": "Human-readable name for the category"
+          },
+          {
+            "name": "categorized_type",
+            "type": "varchar",
+            "description": "Type of content this category applies to"
+          }
+        ]
+      },
+      {
+        "name": "comfy_cms_snippets",
+        "description": "Stores reusable content snippets",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "site_id",
+            "type": "varchar",
+            "description": "Reference to site this snippet belongs to",
+            "constraints": {
+              "foreign_key": {
+                "table": "comfy_cms_sites",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "label",
+            "type": "varchar",
+            "description": "Human-readable name for the snippet"
+          },
+          {
+            "name": "identifier",
+            "type": "varchar",
+            "description": "Unique identifier for the snippet"
+          },
+          {
+            "name": "content",
+            "type": "text",
+            "description": "Content of the snippet"
+          },
+          {
+            "name": "position",
+            "type": "int",
+            "description": "Ordering position"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when record was created"
+          },
+          {
+            "name": "updated_at",
+            "type": "bigint",
+            "description": "Timestamp when record was last updated"
+          }
+        ]
+      },
+      {
+        "name": "comfy_cms_revisions",
+        "description": "Stores revision history for CMS content",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false,
+              "auto_increment": true
+            }
+          },
+          {
+            "name": "record_type",
+            "type": "varchar",
+            "description": "Type of record being tracked"
+          },
+          {
+            "name": "record_id",
+            "type": "int",
+            "description": "ID of record being tracked"
+          },
+          {
+            "name": "data",
+            "type": "text",
+            "description": "Serialized record data",
+            "constraints": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp when revision was created"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "site_files",
+        "type": "one_to_many",
+        "description": "A site can have many files",
+        "from": {
+          "table": "comfy_cms_sites",
+          "column": "id"
+        },
+        "to": {
+          "table": "comfy_cms_files",
+          "column": "site_id"
+        }
+      },
+      {
+        "name": "site_pages",
+        "type": "one_to_many",
+        "description": "A site can have many pages",
+        "from": {
+          "table": "comfy_cms_sites",
+          "column": "id"
+        },
+        "to": {
+          "table": "comfy_cms_pages",
+          "column": "site_id"
+        }
+      },
+      {
+        "name": "site_layouts",
+        "type": "one_to_many",
+        "description": "A site can have many layouts",
+        "from": {
+          "table": "comfy_cms_sites",
+          "column": "id"
+        },
+        "to": {
+          "table": "comfy_cms_layouts",
+          "column": "site_id"
+        }
+      },
+      {
+        "name": "site_categories",
+        "type": "one_to_many",
+        "description": "A site can have many categories",
+        "from": {
+          "table": "comfy_cms_sites",
+          "column": "id"
+        },
+        "to": {
+          "table": "comfy_cms_categories",
+          "column": "site_id"
+        }
+      },
+      {
+        "name": "site_snippets",
+        "type": "one_to_many",
+        "description": "A site can have many snippets",
+        "from": {
+          "table": "comfy_cms_sites",
+          "column": "id"
+        },
+        "to": {
+          "table": "comfy_cms_snippets",
+          "column": "site_id"
+        }
+      },
+      {
+        "name": "page_translations",
+        "type": "one_to_many",
+        "description": "A page can have many translations",
+        "from": {
+          "table": "comfy_cms_pages",
+          "column": "id"
+        },
+        "to": {
+          "table": "comfy_cms_translations",
+          "column": "page_id"
+        }
+      },
+      {
+        "name": "layout_translations",
+        "type": "one_to_many",
+        "description": "A layout can be used by many translations",
+        "from": {
+          "table": "comfy_cms_layouts",
+          "column": "id"
+        },
+        "to": {
+          "table": "comfy_cms_translations",
+          "column": "layout_id"
+        }
+      },
+      {
+        "name": "page_layout",
+        "type": "many_to_one",
+        "description": "Many pages can use the same layout",
+        "from": {
+          "table": "comfy_cms_pages",
+          "column": "layout_id"
+        },
+        "to": {
+          "table": "comfy_cms_layouts",
+          "column": "id"
+        }
+      },
+      {
+        "name": "layout_hierarchy",
+        "type": "one_to_many",
+        "description": "Layouts can have parent-child relationships",
+        "from": {
+          "table": "comfy_cms_layouts",
+          "column": "id"
+        },
+        "to": {
+          "table": "comfy_cms_layouts",
+          "column": "parent_id"
+        }
+      },
+      {
+        "name": "page_hierarchy",
+        "type": "one_to_many",
+        "description": "Pages can have parent-child relationships",
+        "from": {
+          "table": "comfy_cms_pages",
+          "column": "id"
+        },
+        "to": {
+          "table": "comfy_cms_pages",
+          "column": "parent_id"
+        }
+      },
+      {
+        "name": "page_target",
+        "type": "one_to_many",
+        "description": "Pages can target other pages (redirections)",
+        "from": {
+          "table": "comfy_cms_pages",
+          "column": "id"
+        },
+        "to": {
+          "table": "comfy_cms_pages",
+          "column": "target_page_id"
+        }
+      },
+      {
+        "name": "category_categorizations",
+        "type": "one_to_many",
+        "description": "Categories can be assigned to many items",
+        "from": {
+          "table": "comfy_cms_categories",
+          "column": "id"
+        },
+        "to": {
+          "table": "comfy_cms_categorizations",
+          "column": "category_id"
+        }
+      },
+      {
+        "name": "content_categorization",
+        "type": "many_to_many",
+        "description": "Content can be assigned to multiple categories",
+        "from": {
+          "table": "comfy_cms_categories",
+          "column": "id"
+        },
+        "to": {
+          "table": "comfy_cms_categorizations",
+          "column": "categorized_id"
+        },
+        "junction_table": {
+          "name": "comfy_cms_categorizations",
+          "source_column": "category_id",
+          "target_column": "categorized_id"
+        }
+      },
+      {
+        "name": "content_revisions",
+        "type": "one_to_many",
+        "description": "Content can have many revision histories",
+        "from": {
+          "table": "comfy_cms_revisions",
+          "column": "record_id"
+        },
+        "to": {
+          "table": "comfy_cms_revisions",
+          "column": "id"
+        }
+      }
+    ]
+  }

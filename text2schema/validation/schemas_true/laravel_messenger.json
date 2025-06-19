@@ -1,0 +1,258 @@
+{
+    "tables": [
+        {
+            "name": "threads",
+            "description": "Contains information about message threads",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for threads",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "subject",
+                    "type": "varchar",
+                    "description": "Subject of the thread",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "When the thread was created",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "When the thread was last updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "deleted_at",
+                    "type": "datetime",
+                    "description": "When the thread was deleted (for soft deletes)",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "messages",
+            "description": "Contains individual messages within threads",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for messages",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "thread_id",
+                    "type": "int",
+                    "description": "Foreign key to threads table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "threads",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "user_id",
+                    "type": "int",
+                    "description": "Foreign key to users table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "users",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "body",
+                    "type": "text",
+                    "description": "Content of the message",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "When the message was created",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "When the message was last updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "deleted_at",
+                    "type": "datetime",
+                    "description": "When the message was deleted (for soft deletes)",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "users",
+            "description": "Contains user information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for users",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "participants",
+            "description": "Junction table mapping users to threads they participate in",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for participants",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "thread_id",
+                    "type": "int",
+                    "description": "Foreign key to threads table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "threads",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "user_id",
+                    "type": "int",
+                    "description": "Foreign key to users table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "users",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "last_read",
+                    "type": "timestamp",
+                    "description": "When the user last read the thread",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "description": "When the participant was added to the thread",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "deleted_at",
+                    "type": "datetime",
+                    "description": "When the participant was removed from the thread (for soft deletes)",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime",
+                    "description": "When the participant record was last updated",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "name": "thread_messages",
+            "type": "one_to_many",
+            "description": "A thread can have multiple messages",
+            "from": {
+                "table": "threads",
+                "column": "id"
+            },
+            "to": {
+                "table": "messages",
+                "column": "thread_id"
+            }
+        },
+        {
+            "name": "user_messages",
+            "type": "one_to_many",
+            "description": "A user can author multiple messages",
+            "from": {
+                "table": "users",
+                "column": "id"
+            },
+            "to": {
+                "table": "messages",
+                "column": "user_id"
+            }
+        },
+        {
+            "name": "thread_participants",
+            "type": "many_to_many",
+            "description": "Users can participate in multiple threads, and threads can have multiple participants",
+            "from": {
+                "table": "users",
+                "column": "id"
+            },
+            "to": {
+                "table": "threads",
+                "column": "id"
+            },
+            "junction_table": {
+                "name": "participants",
+                "source_column": "user_id",
+                "target_column": "thread_id"
+            }
+        }
+    ]
+}

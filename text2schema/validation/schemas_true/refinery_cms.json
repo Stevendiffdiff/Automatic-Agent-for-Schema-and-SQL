@@ -1,0 +1,752 @@
+{
+    "tables": [
+      {
+        "name": "refinery_authentication_device_roles_users",
+        "description": "Junction table linking authentication device roles and users",
+        "columns": [
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "User ID foreign key",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "refinery_authentication_device_users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "role_id",
+            "type": "int",
+            "description": "Role ID foreign key",
+            "constraints": {
+              "nullable": false,
+              "foreign_key": {
+                "table": "refinery_authentication_device_roles",
+                "column": "id"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "refinery_authentication_device_roles",
+        "description": "Defines roles for authentication",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "title",
+            "type": "varchar",
+            "description": "Role title"
+          }
+        ]
+      },
+      {
+        "name": "refinery_authentication_device_users",
+        "description": "User accounts for authentication",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "username",
+            "type": "varchar",
+            "description": "User's login name"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "description": "User's email address"
+          },
+          {
+            "name": "encrypted_password",
+            "type": "varchar",
+            "description": "User's encrypted password"
+          },
+          {
+            "name": "current_sign_in_at",
+            "type": "datetime",
+            "description": "Timestamp of current login"
+          },
+          {
+            "name": "last_sign_in_at",
+            "type": "datetime",
+            "description": "Timestamp of last login"
+          },
+          {
+            "name": "current_sign_in_ip",
+            "type": "varchar",
+            "description": "IP address of current login"
+          },
+          {
+            "name": "last_sign_in_ip",
+            "type": "varchar",
+            "description": "IP address of last login"
+          },
+          {
+            "name": "sign_in_count",
+            "type": "int",
+            "description": "Number of logins"
+          },
+          {
+            "name": "remember_created_at",
+            "type": "datetime",
+            "description": "Timestamp of remember me creation"
+          },
+          {
+            "name": "reset_password_token",
+            "type": "varchar",
+            "description": "Token for password reset"
+          },
+          {
+            "name": "reset_password_sent_at",
+            "type": "datetime",
+            "description": "Timestamp when reset password was sent"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of record creation"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of last update"
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "URL-friendly user identifier"
+          },
+          {
+            "name": "full_name",
+            "type": "varchar",
+            "description": "User's full name"
+          }
+        ]
+      },
+      {
+        "name": "refinery_authentication_devise_user_plugins",
+        "description": "Plugins associated with users",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "int",
+            "description": "User ID foreign key",
+            "constraints": {
+              "foreign_key": {
+                "table": "refinery_authentication_device_users",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "description": "Plugin name"
+          },
+          {
+            "name": "position",
+            "type": "int",
+            "description": "Plugin position/order"
+          }
+        ]
+      },
+      {
+        "name": "refinery_images",
+        "description": "Stores image resources",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "image_mime_type",
+            "type": "varchar",
+            "description": "MIME type of the image"
+          },
+          {
+            "name": "image_name",
+            "type": "varchar",
+            "description": "Name of the image"
+          },
+          {
+            "name": "image_size",
+            "type": "int",
+            "description": "Size of the image in bytes"
+          },
+          {
+            "name": "image_width",
+            "type": "int",
+            "description": "Width of the image"
+          },
+          {
+            "name": "image_height",
+            "type": "int",
+            "description": "Height of the image"
+          },
+          {
+            "name": "image_uid",
+            "type": "varchar",
+            "description": "Unique identifier for the image"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of record creation"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of last update"
+          }
+        ]
+      },
+      {
+        "name": "refinery_image_translations",
+        "description": "Translations for images",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "refinery_image_id",
+            "type": "int",
+            "description": "Image ID foreign key",
+            "constraints": {
+              "foreign_key": {
+                "table": "refinery_images",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "locale",
+            "type": "varchar",
+            "description": "Language locale code"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of record creation"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of last update"
+          },
+          {
+            "name": "image_alt",
+            "type": "varchar",
+            "description": "Alternative text for the image"
+          },
+          {
+            "name": "image_title",
+            "type": "varchar",
+            "description": "Title for the image"
+          }
+        ]
+      },
+      {
+        "name": "refinery_page_part_translations",
+        "description": "Translations for page parts",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "refinery_page_part_id",
+            "type": "int",
+            "description": "Page part ID foreign key",
+            "constraints": {
+              "foreign_key": {
+                "table": "refinery_page_parts",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "locale",
+            "type": "varchar",
+            "description": "Language locale code"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of record creation"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of last update"
+          },
+          {
+            "name": "body",
+            "type": "text",
+            "description": "Content of the page part"
+          }
+        ]
+      },
+      {
+        "name": "refinery_page_parts",
+        "description": "Parts of pages that can be edited separately",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "refinery_page_id",
+            "type": "int",
+            "description": "Page ID foreign key",
+            "constraints": {
+              "foreign_key": {
+                "table": "refinery_pages",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "URL-friendly identifier"
+          },
+          {
+            "name": "position",
+            "type": "int",
+            "description": "Order position of the page part"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of record creation"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of last update"
+          },
+          {
+            "name": "title",
+            "type": "varchar",
+            "description": "Title of the page part"
+          }
+        ]
+      },
+      {
+        "name": "refinery_pages",
+        "description": "Content pages in the CMS",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "parent_id",
+            "type": "int",
+            "description": "Parent page ID for hierarchical structure",
+            "constraints": {
+              "foreign_key": {
+                "table": "refinery_pages",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "path",
+            "type": "varchar",
+            "description": "URL path to the page"
+          },
+          {
+            "name": "show_in_menu",
+            "type": "boolean",
+            "description": "Whether to show this page in navigation menus"
+          },
+          {
+            "name": "link_url",
+            "type": "varchar",
+            "description": "URL for linked pages"
+          },
+          {
+            "name": "menu_match",
+            "type": "varchar",
+            "description": "Regex for matching URLs for menu highlighting"
+          },
+          {
+            "name": "deletable",
+            "type": "boolean",
+            "description": "Whether the page can be deleted"
+          },
+          {
+            "name": "draft",
+            "type": "boolean",
+            "description": "Whether the page is in draft status"
+          },
+          {
+            "name": "skip_to_first_child",
+            "type": "boolean",
+            "description": "Whether to skip directly to first child page"
+          },
+          {
+            "name": "lft",
+            "type": "int",
+            "description": "Left value for nested set model"
+          },
+          {
+            "name": "rgt",
+            "type": "int",
+            "description": "Right value for nested set model"
+          },
+          {
+            "name": "depth",
+            "type": "int",
+            "description": "Depth in the page hierarchy"
+          },
+          {
+            "name": "view_template",
+            "type": "varchar",
+            "description": "Template for viewing the page"
+          },
+          {
+            "name": "layout_template",
+            "type": "varchar",
+            "description": "Layout template for the page"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of record creation"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of last update"
+          },
+          {
+            "name": "children_count",
+            "type": "int",
+            "description": "Number of child pages"
+          }
+        ]
+      },
+      {
+        "name": "refinery_page_translations",
+        "description": "Translations for pages",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "refinery_page_id",
+            "type": "int",
+            "description": "Page ID foreign key",
+            "constraints": {
+              "foreign_key": {
+                "table": "refinery_pages",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "locale",
+            "type": "varchar",
+            "description": "Language locale code"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of record creation"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of last update"
+          },
+          {
+            "name": "title",
+            "type": "varchar",
+            "description": "Translated page title"
+          },
+          {
+            "name": "custom_slug",
+            "type": "varchar",
+            "description": "Custom URL slug for this locale"
+          },
+          {
+            "name": "menu_title",
+            "type": "varchar",
+            "description": "Menu title for this locale"
+          },
+          {
+            "name": "slug",
+            "type": "varchar",
+            "description": "URL-friendly identifier for this locale"
+          }
+        ]
+      },
+      {
+        "name": "refinery_resources",
+        "description": "Stores file resources",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "file_mime_type",
+            "type": "varchar",
+            "description": "MIME type of the file"
+          },
+          {
+            "name": "file_name",
+            "type": "varchar",
+            "description": "Name of the file"
+          },
+          {
+            "name": "file_size",
+            "type": "int",
+            "description": "Size of the file in bytes"
+          },
+          {
+            "name": "file_uid",
+            "type": "varchar",
+            "description": "Unique identifier for the file"
+          },
+          {
+            "name": "file_ext",
+            "type": "varchar",
+            "description": "File extension"
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of record creation"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of last update"
+          }
+        ]
+      },
+      {
+        "name": "refinery_resource_translations",
+        "description": "Translations for resources",
+        "columns": [
+          {
+            "name": "id",
+            "type": "int",
+            "description": "Primary key",
+            "constraints": {
+              "primary_key": true,
+              "nullable": false
+            }
+          },
+          {
+            "name": "resource_title",
+            "type": "varchar",
+            "description": "Translated resource title"
+          },
+          {
+            "name": "locale",
+            "type": "varchar",
+            "description": "Language locale code"
+          },
+          {
+            "name": "refinery_resource_id",
+            "type": "int",
+            "description": "Resource ID foreign key",
+            "constraints": {
+              "foreign_key": {
+                "table": "refinery_resources",
+                "column": "id"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "datetime",
+            "description": "Timestamp of record creation"
+          },
+          {
+            "name": "updated_at",
+            "type": "datetime",
+            "description": "Timestamp of last update"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "users_roles",
+        "type": "many_to_many",
+        "description": "Relationship between users and roles",
+        "from": {
+          "table": "refinery_authentication_device_users",
+          "column": "id"
+        },
+        "to": {
+          "table": "refinery_authentication_device_roles",
+          "column": "id"
+        },
+        "junction_table": {
+          "name": "refinery_authentication_device_roles_users",
+          "source_column": "user_id",
+          "target_column": "role_id"
+        }
+      },
+      {
+        "name": "users_plugins",
+        "type": "one_to_many",
+        "description": "User can have multiple plugins",
+        "from": {
+          "table": "refinery_authentication_device_users",
+          "column": "id"
+        },
+        "to": {
+          "table": "refinery_authentication_devise_user_plugins",
+          "column": "user_id"
+        }
+      },
+      {
+        "name": "images_translations",
+        "type": "one_to_many",
+        "description": "Images can have multiple translations",
+        "from": {
+          "table": "refinery_images",
+          "column": "id"
+        },
+        "to": {
+          "table": "refinery_image_translations",
+          "column": "refinery_image_id"
+        }
+      },
+      {
+        "name": "pages_parts",
+        "type": "one_to_many",
+        "description": "Pages can have multiple parts",
+        "from": {
+          "table": "refinery_pages",
+          "column": "id"
+        },
+        "to": {
+          "table": "refinery_page_parts",
+          "column": "refinery_page_id"
+        }
+      },
+      {
+        "name": "page_parts_translations",
+        "type": "one_to_many",
+        "description": "Page parts can have multiple translations",
+        "from": {
+          "table": "refinery_page_parts",
+          "column": "id"
+        },
+        "to": {
+          "table": "refinery_page_part_translations",
+          "column": "refinery_page_part_id"
+        }
+      },
+      {
+        "name": "pages_translations",
+        "type": "one_to_many",
+        "description": "Pages can have multiple translations",
+        "from": {
+          "table": "refinery_pages",
+          "column": "id"
+        },
+        "to": {
+          "table": "refinery_page_translations",
+          "column": "refinery_page_id"
+        }
+      },
+      {
+        "name": "pages_hierarchy",
+        "type": "one_to_many",
+        "description": "Pages can have parent-child relationships",
+        "from": {
+          "table": "refinery_pages",
+          "column": "id"
+        },
+        "to": {
+          "table": "refinery_pages",
+          "column": "parent_id"
+        }
+      },
+      {
+        "name": "resources_translations",
+        "type": "one_to_many",
+        "description": "Resources can have multiple translations",
+        "from": {
+          "table": "refinery_resources",
+          "column": "id"
+        },
+        "to": {
+          "table": "refinery_resource_translations",
+          "column": "refinery_resource_id"
+        }
+      }
+    ]
+  }

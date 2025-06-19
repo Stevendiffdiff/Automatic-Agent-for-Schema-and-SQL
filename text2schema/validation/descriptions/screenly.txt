@@ -1,0 +1,41 @@
+### Functional Description:
+
+The software is a **user authentication and API management system** with comprehensive tracking capabilities. It provides:  
+
+1. **User Management**  
+   - Stores user accounts with email/password or OAuth-based authentication (via `provider` and `provider_id`).  
+   - Supports "remember me" functionality (`remember_token`) and password resets (via the `password_resets` table).  
+   - Tracks creation and modification timestamps.  
+
+2. **API Key Management**  
+   - Users can generate multiple named API keys (`api_keys` table).  
+   - Each key is unique and tied to a specific user.  
+
+3. **API Activity Logging**  
+   - All API calls are logged (`api_log`), including:  
+     - The user or API key used (`user_id`, `api_key_id`).  
+     - Image-related data (e.g., uploads or processed images stored as `images`).  
+     - Timestamps for auditing.  
+
+4. **Database Migrations**  
+   - Tracks schema changes (`migrations` table) with batch support for version control.  
+
+#### Key Relationships:  
+- **Users → API Keys**: One-to-many (a user can have multiple keys).  
+- **Users/API Keys → API Logs**: One-to-many (both users and keys can generate multiple logs).  
+
+#### Notable Features:  
+- **Flexible Auth**: Supports both email/password and OAuth logins.  
+- **Security**: Password reset tokens and API keys are securely stored.  
+- **Auditability**: Full API call history with user/key attribution.  
+
+This system is typical of a **B2B or developer-focused platform** where API access and user authentication are core requirements. The schema suggests an emphasis on traceability (logs, timestamps) and multi-method authentication.  
+
+---  
+**Engineer Guidance**: To replicate, prioritize:  
+1. User/auth tables with nullable OAuth fields.  
+2. API key generation with unique constraints.  
+3. Logging all API activity with user/key references.  
+4. A migration system for schema updates.  
+
+The design avoids redundancy (e.g., logs reference users/keys rather than duplicating data) and uses standard practices (timestamps, foreign keys).

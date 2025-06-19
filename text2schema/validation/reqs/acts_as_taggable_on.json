@@ -1,0 +1,12 @@
+[
+  "store-and-track-tags",
+  "track-tag-usage-count",
+  "record-creation-and-update-timestamps",
+  "support-polymorphic-tagging",
+  "record-tagger-information",
+  "support-different-tagger-types",
+  "allow-contextual-tagging",
+  "maintain-relationship-structure",
+  "enable-auditability",
+  "support-analytics"
+]

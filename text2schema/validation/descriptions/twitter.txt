@@ -1,0 +1,40 @@
+### Functional Description:
+
+The software appears to be a **social microblogging platform** (similar to Twitter/X) with core functionality centered around **user profiles, following relationships, and short-form posts ("tweets")**. Here's the key functionality derived from the schema:
+
+---
+
+#### **1. User Management**
+- **User Profiles**: Stores basic account information including display name, email (unique), and hashed password.  
+- **Authentication**: Supports persistent login sessions via `remember_token`.  
+- **URL-Friendly Identifiers**: Users have unique `slug` fields for public profile URLs.  
+- **Timestamps**: Tracks account creation and last update times.
+
+---
+
+#### **2. Social Graph (Following System)**
+- **Follow Relationships**: Users can follow/unfollow other users, creating a directed social graph.  
+- **Junction Table**: The `relationships` table tracks who follows whom (`follower_id` → `followed_id`), with timestamps for each action.  
+- **Many-to-Many**: A user can follow multiple users and be followed by multiple users.
+
+---
+
+#### **3. Content Posting**
+- **Tweets**: Users create short posts (`content` field, likely text with length limits).  
+- **Ownership**: Each tweet is linked to its author via `user_id`.  
+- **Timestamps**: Tracks post creation and edits.
+
+---
+
+#### **Key Relationships**  
+- **One-to-Many**: A user can have many tweets (`users.id` → `tweets.user_id`).  
+- **Many-to-Many**: Follow relationships are mediated through the `relationships` junction table.
+
+---
+
+### Engineering Implications  
+- **User-Centric Design**: All core features (tweets, follows) depend on the `users` table.  
+- **Scalability**: Auto-incrementing IDs and indexed foreign keys (`user_id`, `follower_id`, `followed_id`) suggest optimization for read-heavy workloads.  
+- **Uniqueness Constraints**: `email` and `slug` must be unique per user.  
+
+This schema supports a **minimalist social platform** with user interactions, content creation, and a follow-based network. Engineers should focus on efficient querying for timelines (e.g., "show tweets from users I follow") and integrity constraints for relationships.

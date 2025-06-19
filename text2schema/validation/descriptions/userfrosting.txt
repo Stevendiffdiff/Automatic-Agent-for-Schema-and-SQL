@@ -1,0 +1,49 @@
+### Functional Description of the Competitor's Software:
+
+The competitor's software is a **user management and authentication system** with **role-based access control (RBAC)** and **activity tracking**. It provides comprehensive user account management, session handling, security features, and group/organization structuring. Here's the core functionality:
+
+---
+
+#### **1. User Management**
+- Stores **user profiles** with login credentials (username/password), personal details (name, email), and preferences (locale, theme).
+- Supports **soft deletion** (`deleted_at`) and account enable/disable flags.
+- Users belong to **groups** (organizational units with names/icons) via `group_id`.
+- Tracks **last activity** via reference to the activities table.
+
+#### **2. Authentication & Security**
+- **Session management**: Tracks active sessions (IP, user agent, last activity).
+- **Remember-me functionality**: Persistent login tokens with expiration.
+- **Account verification**: Email verification flows with expiration timers.
+- **Password resets**: Secure token-based reset process with completion tracking.
+- **Rate limiting**: Throttles requests by IP/type to prevent abuse.
+
+#### **3. Role-Based Access Control (RBAC)**
+- **Roles**: Defined by unique slugs (e.g., "admin", "editor") with human-readable names.
+- **Permissions**: Fine-grained access rules (e.g., "create_post") with optional conditions.
+- **Role-permission assignments**: Permissions are granted to roles via a junction table.
+- **User-role assignments**: Users can have multiple roles (many-to-many).
+
+#### **4. Activity Logging**
+- Tracks **user actions** (e.g., logins, updates) with timestamps, IPs, and descriptions.
+- Links activities to specific users for auditing.
+- User profiles reference their **last activity** for quick access.
+
+#### **5. Additional Features**
+- **Groups**: Organizational units users can belong to (e.g., departments, teams).
+- **Soft deletion**: Preserves data while hiding "deleted" entries.
+- **Timestamps**: Automatic tracking of creation/update times across all tables.
+
+---
+
+### Key Relationships:
+- **Users → Groups**: Many-to-one (users belong to one group).
+- **Users ↔ Roles**: Many-to-many (via `role_users` junction table).
+- **Roles ↔ Permissions**: Many-to-many (via `permission_roles` junction table).
+- **Users → Activities/Sessions/Verifications**: One-to-many (users have multiple records).
+
+### Engineering Notes:
+- **Foreign keys** enforce data integrity (e.g., `user_id` references across tables).
+- **Nullable columns** allow optional fields (e.g., `theme`, `ip_address`).
+- **Auto-increment IDs** are used for primary keys except sessions (UUID-like `varchar`).
+
+This system is designed for **scalability** (e.g., soft deletion, indexing via foreign keys) and **security** (hashed passwords, verification workflows). The schema suggests a **web application** with multi-tenant support (groups) and granular access control.

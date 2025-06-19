@@ -1,0 +1,28 @@
+### Functional Description:
+
+The software is an **access monitoring and security system** that tracks and analyzes user authentication attempts to a web application. It serves two primary purposes:
+
+1. **Successful Access Tracking** (via `axes_accesslog` table):
+   - Records all successful logins with timestamps, user details, and access information
+   - Tracks session duration through login/logout timestamps
+   - Captures client metadata (user agent, IP) and accessed paths
+
+2. **Authentication Attempt Monitoring** (via `axes_accessattempt` table):
+   - Records all login attempts (both successful and failed)
+   - Stores detailed request data (GET/POST parameters)
+   - Maintains failure counters for security analysis
+   - Captures the same client metadata as successful accesses
+
+Key Features:
+- **Security Analysis**: Tracks failed attempts and patterns (via `failures_since_start`)
+- **Forensic Capability**: Stores complete request data for investigation
+- **Session Tracking**: Links successful logins to their attempts via username
+- **Client Fingerprinting**: Uses user agent, IP, and HTTP headers to identify clients
+
+The system appears designed for:
+- Brute force attack detection
+- Suspicious activity monitoring
+- Compliance logging
+- User behavior analysis
+
+The data model supports identifying patterns across multiple attempts while maintaining a clear audit trail of successful accesses. The one-to-one relationship suggests the system may correlate successful logins with their preceding attempts for security analysis.

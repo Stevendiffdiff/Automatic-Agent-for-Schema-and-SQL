@@ -1,0 +1,37 @@
+### Functional Description: OAuth 2.0 Authorization Service  
+
+The software is an **OAuth 2.0 authorization server** that enables secure API access delegation via token-based authentication. It supports:  
+
+1. **User Management**  
+   - Stores basic user information (`users` table) and links to OAuth tokens and grants.  
+
+2. **OAuth Application Registration** (`oauth_applications`)  
+   - Applications register with a `name`, `client_id` (`uid`), `secret`, and `redirect_uri`.  
+   - Defines default `scopes` and marks applications as `confidential` (e.g., server-side apps) or public.  
+
+3. **Token-Based Authorization Flow**  
+   - **Access Tokens** (`oauth_access_tokens`):  
+     - Issued after successful authentication (e.g., via authorization code or refresh token flow).  
+     - Includes `token`, `refresh_token`, `expires_in`, and permitted `scopes`.  
+     - Can be revoked (`revoked_at`) and tracks token rotation (`previous_refresh_token`).  
+   - **Authorization Grants** (`oauth_access_grants`):  
+     - Temporary authorization codes (`token`) exchanged for access tokens.  
+     - Tied to a `redirect_uri` and expires (`expires_in`).  
+
+4. **Key Relationships**  
+   - A **user** can have multiple access tokens and grants.  
+   - An **application** can issue multiple tokens/grants for different users.  
+
+### Core Workflow  
+1. An application registers and obtains `client_id`/`secret`.  
+2. A user authorizes the app, generating an **authorization grant** (short-lived code).  
+3. The app exchanges the grant for an **access token** (and optional **refresh token**).  
+4. The token grants API access until expiry/revocation.  
+
+### Security Features  
+- Token expiration (`expires_in`).  
+- Scope restriction (`scopes`).  
+- Token revocation tracking (`revoked_at`).  
+- Confidential client support (`confidential` flag).  
+
+This design supports standard OAuth 2.0 flows (authorization code, refresh token) and is typical for API platforms (e.g., third-party app integrations). Engineers can replicate this with `users`, `applications`, `tokens`, and `grants` tables, enforcing relationships via foreign keys.

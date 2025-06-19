@@ -1,0 +1,259 @@
+{
+    "tables": [
+        {
+            "name": "organizations_organization",
+            "description": "Stores organization details",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for the organization",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "Organization name",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "is_active",
+                    "type": "tinyint",
+                    "description": "Flag indicating if the organization is active",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "created",
+                    "type": "datetime",
+                    "description": "Timestamp when the organization was created",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "modified",
+                    "type": "datetime",
+                    "description": "Timestamp when the organization was last modified",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "slug",
+                    "type": "varchar",
+                    "description": "URL-friendly identifier for the organization",
+                    "constraints": {
+                        "nullable": false,
+                        "unique": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "organizations_organizationowner",
+            "description": "Links organizations to their owners",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "created",
+                    "type": "datetime",
+                    "description": "Timestamp when the record was created",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "modified",
+                    "type": "datetime",
+                    "description": "Timestamp when the record was last modified",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "organization_id",
+                    "type": "int",
+                    "description": "Foreign key to the organization",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "organizations_organization",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "organization_user_id",
+                    "type": "int",
+                    "description": "Foreign key to the organization user",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "organizations_organizationuser",
+                            "column": "id"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "organizations_organizationuser",
+            "description": "Associates users with organizations and defines their roles",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "created",
+                    "type": "datetime",
+                    "description": "Timestamp when the record was created",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "modified",
+                    "type": "datetime",
+                    "description": "Timestamp when the record was last modified",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "is_admin",
+                    "type": "tinyint",
+                    "description": "Flag indicating if the user has admin privileges in the organization",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "organization_id",
+                    "type": "int",
+                    "description": "Foreign key to the organization",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "organizations_organization",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "user_id",
+                    "type": "int",
+                    "description": "Foreign key to the user",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "auth_user",
+                            "column": "id"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "auth_user",
+            "description": "Stores user authentication information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key for the user",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "created",
+                    "type": "datetime",
+                    "description": "Timestamp when the user was created",
+                    "constraints": {
+                        "nullable": false
+                    }
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "name": "organization_to_organizationuser",
+            "type": "one_to_many",
+            "description": "An organization has many organization users",
+            "from": {
+                "table": "organizations_organization",
+                "column": "id"
+            },
+            "to": {
+                "table": "organizations_organizationuser",
+                "column": "organization_id"
+            }
+        },
+        {
+            "name": "auth_user_to_organizationuser",
+            "type": "one_to_many",
+            "description": "A user can be associated with multiple organizations",
+            "from": {
+                "table": "auth_user",
+                "column": "id"
+            },
+            "to": {
+                "table": "organizations_organizationuser",
+                "column": "user_id"
+            }
+        },
+        {
+            "name": "organizationuser_to_organizationowner",
+            "type": "one_to_many",
+            "description": "An organization user can be the owner of multiple organizations",
+            "from": {
+                "table": "organizations_organizationuser",
+                "column": "id"
+            },
+            "to": {
+                "table": "organizations_organizationowner",
+                "column": "organization_user_id"
+            }
+        },
+        {
+            "name": "organization_to_organizationowner",
+            "type": "one_to_many",
+            "description": "An organization can have multiple owners",
+            "from": {
+                "table": "organizations_organization",
+                "column": "id"
+            },
+            "to": {
+                "table": "organizations_organizationowner",
+                "column": "organization_id"
+            }
+        }
+    ]
+}

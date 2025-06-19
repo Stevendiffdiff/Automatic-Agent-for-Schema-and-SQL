@@ -1,0 +1,183 @@
+{
+    "tables": [
+        {
+            "name": "user_sessions_session",
+            "description": "Table that stores user session information",
+            "columns": [
+                {
+                    "name": "session_key",
+                    "type": "varchar",
+                    "description": "Unique key identifying a user session",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "session_data",
+                    "type": "longtext",
+                    "description": "Serialized session data",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "expire_date",
+                    "type": "datetime",
+                    "description": "Date and time when the session expires",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "user_agent",
+                    "type": "varchar",
+                    "description": "Browser/client user agent string",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "last_activity",
+                    "type": "datetime",
+                    "description": "Timestamp of the last activity in this session",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "ip",
+                    "type": "char",
+                    "description": "IP address associated with the session",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "user_id",
+                    "type": "int",
+                    "description": "ID of the user this session belongs to",
+                    "constraints": {
+                        "nullable": true,
+                        "foreign_key": {
+                            "table": "auth_user",
+                            "column": "id"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "auth_user",
+            "description": "Table that stores user authentication and profile information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key identifier for user",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "password",
+                    "type": "varchar",
+                    "description": "Hashed password for user authentication",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "last_login",
+                    "type": "datetime",
+                    "description": "Timestamp of user's last login",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "is_superuser",
+                    "type": "tinyint",
+                    "description": "Flag indicating whether user has superuser privileges",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "username",
+                    "type": "varchar",
+                    "description": "Unique username for login",
+                    "constraints": {
+                        "nullable": false,
+                        "unique": true
+                    }
+                },
+                {
+                    "name": "first_name",
+                    "type": "varchar",
+                    "description": "User's first name",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "last_name",
+                    "type": "varchar",
+                    "description": "User's last name",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "email",
+                    "type": "varchar",
+                    "description": "User's email address",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "is_staff",
+                    "type": "tinyint",
+                    "description": "Flag indicating whether user has staff privileges",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "is_active",
+                    "type": "tinyint",
+                    "description": "Flag indicating whether user account is active",
+                    "constraints": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "date_joined",
+                    "type": "datetime",
+                    "description": "Timestamp when user account was created",
+                    "constraints": {
+                        "nullable": false
+                    }
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "name": "user_session_relationship",
+            "type": "one_to_many",
+            "description": "One user can have multiple sessions",
+            "from": {
+                "table": "auth_user",
+                "column": "id"
+            },
+            "to": {
+                "table": "user_sessions_session",
+                "column": "user_id"
+            }
+        }
+    ]
+}

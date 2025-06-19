@@ -1,0 +1,293 @@
+{
+    "tables": [
+        {
+            "name": "robots_rule",
+            "description": "Stores robot crawling rules",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "robot",
+                    "type": "varchar",
+                    "description": "Name or identifier of the robot/crawler",
+                    "constraints": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "name": "crawl_delay",
+                    "type": "decimal",
+                    "description": "Delay time between crawler requests",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "robots_rule_allowed",
+            "description": "Stores URL patterns that are allowed for crawling",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "rule_id",
+                    "type": "int",
+                    "description": "Reference to robots_rule table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "robots_rule",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "url_id",
+                    "type": "int",
+                    "description": "Reference to robots_url table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "robots_url",
+                            "column": "id"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "robots_rule_disallowed",
+            "description": "Stores URL patterns that are disallowed for crawling",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "rule_id",
+                    "type": "int",
+                    "description": "Reference to robots_rule table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "robots_rule",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "url_id",
+                    "type": "int",
+                    "description": "Reference to robots_url table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "robots_url",
+                            "column": "id"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "robots_rule_sites",
+            "description": "Maps robot rules to specific sites",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "rule_id",
+                    "type": "int",
+                    "description": "Reference to robots_rule table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "robots_rule",
+                            "column": "id"
+                        }
+                    }
+                },
+                {
+                    "name": "site_id",
+                    "type": "int",
+                    "description": "Reference to django_site table",
+                    "constraints": {
+                        "nullable": false,
+                        "foreign_key": {
+                            "table": "django_site",
+                            "column": "id"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "robots_url",
+            "description": "Stores URL patterns for robot crawling rules",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "pattern",
+                    "type": "varchar",
+                    "description": "URL pattern for crawling rules",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "django_site",
+            "description": "Stores website information",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "description": "Primary key",
+                    "constraints": {
+                        "primary_key": true,
+                        "nullable": false,
+                        "auto_increment": true
+                    }
+                },
+                {
+                    "name": "domain",
+                    "type": "varchar",
+                    "description": "Domain name of the site",
+                    "constraints": {
+                        "nullable": true,
+                        "unique": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "description": "Name of the site",
+                    "constraints": {
+                        "nullable": true
+                    }
+                }
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "name": "rule_to_allowed_urls",
+            "type": "one_to_many",
+            "description": "A robot rule can have multiple allowed URL patterns",
+            "from": {
+                "table": "robots_rule",
+                "column": "id"
+            },
+            "to": {
+                "table": "robots_rule_allowed",
+                "column": "rule_id"
+            }
+        },
+        {
+            "name": "rule_to_disallowed_urls",
+            "type": "one_to_many",
+            "description": "A robot rule can have multiple disallowed URL patterns",
+            "from": {
+                "table": "robots_rule",
+                "column": "id"
+            },
+            "to": {
+                "table": "robots_rule_disallowed",
+                "column": "rule_id"
+            }
+        },
+        {
+            "name": "url_to_allowed_rules",
+            "type": "one_to_many",
+            "description": "A URL pattern can be allowed in multiple robot rules",
+            "from": {
+                "table": "robots_url",
+                "column": "id"
+            },
+            "to": {
+                "table": "robots_rule_allowed",
+                "column": "url_id"
+            }
+        },
+        {
+            "name": "url_to_disallowed_rules",
+            "type": "one_to_many",
+            "description": "A URL pattern can be disallowed in multiple robot rules",
+            "from": {
+                "table": "robots_url",
+                "column": "id"
+            },
+            "to": {
+                "table": "robots_rule_disallowed",
+                "column": "url_id"
+            }
+        },
+        {
+            "name": "rule_to_sites",
+            "type": "one_to_many",
+            "description": "A robot rule can apply to multiple sites",
+            "from": {
+                "table": "robots_rule",
+                "column": "id"
+            },
+            "to": {
+                "table": "robots_rule_sites",
+                "column": "rule_id"
+            }
+        },
+        {
+            "name": "site_to_rules",
+            "type": "one_to_many",
+            "description": "A site can have multiple robot rules",
+            "from": {
+                "table": "django_site",
+                "column": "id"
+            },
+            "to": {
+                "table": "robots_rule_sites",
+                "column": "site_id"
+            }
+        }
+    ]
+}

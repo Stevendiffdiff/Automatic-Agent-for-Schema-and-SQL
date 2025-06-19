@@ -1,0 +1,43 @@
+### Functional Description:
+
+The software is a **performance profiling and request inspection tool** for web applications, likely designed for Django-based systems (evidenced by "silk" naming convention and Python-specific fields). It captures and correlates three key aspects of application behavior:
+
+1. **Request/Response Tracking**  
+   - Records full HTTP transaction details (method, path, headers, bodies, timing)  
+   - Tracks view execution and associates responses (1:1)  
+   - Captures metadata about query performance during request processing  
+
+2. **SQL Query Profiling**  
+   - Logs all SQL queries with execution timing  
+   - Stores query text and error traces  
+   - Links queries to originating HTTP requests (1:N)  
+
+3. **Code Profiling**  
+   - Tracks function-level execution (entry/exit points, line numbers)  
+   - Measures execution time and exception states  
+   - Supports both static and dynamic profiling  
+   - Correlates code execution with SQL queries (M:N via junction table)  
+
+Key Relationships:  
+- Each HTTP request has one response  
+- Each request may trigger multiple code profiles  
+- Each request may generate multiple SQL queries  
+- Code profiles may contain multiple SQL queries  
+
+The system provides **performance analytics** through:  
+- Timing metrics at request, function, and query levels  
+- Query counting and aggregation  
+- Source code context for profiling  
+- Error diagnostics via tracebacks  
+
+Implementation Notes:  
+- Designed for detailed post-mortem analysis rather than real-time monitoring  
+- Stores raw and processed versions of request/response bodies  
+- Supports both web requests and background task profiling (nullable request_id)  
+- Includes Python-specific profiling data (pyprofile field)  
+
+This would enable developers to:  
+1. Identify slow requests and their root causes  
+2. Analyze N+1 query problems  
+3. Debug performance bottlenecks in specific functions  
+4. Inspect API call details during troubleshooting

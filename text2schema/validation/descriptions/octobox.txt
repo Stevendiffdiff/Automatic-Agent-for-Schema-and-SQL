@@ -1,0 +1,39 @@
+### Product Description: GitHub Notification & Repository Management Platform  
+
+This is a **GitHub-integrated SaaS platform** that helps users manage repositories, track notifications, and collaborate on issues/pull requests. The core functionality includes:  
+
+#### **1. GitHub App Installation & Permissions**  
+- Tracks installations of the GitHub App (OAuth) with granular permissions (pull requests, issues, statuses).  
+- Supports multi-account setups (user/organization) and repository-level access control.  
+- Manages user permissions via a junction table (`app_installation_permissions`).  
+
+#### **2. Repository Management**  
+- Syncs GitHub repositories (public/private) with metadata (owner, last sync time).  
+- Links repositories to app installations for permission enforcement.  
+
+#### **3. Notification System**  
+- Aggregates GitHub notifications (issues, PRs, comments) with filtering (unread, starred, archived).  
+- Tracks notification subjects (title, URL, state) and associates them with repositories/users.  
+- Supports user preferences (muting, starring, comment display).  
+
+#### **4. Collaboration Features**  
+- **Subjects**: Centralizes GitHub items (issues, PRs) with metadata (state, assignees, comments).  
+- **Comments**: Stores threaded discussions with author associations and review states.  
+- **Labels**: Manages repository labels (name, color) linked to subjects.  
+
+#### **5. User Experience**  
+- **Pinned Searches**: Saves custom queries for quick access.  
+- **User Preferences**: Themes, notification display settings, and encrypted token storage (API, personal access tokens).  
+
+#### **6. Subscription & Monetization**  
+- Offers tiered plans (monthly/yearly pricing, free trials).  
+- Tracks purchases with billing cycles, trial status, and transaction IDs.  
+
+### **Key Differentiators**  
+- **Deep GitHub Integration**: Syncs with GitHub’s permission model and real-time activity.  
+- **Unified Dashboard**: Combines notifications, repository management, and collaboration tools.  
+- **Enterprise-Ready**: Supports teams with granular permissions and audit fields (`created_at`, `updated_at`).  
+
+This schema suggests a **product similar to GitHub’s native notifications but with enhanced customization, cross-repository visibility, and premium features**. Engineers should focus on GitHub API syncing, permission cascading, and real-time updates.  
+
+(Word count: 298)

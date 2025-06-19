@@ -1,0 +1,36 @@
+### Product Functionality Description: Gamification System  
+
+The competitor's software is a **gamification platform** that motivates user engagement through streaks, achievements, and leveling systems. Here’s a breakdown of its core features:  
+
+#### **1. Streak Tracking**  
+- Users can maintain **streaks** (consecutive activity) for predefined **streak activities** (e.g., "daily login," "exercise").  
+- **Active streaks** are tracked in real-time (`streaks` table), recording the current count and last activity timestamp.  
+- **Historical streaks** (`streak_histories`) log past streaks with start/end times, allowing analysis of user consistency.  
+- Streaks can be **frozen** (`frozen_until`) to prevent breaks (e.g., vacations).  
+
+#### **2. Achievements & Badges**  
+- **Achievements** (`achievements`) are predefined goals (e.g., "Complete 10 workouts"). Some are **secret** (`is_secret`) until unlocked.  
+- Users earn achievements via a **many-to-many relationship** (`achievement_user`), tracking progress (`progress` field).  
+- Achievements include visual badges (`image` field) and descriptions.  
+
+#### **3. Leveling & Experience (XP) System**  
+- Users **level up** (`levels` table) by accumulating **experience points (XP)** (`experiences` table).  
+- Each level requires a set XP threshold (`next_level_experience`).  
+- **XP audits** (`experience_audits`) log all XP changes, including:  
+  - Source (`type`, `reason`)  
+  - Whether it triggered a level-up (`levelled_up`, `level_to`)  
+
+#### **4. User Progression**  
+- Users (`users`) are linked to their **current level** (`level_id`) and **XP total**.  
+- The system supports **retrospective analysis** via streak histories and XP audits.  
+
+### Key Relationships  
+- **Streaks** and **achievements** are user-specific but reference shared definitions (`streak_activities`, `achievements`).  
+- **XP and levels** are tied through a progressive system with audit trails for transparency.  
+
+### Engineering Implications  
+- **Real-time updates** for streaks/XP require efficient writes to `streaks` and `experiences`.  
+- **Historical data** (`streak_histories`, `experience_audits`) enables analytics and user insights.  
+- **Junction tables** (e.g., `achievement_user`) handle many-to-many relationships.  
+
+This system is designed to **drive habitual engagement** through measurable goals, rewards, and progress tracking.

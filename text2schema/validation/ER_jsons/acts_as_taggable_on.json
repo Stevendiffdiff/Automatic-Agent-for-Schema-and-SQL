@@ -1,0 +1,50 @@
+{
+  "entities": [
+    {
+      "name": "tagger",
+      "attributes": [
+        "tagger_id",
+        "tagger_type"
+      ]
+    },
+    {
+      "name": "tags",
+      "attributes": [
+        "tag_id",
+        "name",
+        "created_at",
+        "updated_at",
+        "taggings_count"
+      ]
+    },
+    {
+      "name": "taggings",
+      "attributes": [
+        "tagging_id",
+        "tag_id",
+        "tagger_id",
+        "taggable_id",
+        "taggable_type",
+        "context",
+        "created_at"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "from": "tagger",
+      "to": "taggings",
+      "label": "creates"
+    },
+    {
+      "from": "tags",
+      "to": "taggings",
+      "label": "is_used_in"
+    },
+    {
+      "from": "taggings",
+      "to": "taggable_entity",
+      "label": "tags"
+    }
+  ]
+}

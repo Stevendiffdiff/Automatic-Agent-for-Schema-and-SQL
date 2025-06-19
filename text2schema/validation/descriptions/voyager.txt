@@ -1,0 +1,46 @@
+### Functional Description of the Competitor's Software:
+
+The competitor's software is a **multi-tenant, internationalized administration platform** with a focus on **custom data modeling, role-based access control (RBAC), and dynamic UI configuration**. It appears to be a **low-code/no-code backend system** that allows administrators to define custom data structures, manage user permissions, and configure navigation menus dynamically.
+
+#### Core Functionalities:
+
+1. **Internationalization (i18n) Support**  
+   - Stores translations for table/column names and record content across locales.  
+   - Supports dynamic language switching with locale-based text rendering.
+
+2. **Role-Based Access Control (RBAC)**  
+   - Defines granular permissions (e.g., per-table CRUD operations).  
+   - Supports role hierarchies:  
+     - Users have one *primary role* (many-to-one) and optionally *secondary roles* (many-to-many).  
+     - Permissions are assignable to multiple roles (many-to-many via `permission_role` junction table).  
+
+3. **Dynamic Navigation Menus**  
+   - Hierarchical menu structures with configurable items (URLs, icons, colors).  
+   - Supports nested menus via `parent_id` self-referential relationships.  
+   - Menu items can link to routes with parameters for dynamic routing.  
+
+4. **Custom Data Types & Fields**  
+   - Admins can define custom data types (`data_types`) with metadata (e.g., icons, model classes).  
+   - Each type has configurable fields (`data_rows`):  
+     - Field visibility controls (browse/read/edit/add/delete).  
+     - Server-side processing toggle.  
+     - Automatic permission generation.  
+
+5. **System & User Settings**  
+   - Global settings (`settings` table) with typed values, grouping, and display ordering.  
+   - User-specific preferences stored in `users.settings` (JSON).  
+
+6. **Auditability**  
+   - Timestamps (`created_at`, `updated_at`) track record lifecycle.  
+
+#### Key Differentiators:  
+- **Extensibility**: Custom data types and fields are dynamically configurable without code changes.  
+- **Localization-First**: Translations are decoupled from schema, enabling multi-language support at all levels.  
+- **UI Flexibility**: Menus and settings are data-driven, allowing runtime reconfiguration.  
+
+#### Engineering Implications:  
+- **Database**: Requires support for JSON fields (e.g., `details` columns) and complex relationships.  
+- **AuthZ**: Permission checks must evaluate both primary and secondary roles.  
+- **Caching**: Dynamic configurations (menus, data types) likely require cache invalidation strategies.  
+
+This system is positioned as a **unified admin dashboard framework** for applications requiring customizable data models and granular access control (e.g., SaaS platforms, enterprise tools).
