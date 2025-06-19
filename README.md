@@ -52,7 +52,7 @@ python text2schema.py
 3. Start the GUI code.
 ```
 cd text2sql
-python ./test2sql/text2sql.py
+python text2sql.py
 ```
 
 4. Run the code on your local URL, e.g.```http://127.0.0.1:7860```
