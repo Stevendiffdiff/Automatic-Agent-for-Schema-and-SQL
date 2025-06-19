@@ -39,7 +39,7 @@ python text2schema.py
 2. Run the code on your local URL, e.g.```http://127.0.0.1:7860```
 ![](text2schema/assets/port.png)
 
-3. As for the usage of our text2schema agent, please refer to the following DEMO ...
+3. As for the usage of our text2schema agent, please refer to the following DEMO ... (You may need to download the DEMO in ```text2schema/assets/demo.mp4``` by yourself and watch it.)
 
 <video src="text2schema/assets/demo.mp4" autoplay="true" controls="controls"></video>
 
@@ -58,7 +58,7 @@ python ./test2sql/text2sql.py
 4. Run the code on your local URL, e.g.```http://127.0.0.1:7860```
 ![](text2sql/assets/port.png)
 
-5. The GUI has four windows:'Input', 'sql-output', 'text-output','mysql-output' and two buttons: 'Input confirm', 'Run sql'. Users could build a database, update the items and showcase the results. As for the usage of our text2schema agent, please refer to the following DEMO ...
+5. The GUI has four windows:'Input', 'sql-output', 'text-output','mysql-output' and two buttons: 'Input confirm', 'Run sql'. Users could build a database, update the items and showcase the results. As for the usage of our text2schema agent, please refer to the following DEMO ... (You may need to download the DEMO in ```text2sql/assets/demo.mp4``` by yourself and watch it.)
 
 <video src="text2sql/assets/demo.mp4" autoplay="true" controls="controls"></video>
 
